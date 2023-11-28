@@ -4,18 +4,22 @@
     <my-header />
     <router-view></router-view>
     <scroll-top />
+    <my-footer />
   </div>
 </template>
 
 <script>
-import MySwiper from '../components/MySwiper.vue';
-import MyHeader from '../components/MyHeader.vue';
-import ScrollTop from '../components/ScrollTop.vue';
+import MySwiper from '../components/MySwiper.vue'
+import MyHeader from '../components/MyHeader.vue'
+import ScrollTop from '../components/ScrollTop.vue'
+import MyFooter from '../components/MyFooter.vue'
+
 export default {
   components: {
     MyHeader,
     MySwiper,
-    ScrollTop
+    ScrollTop,
+    MyFooter
   }
 }
 </script>
@@ -23,6 +27,5 @@ export default {
 <style lang="scss">
 .home-container {
   width: 100%;
-  height: 100rem;
 }
 </style>
