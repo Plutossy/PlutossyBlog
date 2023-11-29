@@ -6,7 +6,7 @@
 
     <!-- 导航栏 -->
     <el-col :span="16" class="hidden-sm-and-down">
-      <el-row>
+      <el-row justify="space-around">
         <el-col :span="3" :xs="24">
           <router-link to="/index">
             <el-icon>
@@ -151,12 +151,6 @@ export default {
     // 点击按钮，显示/隐藏导航栏
     toggleEvent() {
       this.btnHide = !this.btnHide
-      // if (!this.btnHide) {
-      //   // 解决点击屏幕其他地方，btnHide不生效不改变的问题
-      //   window.addEventListener('click', () => {
-      //     this.btnHide = true
-      //   })
-      // }
     }
   }
 }
@@ -164,9 +158,12 @@ export default {
 
 <style lang="scss" scoped>
 .header-container {
+  position: fixed;
+  top: 0;
+  z-index: 999;
+  width: 100%;
   background-color: rgba($color: #000000, $alpha: 0.5);
   padding: 0.8rem 5rem;
-  border-radius: 1rem;
   border-bottom: 1px solid #b2b1b1;
   box-shadow: 0 1px #ccc;
   .logo-box {
@@ -181,9 +178,9 @@ export default {
     }
   }
 
-  &:nth-child(2) {
+  > .el-col:nth-child(2) {
     a {
-      padding: 0.7rem 1rem;
+      padding: 0.7rem 0;
       color: rgb(225, 224, 224);
       display: flex;
       justify-content: center;
@@ -205,6 +202,7 @@ export default {
       cursor: pointer;
     }
   }
+
   .input {
     display: flex;
     align-items: center;

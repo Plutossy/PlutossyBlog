@@ -188,6 +188,7 @@ export default {
         }
         > p {
           text-indent: 2em;
+          text-align: justify;
           line-height: 1.5;
         }
       }

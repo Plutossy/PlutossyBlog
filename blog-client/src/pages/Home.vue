@@ -1,7 +1,7 @@
 <template>
   <div class="home-container">
-    <my-swiper />
     <my-header />
+    <my-swiper />
     <router-view></router-view>
     <scroll-top />
     <my-footer />
@@ -9,8 +9,8 @@
 </template>
 
 <script>
-import MySwiper from '../components/MySwiper.vue'
 import MyHeader from '../components/MyHeader.vue'
+import MySwiper from '../components/MySwiper.vue'
 import ScrollTop from '../components/ScrollTop.vue'
 import MyFooter from '../components/MyFooter.vue'
 
@@ -24,7 +24,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .home-container {
   width: 100%;
 }

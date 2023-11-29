@@ -1,11 +1,17 @@
 <template>
   <div class="index-container">
-    <h1>首页</h1>
+    <recommend />
+    <h1>Index</h1>
   </div>
 </template>
 
 <script>
-export default {}
+import Recommend from '../components/recommend/Recommend.vue'
+export default {
+  components: {
+    Recommend
+  }
+}
 </script>
 
 <style lang="scss" scoped>

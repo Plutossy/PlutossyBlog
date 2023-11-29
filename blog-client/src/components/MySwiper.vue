@@ -85,7 +85,7 @@ export default {
 
 .swiper {
   width: 100%;
-  padding-top: 50px;
+  padding-top: 100px;
   padding-bottom: 50px;
   .swiper-slide {
     background-position: center;
