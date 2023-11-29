@@ -1,13 +1,13 @@
 <template>
   <!-- 底部部分 -->
   <div class="footer-container">
-    <el-row>
-      <el-col :span="6" class="el-col-code">
+    <el-row justify="space-around">
+      <el-col :span="4" :xs="4" class="el-col-code">
         <div class="grid-content ep-bg-purple-light grid-content-code">
           <img src="@/assets/img/CSDN.jpg" alt="二维码" />
         </div>
       </el-col>
-      <el-col :span="6">
+      <el-col :span="6" :xs="6">
         <div class="grid-content ep-bg-purple-light">
           <h3>最新博客</h3>
           <ul>
@@ -29,7 +29,7 @@
           </ul>
         </div>
       </el-col>
-      <el-col :span="6">
+      <el-col :span="7" :xs="8">
         <div class="grid-content ep-bg-purple">
           <h3>联系我</h3>
           <ul>
@@ -62,7 +62,7 @@
           </ul>
         </div>
       </el-col>
-      <el-col :span="6">
+      <el-col :span="7" :xs="6">
         <div class="grid-content ep-bg-purple-light">
           <h3>SSY_Blog</h3>
           <p>这是我的个人博客、会分享关于编程、写作、思考相关的任何内容，希望可以给来到这儿的人有所帮助...</p>
@@ -163,8 +163,8 @@ export default {
           justify-content: center;
         }
         > img {
-          width: 10rem;
-          height: 10rem;
+          width: 8rem;
+          height: 8rem;
         }
         h3 {
           font-size: 1.3rem;
@@ -203,6 +203,7 @@ export default {
     }
     .el-col-code {
       align-items: center;
+      padding-left: 2rem;
     }
     .el-col:last-child {
       padding: 0 1rem;

@@ -1,6 +1,6 @@
 <template>
   <div class="about-container">
-    <h1>关于</h1>
+    <h1>标签</h1>
   </div>
 </template>
 
