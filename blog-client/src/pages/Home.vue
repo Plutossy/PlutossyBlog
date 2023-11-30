@@ -1,7 +1,6 @@
 <template>
   <div class="home-container">
     <my-header />
-    <my-swiper />
     <router-view></router-view>
     <scroll-top />
     <my-footer />

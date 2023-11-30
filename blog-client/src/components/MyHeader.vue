@@ -158,11 +158,13 @@ export default {
 
 <style lang="scss" scoped>
 .header-container {
-  position: fixed;
+  // position: fixed;
+  position: sticky; // 粘性定位
   top: 0;
   z-index: 999;
   width: 100%;
   background-color: rgba($color: #000000, $alpha: 0.5);
+  margin: 0 !important;
   padding: 0.8rem 5rem;
   border-bottom: 1px solid #b2b1b1;
   box-shadow: 0 1px #ccc;

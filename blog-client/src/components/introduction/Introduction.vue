@@ -19,9 +19,9 @@
       </div>
 
       <div class="card-footer">
-        <el-row :gutter="20" justify="space-between" align="middle">
+        <el-row justify="space-between" align="middle">
           <el-col :span="16">
-            <el-row :gutter="10" justify="space-around">
+            <el-row justify="space-between">
               <el-col :span="8">
                 <img src="@/assets/img/avatar1.png" alt="博客主" />
                 <a href="javascript:;">Pluto_ssy</a>
@@ -58,10 +58,8 @@ export default {
 <style lang="scss" scoped>
 .introduction-container {
   width: 100%;
-  height: 100%;
+  margin: 1rem auto;
   .box-card {
-    width: 100%;
-    height: 100%;
     background-color: #f5f7fa;
 
     .card-header {
@@ -72,14 +70,10 @@ export default {
       }
     }
     .card-content {
-      width: 100%;
-      height: 100%;
       > .el-row {
         width: 100%;
-        height: 100%;
         > .el-col:first-child {
           width: 30%;
-          height: 100%;
           margin: auto; // 居中一下
           > img {
             width: 100%;
@@ -88,10 +82,7 @@ export default {
         }
         > .el-col:last-child {
           width: 70%;
-          height: 100%;
           > p {
-            width: 100%;
-            height: 100%;
             font-size: 1rem;
             font-weight: 400;
             text-indent: 2em;
@@ -108,25 +99,21 @@ export default {
     }
 
     .card-footer {
-      width: 100%;
-      height: 100%;
       color: #888686;
       font-size: 0.6rem;
       font-weight: 400;
       margin-top: 20px;
       > .el-row {
-        width: 100%;
-        height: 100%;
         > .el-col:first-child {
           .el-row {
             > .el-col {
               display: flex;
               align-items: center;
-              justify-content: center;
               > img {
                 width: 1.5rem;
                 height: 1.5rem;
                 border-radius: 50%;
+                cursor: pointer;
               }
               > a {
                 color: #1e70bf;
@@ -148,7 +135,7 @@ export default {
         }
         > .el-col:last-child {
           .type {
-            width: 50%;
+            width: 4rem;
             height: 100%;
             color: #00b5ad;
             border: 1px solid #00b5ad;
@@ -156,6 +143,12 @@ export default {
             text-align: center;
             line-height: 2;
             margin: auto;
+            cursor: pointer;
+
+            &:hover {
+              background-color: #00b5ad;
+              color: #fff;
+            }
           }
         }
       }

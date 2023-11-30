@@ -13,9 +13,11 @@ export default {
 .el-backtop {
   width: 3.5rem;
   height: 3.5rem;
-  color: #f08047;
+  color: #fff;
+  background-color: rgb(83, 170, 231);
   transition: height 0.3s;
   &:hover {
+    background-color: rgb(83, 170, 231);
     border-radius: 2rem;
     height: 8rem;
     display: flex;
@@ -25,6 +27,8 @@ export default {
       content: '回到顶部';
       width: 100%;
       height: 100%;
+      color: #ebebeb;
+      margin-top: -0.5rem;
       display: flex;
       flex-direction: column;
       justify-content: center;
