@@ -133,7 +133,7 @@ export default {}
   align-items: center;
   .top-img {
     width: 100%;
-    background: url(@/assets/img/bg4.jpeg) no-repeat center center;
+    background: url(@/assets/img/bg6.jpeg) no-repeat center center;
     background-size: cover;
 
     font-family: 'STXingkai', serif;
@@ -230,13 +230,16 @@ export default {}
 
       .content-title {
         width: 100%;
-        padding: 0 1rem;
         > .el-row {
           font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
           font-size: 1.2rem;
           font-weight: 500;
           margin-top: 1rem;
           cursor: pointer;
+          &:hover {
+            border-radius: 5px;
+            background-color: rgb(188, 188, 188);
+          }
           > .el-col:nth-child(1) {
             div {
               width: 0.5rem;
