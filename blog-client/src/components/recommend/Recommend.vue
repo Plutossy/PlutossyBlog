@@ -3,8 +3,14 @@
     <el-row align="middle" justify="center">
       <h1>最新推荐</h1>
     </el-row>
-    <el-row align="middle" :gutter="40" justify="space-around">
-      <el-col :span="8" :xs="20">
+    <el-row align="middle" :gutter="20" justify="space-around">
+      <el-col :span="7" :xs="20">
+        <introduction />
+      </el-col>
+      <el-col :span="9" :xs="20">
+        <introduction />
+      </el-col>
+      <el-col :span="7" :xs="20">
         <introduction />
       </el-col>
     </el-row>
