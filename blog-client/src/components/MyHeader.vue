@@ -1,5 +1,9 @@
 <template>
-  <el-row class="header-container" :gutter="20" justify="space-around">
+  <el-row
+    class="header-container animate__animated animate__fadeInDown"
+    :gutter="20"
+    justify="space-around"
+  >
     <el-col :span="3" :xs="4" class="logo-box">
       <h2 class="logo">SSY_Blog</h2>
     </el-col>
@@ -182,14 +186,16 @@ export default {
 
   > .el-col:nth-child(2) {
     a {
+      font-size: large;
       padding: 0.7rem 0;
       color: rgb(225, 224, 224);
       display: flex;
       justify-content: center;
       align-items: center;
       &:hover {
-        color: #f2711c;
-        background-color: rgba($color: #000000, $alpha: 0.3);
+        color: #ffffff;
+        background-color: #f2711c;
+        // background-color: rgba($color: #000000, $alpha: 0.5);
         border-radius: 5px;
         cursor: pointer;
       }
@@ -198,8 +204,9 @@ export default {
       }
     }
     .router-link-active {
-      color: #f2711c;
-      background-color: rgba($color: #000000, $alpha: 0.4);
+      color: #ffffff;
+      background-color: #f2711c;
+      // background-color: rgba($color: #000000, $alpha: 0.4);
       border-radius: 5px;
       cursor: pointer;
     }

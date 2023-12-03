@@ -9,10 +9,10 @@
 
       <div class="card-content">
         <el-row :gutter="16" justify="space-around">
-          <el-col :span="8">
+          <el-col :span="6">
             <img src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif" />
           </el-col>
-          <el-col :span="16">
+          <el-col :span="18">
             <p>这是一个基于Vue.js的前后端分离的博客系统，前端使用Vue.js，后端使用Spring Boot，数据库使用MySQL，使用Nginx作为反向代理服务器。这是一个基于Vue.js的前后端分离的博客系统，前端使用Vue.js，后端使用Spring Boot，数据库使用MySQL，使用Nginx作为反向代理服务器。这是一个基于Vue.js的前后端分离的博客系统，前端使用Vue.js，后端使用Spring Boot，数据库使用MySQL，使用Nginx作为反向代理服务器。</p>
           </el-col>
         </el-row>
@@ -58,7 +58,7 @@ export default {
 <style lang="scss" scoped>
 .introduction-container {
   width: 100%;
-  margin: 1rem auto;
+  margin: 1.5rem auto;
   .box-card {
     background-color: #f5f7fa;
 
@@ -73,25 +73,23 @@ export default {
       > .el-row {
         width: 100%;
         > .el-col:first-child {
-          width: 30%;
           margin: auto; // 居中一下
           > img {
             width: 100%;
-            height: 100%;
           }
         }
         > .el-col:last-child {
-          width: 70%;
           > p {
             font-size: 1rem;
             font-weight: 400;
+            line-height: 1.5;
             text-indent: 2em;
             text-align: justify;
             /* 超出部分隐藏并显示... */
             overflow: hidden;
             text-overflow: ellipsis;
             display: -webkit-box;
-            -webkit-line-clamp: 4;
+            -webkit-line-clamp: 5;
             -webkit-box-orient: vertical;
           }
         }

@@ -1,5 +1,5 @@
 <template>
-  <el-backtop :right="80" :bottom="80" :visibility-height="400" />
+  <el-backtop :right="80" :bottom="80" :visibility-height="500" />
 </template>
 
 

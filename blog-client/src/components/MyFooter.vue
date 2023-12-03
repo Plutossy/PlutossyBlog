@@ -65,7 +65,7 @@
       <el-col :span="7" :xs="6">
         <div class="grid-content ep-bg-purple-light">
           <h3>SSY_Blog</h3>
-          <p>这是我的个人博客、会分享关于编程、写作、思考相关的任何内容，希望可以给来到这儿的人有所帮助...</p>
+          <p>这是我的个人博客，会分享关于编程、写作、学习以及其他相关的任何内容，希望可以对来到这儿的人有所帮助</p>
         </div>
       </el-col>
     </el-row>
@@ -190,6 +190,10 @@ export default {
           text-indent: 2em;
           text-align: justify;
           line-height: 1.5;
+          // 末尾添加省略号
+          &::after {
+            content: '......';
+          }
         }
       }
       > p {
