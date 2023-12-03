@@ -2,7 +2,7 @@
   <div class="index-container">
     <my-swiper />
     <recommend />
-    <el-row :gutter="20" align="middle">
+    <el-row :gutter="20">
       <el-col :span="16" :xs="24">
         <h2>欢迎来到我的博客星球！</h2>
         <introduction />
@@ -10,6 +10,17 @@
         <introduction />
         <introduction />
         <introduction />
+        <el-pagination
+          :page-size="5"
+          :pager-count="4"
+          layout="prev, pager, next"
+          :total="28"
+          prev-text="上一页"
+          next-text="下一页"
+          :hide-on-single-page="true"
+          class="mt-4"
+          background
+        />
       </el-col>
       <el-col :span="8" :xs="24">
         <aside-vue />
@@ -37,7 +48,7 @@ export default {
 .index-container {
   width: 100%;
   > .el-row {
-    margin: 1rem 0 !important;
+    margin: 1rem 5rem !important;
     > .el-col:first-child {
       height: 100%;
       display: flex;
@@ -57,7 +68,7 @@ export default {
         width: 0;
         white-space: nowrap;
         animation: width 2s steps(11) forwards;
-        animation-delay: 2s;
+        animation-delay: 1s;
         &::after {
           content: '';
           position: absolute;
@@ -82,6 +93,11 @@ export default {
         100% {
           opacity: 0;
         }
+      }
+
+      // 分页
+      > .el-pagination {
+        margin-bottom: 2rem;
       }
     }
     > .el-col:last-child {
