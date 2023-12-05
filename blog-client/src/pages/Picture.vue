@@ -7,7 +7,7 @@
     </div>
 
     <!--照片墙-->
-    <div class="content">
+    <div class="content animate__animated animate__zoomIn">
       <Lightgallery
         :settings="{ speed: 500, plugins: plugins }"
         :onInit="onInit"

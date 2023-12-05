@@ -1,7 +1,7 @@
 <template>
   <div class="type-container">
     <el-row>
-      <el-card shadow="hover" class="box-card">
+      <el-card shadow="hover" class="box-card animate__animated animate__fadeInLeft">
         <template #header>
           <div class="card-header">
             <h2>分类</h2>
@@ -96,29 +96,30 @@
         </div>
       </el-card>
     </el-row>
-    <el-row>
+
+    <el-row class="animate__animated animate__fadeInUpBig">
       <introduction />
     </el-row>
-    <el-row>
+    <el-row class="animate__animated animate__fadeInUpBig">
       <introduction />
     </el-row>
-    <el-row>
+    <el-row class="animate__animated animate__fadeInUpBig">
       <introduction />
     </el-row>
-    <el-row>
+    <el-row class="animate__animated animate__fadeInUpBig">
       <introduction />
     </el-row>
     <el-row justify="center">
       <el-pagination
         :page-size="5"
-        :pager-count="4"
+        :pager-count="5"
         layout="prev, pager, next"
         :total="28"
         prev-text="上一页"
         next-text="下一页"
         :hide-on-single-page="true"
-        class="mt-4"
         background
+        class="animate__animated animate__fadeInUpBig"
       />
     </el-row>
   </div>

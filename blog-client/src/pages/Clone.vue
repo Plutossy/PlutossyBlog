@@ -7,7 +7,7 @@
     </div>
     <!-- 主体部分 -->
     <div class="content">
-      <el-row justify="space-between" align="middle">
+      <el-row justify="space-between" align="middle" class="animate__animated animate__rollIn">
         <el-col :span="3">
           <h2>创作历程</h2>
         </el-col>
@@ -19,7 +19,7 @@
         </el-col>
       </el-row>
 
-      <div>
+      <div class="animate__animated animate__zoomInDown animate__delay-1s">
         <el-row justify="center" align="middle">
           <h2>2023</h2>
         </el-row>
@@ -69,7 +69,7 @@
         </div>
       </div>
 
-      <div>
+      <div class="animate__animated animate__zoomInDown animate__delay-1s">
         <el-row justify="center" align="middle">
           <h2>2022</h2>
         </el-row>

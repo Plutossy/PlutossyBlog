@@ -3,7 +3,7 @@
     <my-swiper />
     <recommend />
     <el-row :gutter="20">
-      <el-col :span="16" :xs="24">
+      <el-col :span="16" :xs="24" class="animate__animated animate__fadeInLeftBig">
         <h2>欢迎来到我的博客星球！</h2>
         <introduction />
         <introduction />
@@ -12,17 +12,20 @@
         <introduction />
         <el-pagination
           :page-size="5"
-          :pager-count="4"
+          :pager-count="5"
           layout="prev, pager, next"
           :total="28"
           prev-text="上一页"
           next-text="下一页"
           :hide-on-single-page="true"
-          class="mt-4"
           background
         />
       </el-col>
-      <el-col :span="8" :xs="24">
+      <el-col
+        :span="8"
+        :xs="24"
+        class="animate__animated animate__fadeInRightBig animate__delay-1s"
+      >
         <aside-vue />
       </el-col>
     </el-row>
@@ -68,7 +71,7 @@ export default {
         width: 0;
         white-space: nowrap;
         animation: width 2s steps(11) forwards;
-        animation-delay: 1s;
+        animation-delay: 2s;
         &::after {
           content: '';
           position: absolute;

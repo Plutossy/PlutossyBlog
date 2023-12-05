@@ -147,6 +147,7 @@ export default {
 
   .el-card {
     margin-bottom: 1rem;
+    margin-top: 0.5rem;
     .card-header {
       padding: 1rem;
       border-radius: 1rem;

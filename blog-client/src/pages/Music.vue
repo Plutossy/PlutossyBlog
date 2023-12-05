@@ -5,15 +5,38 @@
       <div>音乐盒</div>
       <div>昆山玉碎凤凰叫，芙蓉泣露香兰笑。</div>
     </div>
+
+    <!-- 音乐内容区 -->
+    <div class="song-audio">
+      <audio
+        ref="player"
+        :src="url"
+        controls="controls"
+        preload="true"
+        @canplay="startPlay"
+        @ended="ended"
+        @timeupdate="timeupdate"
+        muted
+      ></audio>
+    </div>
   </div>
 </template>
 
 <script>
-export default {}
+export default {
+  data() {
+    return {
+      url: 'http://music.163.com/song/media/outer/url?id=1406025645.mp3'
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
 .music-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   .top-img {
     width: 100%;
     background: url(@/assets/img/bg5.jpeg) no-repeat center center;
@@ -50,6 +73,23 @@ export default {}
       font-weight: 560;
       margin-bottom: 2rem;
     }
+  }
+
+  .song-audio {
+    position: relative;
+    z-index: 1;
+    font-family: 'STXingkai', serif;
+    // font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
+    background-color: rgba(255, 255, 255, 0.7);
+    width: 90%;
+    margin-top: -2rem;
+    margin-bottom: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 1px 2px 0 rgba(34, 36, 38, 0.6);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="recommend-container">
+  <div class="recommend-container animate__animated animate__bounceInUp">
     <el-row align="middle" justify="center">
       <h1>最新推荐</h1>
     </el-row>
