@@ -8,16 +8,7 @@
 
     <!-- 音乐内容区 -->
     <div class="song-audio">
-      <audio
-        ref="player"
-        :src="url"
-        controls="controls"
-        preload="true"
-        @canplay="startPlay"
-        @ended="ended"
-        @timeupdate="timeupdate"
-        muted
-      ></audio>
+      <audio ref="audio" autoplay></audio>
     </div>
   </div>
 </template>
@@ -26,7 +17,13 @@
 export default {
   data() {
     return {
-      url: 'http://music.163.com/song/media/outer/url?id=1406025645.mp3'
+      playStatus: false, //播放状态，用来控制播放、暂停按钮的显示
+      Timer: '', //定时器，我们需要实时监听到歌曲的播放进度
+      currentBar: 0, //进度条长度，默认为0，根据歌曲进度同步更新
+      currentText: '00:00', //进度条旁边的播放时间，同样要实时更新
+      durationText: '00:00', //当前歌曲的播放时长
+      listShow: false, //控制播放列表的显示
+      loopStyle: 'list' //not:单曲播放 list:列表循环 single:单曲循环 random:随机循环
     }
   }
 }

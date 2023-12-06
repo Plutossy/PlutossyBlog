@@ -4,7 +4,7 @@
   -moz-osx-font-smoothing: grayscale;
   /* text-align: center; */
   color: #2c3e50;
-  background: url(assets/img/bg1.png) no-repeat center center fixed;
+  background: url(assets/img/bg1.png) repeat top center fixed;
   /* margin-top: 60px; */
 }
 
