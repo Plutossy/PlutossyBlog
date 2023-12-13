@@ -1,14 +1,16 @@
 <template>
   <div class="play-bar" :class="{show: !toggle}">
     <!-- 显示按钮 -->
-    <div @click="toggle=!toggle" class="item-up" :class="{turn: toggle}">
-      <!-- <svg class="icon">
+    <el-tooltip effect="dark" content="音乐条" placement="top">
+      <div @click="toggle=!toggle" class="item-up" :class="{turn: toggle}">
+        <!-- <svg class="icon">
         <use xlink:href="#icon-jiantou-xia-cuxiantiao" />
-      </svg>-->
-      <el-icon>
-        <ArrowUpBold />
-      </el-icon>
-    </div>
+        </svg>-->
+        <el-icon>
+          <ArrowUpBold />
+        </el-icon>
+      </div>
+    </el-tooltip>
 
     <!-- 隐藏的音乐插件 -->
     <audio
@@ -198,7 +200,7 @@ export default {
       mouseStartX: 0, // 拖拽开始位置
       tag: false, // 是否拖拽
       volume: 50, // 音量,默认一半
-      toggle: true, // 显示隐藏播放器页面
+      toggle: false, // 显示隐藏播放器页面
       listShow: false // 显示播放菜单
     }
   },
@@ -281,6 +283,7 @@ export default {
   }
   .play-list:hover {
     background: rgb(180, 180, 180);
+    cursor: pointer;
   }
 }
 </style>

@@ -8,12 +8,21 @@
 
     <!-- 音乐内容区 -->
     <div class="song-audio">
-      <audio ref="audio" autoplay></audio>
+      <el-row justify="space-between">
+        <el-col :span="12">
+          <song-list />
+        </el-col>
+        <el-col :span="10">
+          <lyric-info />
+        </el-col>
+      </el-row>
     </div>
   </div>
 </template>
 
 <script>
+import LyricInfo from '../components/songlist/LyricInfo.vue'
+import SongList from '../components/songlist/SongList.vue'
 export default {
   data() {
     return {
@@ -25,6 +34,10 @@ export default {
       listShow: false, //控制播放列表的显示
       loopStyle: 'list' //not:单曲播放 list:列表循环 single:单曲循环 random:随机循环
     }
+  },
+  components: {
+    SongList,
+    LyricInfo
   }
 }
 </script>
@@ -87,6 +100,9 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    .el-row {
+      width: 100%;
+    }
   }
 }
 </style>
