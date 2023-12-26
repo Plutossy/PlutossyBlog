@@ -11,7 +11,7 @@ import {
 
 
 // 导入音乐 vuex 模块
-import moduleCart from './modules/song.js'
+import moduleSong from './modules/song.js'
 
 
 // 创建 Store 的实例对象
@@ -19,7 +19,7 @@ const store = createStore({
   // 挂载 store 模块
   modules: {
     // 挂载音乐的 vuex 模块，模块内成员的访问路径被调整为 m_song，例如：
-    // 购物车模块中 cart 数组的访问路径是 m_song/song
+    // 音乐模块中 cart 数组的访问路径是 m_song/song
     m_song: moduleSong,
   }
 })
