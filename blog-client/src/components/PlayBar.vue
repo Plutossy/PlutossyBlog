@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2023-12-05 14:58:01
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2023-12-27 18:27:32
+ * @LastEditTime: 2023-12-27 20:31:19
  * @FilePath: \blog-client\src\components\PlayBar.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -69,8 +69,7 @@
               </div>
               <!-- 拖动的点 -->
               <!-- onselectstart禁止复制，优化体验 -->
-              <div ref="idot" class="idot" :style="{ left: curLength + '%' }" @mousedown="mousedown" @mouseup="mouseup"
-                onselectstart="return false"></div>
+              <div ref="idot" class="idot" :style="{ left: curLength + '%' }" @mousedown="mousedown" @mouseup="mouseup" onselectstart="return false"></div>
             </div>
           </el-col>
 
@@ -295,6 +294,8 @@ export default {
     timeupdate() {
       this.currentTime = this.formatSeconds(this.$refs.player.currentTime)
       this.$store.commit('m_song/setCurrentTime', this.currentTime)
+      // 进度条长度
+      this.curLength = this.$refs.player.currentTime / this.$refs.player.duration * 100
     },
     download() {
       // this.songContent.url
@@ -326,8 +327,8 @@ export default {
     },
     // 鼠标按下
     mousedown(e) {
-      this.mouseStartX = e.clientX
       this.tag = true
+      this.mouseStartX = e.clientX
       // 解决鼠标移除当前窗口抬起后还能拖动的bug
       // window.addEventListener('mouseout', () => {
       //   this.tag = false
@@ -346,8 +347,8 @@ export default {
       if (!this.durationTime) return false
       if (this.tag) {
         let moveX = e.clientX - this.mouseStartX // 点移动的距离
+        if (moveX < 0) moveX = 0
         const curLength = this.$refs.curProgress.getBoundingClientRect().width // 当前进度条长度
-        if (curLength + moveX < 0) moveX = 0
         let newPercent = ((curLength + moveX) / this.progressLength) * 100 // 新的进度条百分比乘以100
         if (newPercent < 0) newPercent = 0
         if (newPercent > 100) newPercent = 100
@@ -418,6 +419,7 @@ export default {
   unmounted() {
     // 解除绑定
     this.$refs.progress.removeEventListener('mousemove')
+    window.removeEventListener('mouseup')
   },
 }
 </script>

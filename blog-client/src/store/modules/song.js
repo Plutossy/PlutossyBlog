@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2023-12-05 15:20:38
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2023-12-27 17:58:07
+ * @LastEditTime: 2023-12-27 20:20:47
  * @FilePath: \blog-client\src\store\modules\song.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -15,23 +15,34 @@ const state = {
 const getters = {}
 
 const mutations = {
+  // 定义存储到本地的 mutations 方法
+  saveToStroage(state) {
+    window.sessionStorage.setItem('songContent', JSON.stringify(state.songContent))
+    window.sessionStorage.setItem('playList', JSON.stringify(state.playList))
+    window.sessionStorage.setItem('currentTime', JSON.stringify(state.currentTime))
+  },
   setSongContent(state, payload) {
     state.songContent = payload
     state.playList.indexOf(payload) == -1 ? state.playList.push(payload) : ""
+    this.commit('m_song/saveToStroage')
   },
   setLyric(state, payload) {
     state.songContent.lyric = payload
+    this.commit('m_song/saveToStroage')
   },
   setCurrentTime(state, payload) {
     state.currentTime = payload
+    this.commit('m_song/saveToStroage')
   },
   removeSong(state, payload) {
     const index = state.playList.indexOf(payload)
     state.playList.splice(index, 1)
+    this.commit('m_song/saveToStroage')
   },
   addSong(state, payload) {
     const index = state.playList.indexOf(payload)
     state.playList.indexOf(payload) == -1 ? state.playList.push(payload) : ""
+    this.commit('m_song/saveToStroage')
   }
 }
 
