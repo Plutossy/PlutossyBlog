@@ -141,15 +141,20 @@ $box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
       .progress-box {
         .item-song-title {
           height: 20px;
-          line-height: 10px;
+          line-height: 20px;
+          padding: 0 0.5rem 0.5rem;
           >.el-col {
             text-align: center;
+            overflow:hidden; 
+            white-space:nowrap;
+            text-overflow:ellipsis;
           }
         }
         .progress {
+          position: relative;
           width: 100%;
+          height: 0.4rem;
           background: $color-blue-shallow;
-          height: 6px;
           cursor: pointer;
           .bg {
             width: 100%;
@@ -162,10 +167,10 @@ $box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
           .idot {
             width: 0.8rem;
             height: 0.8rem;
-            position: relative;
+            position: absolute;
             border-radius: 50%;
             background-color: $color-black;
-            top: -9px;
+            top: -0.2rem;
             vertical-align: middle;
           }
         }
