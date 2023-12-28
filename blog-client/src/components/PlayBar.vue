@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2023-12-05 14:58:01
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2023-12-28 14:02:26
+ * @LastEditTime: 2023-12-28 16:17:36
  * @FilePath: \blog-client\src\components\PlayBar.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -179,7 +179,7 @@ export default {
   name: 'play-bar',
   data() {
     return {
-      songUrl: 'http://music.163.com/song/media/outer/url?id=1985969510.mp3', // 歌曲url
+      songUrl: 'http://music.163.com/song/media/outer/url?id=1406025645.mp3', // 歌曲url
       playStatus: false, // 播放状态
       playButtonUrl: '#icon-bofang', // 播放按钮图标
       Timer: null, //定时器
@@ -194,7 +194,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('m_song', ['songContent', 'playList', 'currentSeconds'])
+    ...mapState('m_song', ['songContent', 'playList'])
   },
   watch: {
     // 监听歌曲变化
@@ -205,14 +205,14 @@ export default {
     volume(val) {
       this.$refs.player.volume = val / 100
     },
-    // 监听当前播放时间变化
-    currentTime: {
-      bind() {
-        // this.currentTime = this.formatSeconds(newVal)
-        this.curLength = this.currentTime / this.durationTime * 100
-      },
-      immediate: true
-    },
+    // // 监听当前播放时间变化
+    // currentTime: {
+    //   handler() {
+    //     // this.currentTime = this.formatSeconds(newVal)
+    //     // this.curLength = this.currentTime / this.durationTime * 100
+    //   },
+    //   immediate: true
+    // },
     // durationTime: {
     //   bind(newVal) {
     //     this.durationTime = this.formatSeconds(newVal)
@@ -392,9 +392,9 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 /* 单文件组件的 <style> 标签支持使用 v-bind CSS 函数将 CSS 的值链接到动态的组件状态： */
-/* 注意: 没有scoped 和 scss */
+/* 注意: 没有scss */
 .idot {
   left: calc(v-bind(curLength + '%') - 0.4rem);
 }
