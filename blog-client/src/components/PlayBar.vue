@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2023-12-05 14:58:01
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2023-12-27 20:31:19
+ * @LastEditTime: 2023-12-28 14:02:26
  * @FilePath: \blog-client\src\components\PlayBar.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -62,14 +62,14 @@
               <el-col :span="3">&nbsp;--&nbsp;</el-col>
               <el-col :span="7">歌手名字歌手名字</el-col>
             </el-row>
-            <div ref="progress" class="progress" @mousemove="mousemove">
+            <div class="progress">
               <!-- 进度条 -->
-              <div ref="bg" class="bg" @click="updatemove">
+              <div ref="bg" class="bg" @click.stop="updatemove">
                 <div ref="curProgress" class="cur-progress" :style="{ width: curLength + '%' }"></div>
               </div>
               <!-- 拖动的点 -->
               <!-- onselectstart禁止复制，优化体验 -->
-              <div ref="idot" class="idot" :style="{ left: curLength + '%' }" @mousedown="mousedown" @mouseup="mouseup" onselectstart="return false"></div>
+              <div ref="idot" class="idot" @mousedown.stop="mousedown" onselectstart="return false"></div>
             </div>
           </el-col>
 
@@ -172,21 +172,20 @@ import '@/assets/js/iconfont2.js'
 import '@/assets/js/iconfont3.js'
 import { mapState } from 'vuex'
 import { downloadSong } from '@/api'
-// import { mixin } from '@/mixins'
+import { mixin } from '@/mixins'
 
 export default {
-  // mixins: [mixin],
+  mixins: [mixin],
   name: 'play-bar',
   data() {
     return {
       songUrl: 'http://music.163.com/song/media/outer/url?id=1985969510.mp3', // 歌曲url
       playStatus: false, // 播放状态
       playButtonUrl: '#icon-bofang', // 播放按钮图标
-      Timer: '', //定时器
+      Timer: null, //定时器
       currentTime: '00:00', // 当前播放时间
       durationTime: '00:00', // 歌曲总时间
       curLength: 0, // 当前播放长度
-      progressLength: 0, // 歌曲总长度
       tag: false, // 是否拖拽
       mouseStartX: 0, // 拖拽开始位置
       volume: 50, // 音量,默认一半
@@ -195,7 +194,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('m_song', ['songContent', 'playList'])
+    ...mapState('m_song', ['songContent', 'playList', 'currentSeconds'])
   },
   watch: {
     // 监听歌曲变化
@@ -206,7 +205,7 @@ export default {
     volume(val) {
       this.$refs.player.volume = val / 100
     },
-    // 格式化时间
+    // 监听当前播放时间变化
     currentTime: {
       bind() {
         // this.currentTime = this.formatSeconds(newVal)
@@ -222,9 +221,6 @@ export default {
     // },
   },
   mounted() {
-    // getBoundingClientRect 获取元素的大小及其相对于视口的位置
-    this.progressLength = this.$refs.progress.getBoundingClientRect().width
-
     document.querySelector('.item-volume').addEventListener('click', (e) => {
       document.querySelector('.volume').classList.toggle('show-volume')
       e.stopPropagation()
@@ -262,8 +258,8 @@ export default {
       this.currentTime = this.formatSeconds(this.$refs.player.currentTime)
       // 设置播放时长
       this.durationTime = this.formatSeconds(this.$refs.player.duration)
-      // // 设置播放进度条长度
-      // this.progressLength = this.$refs.progress.getBoundingClientRect().width
+      // 设置播放进度条长度
+      // this.curLength = this.$refs.player.currentTime / this.$refs.player.duration * 100
       // 设置音量
       this.$refs.player.volume = this.volume / 100
       // // 设置当前播放歌曲
@@ -274,7 +270,7 @@ export default {
     //上一首
     prevSong() {
       let index = this.playList.indexOf(this.songContent)
-      let length = this.playList.length
+      const length = this.playList.length
       index == 0 ? (index = length - 1) : index--
       this.$store.commit('m_song/setSongContent', this.playList[index])
     },
@@ -282,7 +278,7 @@ export default {
     nextSong() {
       // 列表循环
       let index = this.playList.indexOf(this.songContent)
-      let length = this.playList.length
+      const length = this.playList.length
       index == length - 1 ? (index = 0) : index++
       this.$store.commit('m_song/setSongContent', this.playList[index])
     },
@@ -294,6 +290,7 @@ export default {
     timeupdate() {
       this.currentTime = this.formatSeconds(this.$refs.player.currentTime)
       this.$store.commit('m_song/setCurrentTime', this.currentTime)
+      this.$store.commit('m_song/setCurrentSeconds', this.$refs.player.currentTime)
       // 进度条长度
       this.curLength = this.$refs.player.currentTime / this.$refs.player.duration * 100
     },
@@ -333,10 +330,10 @@ export default {
       // window.addEventListener('mouseout', () => {
       //   this.tag = false
       // })
-      // 解决鼠标在当前窗口别的地方抬起后还能拖动的bug
-      window.addEventListener('mouseup', () => {
-        this.tag = false
-      })
+      // 鼠标抬起
+      document.addEventListener('mouseup', this.mouseup)
+      // 拖动进度条
+      document.addEventListener('mousemove', this.mousemove)
     },
     // 鼠标抬起
     mouseup() {
@@ -346,15 +343,20 @@ export default {
     mousemove(e) {
       if (!this.durationTime) return false
       if (this.tag) {
-        let moveX = e.clientX - this.mouseStartX // 点移动的距离
-        if (moveX < 0) moveX = 0
-        const curLength = this.$refs.curProgress.getBoundingClientRect().width // 当前进度条长度
-        let newPercent = ((curLength + moveX) / this.progressLength) * 100 // 新的进度条百分比乘以100
-        if (newPercent < 0) newPercent = 0
-        if (newPercent > 100) newPercent = 100
-        this.curLength = newPercent
-        this.mouseStartX = e.clientX
-        this.changeProgress(newPercent)
+        // 防抖
+        this.Timer = setTimeout(() => {
+          // getBoundingClientRect 获取元素的大小及其相对于视口的位置
+          const curLength = this.$refs.curProgress.getBoundingClientRect().width // 当前进度条长度
+          const progressLength = this.$refs.bg.getBoundingClientRect().width // 进度条总长度
+          let moveX = e.clientX - this.mouseStartX // 点移动的距离
+          let newPercent = ((curLength + moveX) / progressLength) * 100 // 新的进度条百分比乘以100
+          if (newPercent < 0) newPercent = 0 // 判断是否超出左边界
+          if (newPercent > 100) newPercent = 100 // 判断是否超出右边界
+          this.curLength = newPercent
+          this.mouseStartX += moveX
+          this.changeProgress(newPercent)
+          this.Timer && clearTimeout(this.Timer)
+        }, 200)
       }
     },
     // 点击播放条切换播放进度
@@ -363,7 +365,8 @@ export default {
       if (!this.tag) {
         // 相对于有定位的父元素的坐标 也就是 progress 的左侧坐标
         const curLength = this.$refs.bg.offsetLeft // 当前进度条左侧坐标  0
-        let newPercent = ((e.offsetX - curLength) / this.progressLength) * 100 // 新的进度条百分比乘以100
+        const progressLength = this.$refs.bg.getBoundingClientRect().width // 进度条总长度
+        let newPercent = ((e.offsetX - curLength) / progressLength) * 100 // 新的进度条百分比乘以100
         if (newPercent < 0) newPercent = 0
         if (newPercent > 100) newPercent = 100
         this.curLength = newPercent
@@ -380,49 +383,22 @@ export default {
     toMusic() {
       this.$router.push({ path: '/music' })
     },
-
-    // 格式化时间
-    formatSeconds(val) {
-      let result = ''
-      const theTime = parseFloat(val)
-      const hour = parseInt(theTime / 3600) // 小时
-      const minute = parseInt((theTime / 60) % 60) // 分钟
-      const second = parseInt(theTime % 60) // 秒
-      if (hour > 0) {
-        if (hour < 10) {
-          result = '0' + hour + ':'
-        } else {
-          result = hour + ':'
-        }
-      }
-      if (minute > 0) {
-        if (minute < 10) {
-          result += '0' + minute + ':'
-        } else {
-          result += minute + ':'
-        }
-      } else {
-        result += '00:'
-      }
-      if (second) {
-        if (second < 10) {
-          result += '0' + second
-        } else {
-          result += second
-        }
-      } else {
-        result += '00'
-      }
-      return result
-    },
   },
   unmounted() {
     // 解除绑定
-    this.$refs.progress.removeEventListener('mousemove')
-    window.removeEventListener('mouseup')
+    document.removeEventListener('mousemove')
+    document.removeEventListener('mouseup')
   },
 }
 </script>
+
+<style>
+/* 单文件组件的 <style> 标签支持使用 v-bind CSS 函数将 CSS 的值链接到动态的组件状态： */
+/* 注意: 没有scoped 和 scss */
+.idot {
+  left: calc(v-bind(curLength + '%') - 0.4rem);
+}
+</style>
 
 <style lang="scss" scoped>
 @import '../assets/css/play-bar.scss';
