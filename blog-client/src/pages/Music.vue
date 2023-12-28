@@ -47,6 +47,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+
   .top-img {
     width: 100%;
     background: url(@/assets/img/bg5.jpeg) no-repeat center center;
@@ -62,6 +63,7 @@ export default {
     justify-content: center;
     align-items: center;
     position: relative;
+
     &::before {
       // 设置遮罩层
       content: '';
@@ -71,13 +73,16 @@ export default {
       width: 100%;
       height: 100%;
       background: rgba(0, 0, 0, 0.5);
-      z-index: -1; /* 设置伪元素的层级为负数，保证它在元素后面 */
+      z-index: -1;
+      /* 设置伪元素的层级为负数，保证它在元素后面 */
     }
+
     div:first-child {
       font-size: 4rem;
       font-weight: 560;
       margin-bottom: 2rem;
     }
+
     div:last-child {
       font-size: 1.8rem;
       font-weight: 560;
@@ -100,8 +105,13 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
     .el-row {
       width: 100%;
+
+      .el-col {
+        height: 32rem;
+      }
     }
   }
 }

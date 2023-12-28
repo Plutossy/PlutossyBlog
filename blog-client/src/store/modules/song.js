@@ -2,11 +2,12 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2023-12-05 15:20:38
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2023-12-28 14:22:56
+ * @LastEditTime: 2023-12-28 19:07:12
  * @FilePath: \blog-client\src\store\modules\song.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 const state = {
+  playStatus: false, //播放状态, 默认为false
   playList: [], //播放列表
   songContent: {},   //当前播放的歌曲信息
   currentTime: "00:00",  //当前歌曲的播放进度
@@ -18,13 +19,19 @@ const getters = {}
 const mutations = {
   // 定义存储到本地的 mutations 方法
   saveToStroage(state) {
+    window.sessionStorage.setItem('playStatus', JSON.stringify(state.playStatus))
     window.sessionStorage.setItem('songContent', JSON.stringify(state.songContent))
     window.sessionStorage.setItem('playList', JSON.stringify(state.playList))
     window.sessionStorage.setItem('currentTime', JSON.stringify(state.currentTime))
     window.sessionStorage.setItem('currentSeconds', JSON.stringify(state.currentSeconds))
   },
+  setPlayStatus(state, status) {
+    state.playStatus = status
+    this.commit('m_song/saveToStroage')
+  },
   setSongContent(state, payload) {
     state.songContent = payload
+    // 判断当前播放列表是否已经存在该歌曲 如果不存在则添加到播放列表
     state.playList.indexOf(payload) == -1 ? state.playList.push(payload) : ""
     this.commit('m_song/saveToStroage')
   },

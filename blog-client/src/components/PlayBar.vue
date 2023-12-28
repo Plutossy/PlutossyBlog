@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2023-12-05 14:58:01
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2023-12-28 16:17:36
+ * @LastEditTime: 2023-12-28 20:20:47
  * @FilePath: \blog-client\src\components\PlayBar.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -180,7 +180,6 @@ export default {
   data() {
     return {
       songUrl: 'http://music.163.com/song/media/outer/url?id=1406025645.mp3', // 歌曲url
-      playStatus: false, // 播放状态
       playButtonUrl: '#icon-bofang', // 播放按钮图标
       Timer: null, //定时器
       currentTime: '00:00', // 当前播放时间
@@ -194,9 +193,13 @@ export default {
     }
   },
   computed: {
-    ...mapState('m_song', ['songContent', 'playList'])
+    ...mapState('m_song', ['playStatus', 'songContent', 'playList'])
   },
   watch: {
+    playStatus() {
+      this.playButtonUrl = this.playStatus ? '#icon-zanting' : '#icon-bofang'
+      this.playStatus ? this.$refs.player.play() : this.$refs.player.pause()
+    },
     // 监听歌曲变化
     songContent() {
       this.startPlay(this.songContent)
@@ -235,11 +238,11 @@ export default {
       // 通过$nextTick()方法，确保拿到最新的DOM节点
       this.$nextTick(() => {
         if (this.$refs.player.paused) {
-          this.playStatus = true
+          this.$store.commit('m_song/setPlayStatus', true)
           this.$refs.player.play()
           this.playButtonUrl = '#icon-zanting'
         } else {
-          this.playStatus = false
+          this.$store.commit('m_song/setPlayStatus', false)
           this.$refs.player.pause()
           this.playButtonUrl = '#icon-bofang'
         }
@@ -250,9 +253,9 @@ export default {
       obj == this.songContent ? this.togglePlay() : this.$store.commit('m_song/setSongContent', obj)
     },
     // 初始化，获取链接后准备播放
-    startPlay() {
+    startPlay(obj) {
       // 播放状态
-      this.playStatus = true
+      // this.$store.commit('m_song/setPlayStatus', true)
       // 重置播放进度
       // this.currentTime = '00:00'
       this.currentTime = this.formatSeconds(this.$refs.player.currentTime)
@@ -262,8 +265,8 @@ export default {
       // this.curLength = this.$refs.player.currentTime / this.$refs.player.duration * 100
       // 设置音量
       this.$refs.player.volume = this.volume / 100
-      // // 设置当前播放歌曲
-      // this.$refs.player.src = this.songContent.url
+      // 设置当前播放歌曲
+      // this.$refs.player.src = obj.songUrl
       // 开始播放
       // this.$refs.player.play()
     },
@@ -447,9 +450,15 @@ export default {
     color: slategray;
   }
 
-  .play-list .el-col {
-    font-size: 0.8rem;
-    color: #000000;
+  .play-list {
+    .el-col {
+      font-size: 0.8rem;
+      color: #000000;
+    }
+
+    .el-col:last-child:hover {
+      color: red;
+    }
   }
 
   .play-list {

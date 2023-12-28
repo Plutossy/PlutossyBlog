@@ -8,10 +8,10 @@
     <!-- 主体部分 -->
     <div class="content">
       <el-row justify="space-between" align="middle" class="animate__animated animate__rollIn">
-        <el-col :span="3">
+        <el-col :span="6">
           <h2>创作历程</h2>
         </el-col>
-        <el-col :span="2">
+        <el-col :span="4">
           <p>
             共
             <span>7</span> 篇
@@ -26,43 +26,51 @@
         <div class="content-title">
           <el-row align="middle">
             <!-- 点点 -->
-            <el-col :span="1">
+            <el-col :span="1" :xs="1">
               <div></div>
             </el-col>
             <!-- 标题 -->
-            <el-col :span="6">昆山玉碎凤凰叫,芙蓉泣露香兰笑。</el-col>
+            <el-col :span="14" :xs="14">昆山玉碎凤凰叫,芙蓉泣露香兰笑。</el-col>
             <!-- 创作日期 -->
-            <el-col :span="2">
+            <el-col :span="2" :xs="4">
               <div>3月24日</div>
             </el-col>
             <!-- 原创 / 转载 -->
-            <el-col :span="1" :offset="13">
+            <el-col :span="1" :xs="2" :offset="2">
               <div>原创</div>
             </el-col>
           </el-row>
 
           <el-row align="middle">
-            <el-col :span="1">
+            <!-- 点点 -->
+            <el-col :span="1" :xs="1">
               <div></div>
             </el-col>
-            <el-col :span="6">昆山玉。</el-col>
-            <el-col :span="2">
+            <!-- 标题 -->
+            <el-col :span="14" :xs="14">昆山玉碎凤凰叫,芙蓉泣露香兰笑。</el-col>
+            <!-- 创作日期 -->
+            <el-col :span="2" :xs="4">
               <div>3月24日</div>
             </el-col>
-            <el-col :span="1" :offset="13">
+            <!-- 原创 / 转载 -->
+            <el-col :span="1" :xs="2" :offset="2">
               <div>原创</div>
             </el-col>
           </el-row>
 
           <el-row align="middle">
-            <el-col :span="1">
+            <!-- 点点 -->
+            <el-col :span="1" :xs="1">
               <div></div>
             </el-col>
-            <el-col :span="6">昆山玉碎凤凰叫,芙蓉泣露香兰笑。</el-col>
-            <el-col :span="2">
+            <!-- 标题 -->
+            <el-col :span="14" :xs="14">昆山玉碎凤凰叫,芙蓉泣露香兰笑。</el-col>
+            <!-- 创作日期 -->
+            <el-col :span="2" :xs="4">
               <div>3月24日</div>
             </el-col>
-            <el-col :span="1" :offset="13">
+            <!-- 原创 / 转载 -->
+            <el-col :span="1" :xs="2" :offset="2">
               <div>原创</div>
             </el-col>
           </el-row>
@@ -71,48 +79,56 @@
 
       <div class="animate__animated animate__zoomInDown animate__delay-1s">
         <el-row justify="center" align="middle">
-          <h2>2022</h2>
+          <h2>2023</h2>
         </el-row>
         <div class="content-title">
           <el-row align="middle">
             <!-- 点点 -->
-            <el-col :span="1">
+            <el-col :span="1" :xs="1">
               <div></div>
             </el-col>
             <!-- 标题 -->
-            <el-col :span="6">昆山玉碎凤凰露香兰笑。</el-col>
+            <el-col :span="14" :xs="14">昆山玉碎凤凰叫,芙蓉泣露香兰笑。</el-col>
             <!-- 创作日期 -->
-            <el-col :span="2">
+            <el-col :span="2" :xs="4">
               <div>3月24日</div>
             </el-col>
             <!-- 原创 / 转载 -->
-            <el-col :span="1" :offset="13">
+            <el-col :span="1" :xs="2" :offset="2">
               <div>原创</div>
             </el-col>
           </el-row>
 
           <el-row align="middle">
-            <el-col :span="1">
+            <!-- 点点 -->
+            <el-col :span="1" :xs="1">
               <div></div>
             </el-col>
-            <el-col :span="6">昆山玉叫,芙蓉泣露香兰笑。</el-col>
-            <el-col :span="2">
+            <!-- 标题 -->
+            <el-col :span="14" :xs="14">昆山玉碎凤凰叫,芙蓉泣露香兰笑。</el-col>
+            <!-- 创作日期 -->
+            <el-col :span="2" :xs="4">
               <div>3月24日</div>
             </el-col>
-            <el-col :span="1" :offset="13">
+            <!-- 原创 / 转载 -->
+            <el-col :span="1" :xs="2" :offset="2">
               <div>原创</div>
             </el-col>
           </el-row>
 
           <el-row align="middle">
-            <el-col :span="1">
+            <!-- 点点 -->
+            <el-col :span="1" :xs="1">
               <div></div>
             </el-col>
-            <el-col :span="6">昆山香兰笑。</el-col>
-            <el-col :span="2">
+            <!-- 标题 -->
+            <el-col :span="14" :xs="14">昆山玉碎凤凰叫,芙蓉泣露香兰笑。</el-col>
+            <!-- 创作日期 -->
+            <el-col :span="2" :xs="4">
               <div>3月24日</div>
             </el-col>
-            <el-col :span="1" :offset="13">
+            <!-- 原创 / 转载 -->
+            <el-col :span="1" :xs="2" :offset="2">
               <div>原创</div>
             </el-col>
           </el-row>
@@ -131,6 +147,7 @@ export default {}
   display: flex;
   flex-direction: column;
   align-items: center;
+
   .top-img {
     width: 100%;
     background: url(@/assets/img/bg6.jpeg) no-repeat center center;
@@ -146,6 +163,7 @@ export default {}
     justify-content: center;
     align-items: center;
     position: relative;
+
     &::before {
       // 设置遮罩层
       content: '';
@@ -155,13 +173,16 @@ export default {}
       width: 100%;
       height: 100%;
       background: rgba(0, 0, 0, 0.5);
-      z-index: -1; /* 设置伪元素的层级为负数，保证它在元素后面 */
+      z-index: -1;
+      /* 设置伪元素的层级为负数，保证它在元素后面 */
     }
+
     div:first-child {
       font-size: 4rem;
       font-weight: 560;
       margin-bottom: 2rem;
     }
+
     div:last-child {
       font-size: 1.8rem;
       font-weight: 560;
@@ -184,7 +205,7 @@ export default {}
     flex-direction: column;
     align-items: center;
 
-    > .el-row {
+    >.el-row {
       width: 95%;
       margin-bottom: 1rem;
       padding: 1rem 0;
@@ -194,23 +215,28 @@ export default {}
       border-bottom: 1px solid #000000;
       border-radius: 0.5rem;
       box-shadow: 0 1px 2px 0 rgba(34, 36, 38, 0.6);
+
       h2 {
         color: #f2711c;
       }
+
       p {
         font-family: 'STXingkai', serif;
+
         span {
           color: #f2711c;
           font-size: xx-large;
         }
       }
+
       .el-col {
         display: flex;
         justify-content: center;
         align-items: center;
       }
     }
-    > div {
+
+    >div {
       width: 95%;
       margin-bottom: 1rem;
       padding: 1rem 0;
@@ -220,8 +246,10 @@ export default {}
       border-bottom: 1px solid #000000;
       border-radius: 0.5rem;
       box-shadow: 0 1px 2px 0 rgba(34, 36, 38, 0.6);
-      > .el-row {
+
+      >.el-row {
         border-bottom: 1px solid #878787;
+
         h2 {
           font-family: 'STXingkai', serif;
           font-size: 2rem;
@@ -230,17 +258,21 @@ export default {}
 
       .content-title {
         width: 100%;
-        > .el-row {
+
+        >.el-row {
           font-family: Lato, 'Helvetica Neue', Arial, Helvetica, sans-serif;
           font-size: 1.2rem;
           font-weight: 500;
           margin-top: 1rem;
+          padding: 0.6rem 0;
           cursor: pointer;
+
           &:hover {
             border-radius: 5px;
             background-color: rgb(188, 188, 188);
           }
-          > .el-col:nth-child(1) {
+
+          >.el-col:nth-child(1) {
             div {
               width: 0.5rem;
               height: 0.5rem;
@@ -249,7 +281,8 @@ export default {}
               margin: 0 auto;
             }
           }
-          > .el-col:nth-child(3) {
+
+          >.el-col:nth-child(3) {
             div {
               color: #00b5ad;
               border: 2px solid #00b5ad;
@@ -258,12 +291,13 @@ export default {}
               justify-content: center;
               align-items: center;
               position: relative;
+
               &::before {
                 content: '';
                 display: block;
                 width: 0.7rem;
                 height: 0.7rem;
-                background: none rgb(188, 188, 188);
+                background-color: rgb(198, 198, 198);
                 position: absolute;
                 top: 50%;
                 left: 0;
@@ -274,7 +308,8 @@ export default {}
               }
             }
           }
-          > .el-col:nth-child(4) {
+
+          >.el-col:nth-child(4) {
             div {
               color: #f2711c;
               border: 2px solid #f2711c;
