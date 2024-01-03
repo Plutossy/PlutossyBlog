@@ -98,7 +98,7 @@ $box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
     background-color: $theme-play-bar-color;
 
     .item {
-      // position: relative;
+      position: relative;
       height: 50px;
       line-height: 60px;
       text-align: center;
@@ -107,10 +107,12 @@ $box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
         color: red !important;
       }
       .volume {
+        position: absolute;
         display: none;
         height: 100px;
-        right: 22px;
-        bottom: 132px;
+        bottom: 2.5rem;
+        left: 50%;
+        transform: translateX(-50%);
       }
       .show-volume {
         display: block;
@@ -118,8 +120,8 @@ $box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
     }
 
     .item-img {
-      width: $play-bar-height;
-      height: $play-bar-height;
+      width: calc($play-bar-height - 0.5rem);
+      height: calc($play-bar-height - 0.5rem);
       text-align: center;
       img {
         vertical-align: middle;

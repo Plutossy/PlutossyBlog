@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2023-12-05 14:58:01
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2023-12-28 20:20:47
+ * @LastEditTime: 2024-01-03 16:36:16
  * @FilePath: \blog-client\src\components\PlayBar.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -22,7 +22,7 @@
 
     <!-- 隐藏的音乐插件 -->
     <audio ref="player" :src="songUrl" controls="controls" preload="auto" @canplay="startPlay" @ended="ended"
-      @timeupdate="timeupdate" style="display: none;"></audio>
+      @timeupdate="timeupdate" @error="errorHandler" style="display: none;"></audio>
 
     <!-- 音乐控件 -->
     <el-row class="song-control">
@@ -36,7 +36,6 @@
       <el-col :span="1" class="item" @click="togglePlay">
         <svg class="icon">
           <use :xlink:href="playButtonUrl" />
-          <!-- <use xlink:href="#icon-bofang" /> -->
         </svg>
       </el-col>
       <!-- 下一首 -->
@@ -47,8 +46,7 @@
       </el-col>
       <!-- 歌曲图片 -->
       <el-col :span="2" class="item-img" @click="toMusic">
-        <!-- <img :src="picUrl" /> -->
-        <img src="@/assets/img/CSDN.jpg" alt />
+        <img :src="songContent.img" />
       </el-col>
       <!-- 播放进度 -->
       <el-col :span="12" class="playing-speed">
@@ -58,9 +56,13 @@
           <!-- 进度条和名字 -->
           <el-col :span="18" class="progress-box">
             <el-row justify="space-between" align="middle" class="item-song-title">
-              <el-col :span="14">歌曲名字歌曲名字</el-col>
+              <el-col :span="14">{{ songContent.name }}</el-col>
               <el-col :span="3">&nbsp;--&nbsp;</el-col>
-              <el-col :span="7">歌手名字歌手名字</el-col>
+              <el-col :span="7">
+                <el-tooltip effect="dark" :content="songContent.singer" placement="top">
+                  {{ songContent.singer }}
+                </el-tooltip>
+              </el-col>
             </el-row>
             <div class="progress">
               <!-- 进度条 -->
@@ -124,39 +126,40 @@
             <el-col :span="6">歌手</el-col>
             <el-col :span="4"></el-col>
           </el-row>
-          <el-row class="play-list">
+
+          <el-row v-if="playSongList.length" class="play-list" align="middle" v-for="site in playSongList" :key="site.id">
             <el-col :span="2" class="song-img">
               &nbsp;
-              <!-- <img src v-show="(site.id==songContent.id&&playStatus===true)?true:false" /> -->
-              <img src alt />
+              <img v-show="(site.id === songContent.id && playStatus === true) ? true : false"
+                src="@/assets/img/song/wave.gif" />
             </el-col>
-            <el-col :span="6" class="song-name">歌曲名字</el-col>
+            <el-col :span="6" class="song-name">
+              <el-tooltip effect="dark" :content="site.name" placement="top">
+                {{ site.name }}
+              </el-tooltip>
+            </el-col>
             <el-col :span="6">歌曲时长</el-col>
-            <el-col :span="6">歌手名</el-col>
-
-            <!-- <el-col :span="1" v-show="(site.id!=songContent.id||playStatus==false)?true:false"> -->
+            <el-col :span="6">{{ site.singer }}</el-col>
             <el-col :span="1">
               <el-tooltip class="item" effect="dark" content="播放/暂停" placement="top">
                 <el-icon @click="cutSong(site)">
-                  <VideoPlay v-if="!this.playStatus" />
+                  <VideoPlay v-if="(site.id !== songContent.id || playStatus === false) ? true : false" />
                   <VideoPause v-else />
                 </el-icon>
               </el-tooltip>
             </el-col>
-            <!-- <el-col :span="1">
-              <el-tooltip class="item" effect="dark" content="暂停" placement="top">
-                <el-icon @click="pause">
-                  <VideoPause />
-                </el-icon>
-              </el-tooltip>
-            </el-col>-->
-            <el-col :span="3">
-              <el-tooltip class="item" effect="dark" content="移除" placement="top" @click.native="removeSong(site)">
+            <el-col :span="3" @click="removeSong(site)">
+              <el-tooltip class="item" effect="dark" content="移除" placement="top">
                 <el-icon>
                   <Delete />
                 </el-icon>
               </el-tooltip>
             </el-col>
+          </el-row>
+
+          <el-row v-else class="play-list-tips" justify="center">
+            <el-col :span="24">空空如也~</el-col>
+            <el-col :span="24">请先添加一些歌曲吧！</el-col>
           </el-row>
         </el-col>
       </el-row>
@@ -170,7 +173,7 @@ import '@/assets/js/iconfont.js'
 import '@/assets/js/iconfont1.js'
 import '@/assets/js/iconfont2.js'
 import '@/assets/js/iconfont3.js'
-import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 import { downloadSong } from '@/api'
 import { mixin } from '@/mixins'
 
@@ -179,7 +182,7 @@ export default {
   name: 'play-bar',
   data() {
     return {
-      songUrl: 'http://music.163.com/song/media/outer/url?id=1406025645.mp3', // 歌曲url
+      songUrl: '', // 歌曲链接
       playButtonUrl: '#icon-bofang', // 播放按钮图标
       Timer: null, //定时器
       currentTime: '00:00', // 当前播放时间
@@ -189,20 +192,37 @@ export default {
       mouseStartX: 0, // 拖拽开始位置
       volume: 50, // 音量,默认一半
       toggle: false, // 显示隐藏播放器页面
-      listShow: false // 显示播放菜单
+      listShow: false, // 显示播放菜单
+      playSongList: [], // 播放列表
     }
   },
   computed: {
-    ...mapState('m_song', ['playStatus', 'songContent', 'playList'])
+    ...mapGetters('m_song', ['playStatus', 'songContent', 'playList'])
   },
   watch: {
-    playStatus() {
-      this.playButtonUrl = this.playStatus ? '#icon-zanting' : '#icon-bofang'
-      this.playStatus ? this.$refs.player.play() : this.$refs.player.pause()
+    playStatus: {
+      handler() {
+        this.playButtonUrl = this.playStatus ? '#icon-zanting' : '#icon-bofang'
+      },
+      immediate: true
     },
     // 监听歌曲变化
-    songContent() {
-      this.startPlay(this.songContent)
+    songContent: {
+      handler() {
+        this.songUrl = this.songContent.url
+      },
+      immediate: true
+    },
+    playSongList: {
+      handler() {
+        if (this.playList.length > 7) {
+          this.playSongList = this.playList.slice(this.playList.length - 7, this.playList.length)
+          console.log(this.playSongList);
+        } else {
+          this.playSongList = this.playList
+        }
+      },
+      immediate: true
     },
     // 监听音量变化
     volume(val) {
@@ -235,6 +255,7 @@ export default {
   methods: {
     // 控制音乐播放、暂停
     togglePlay() {
+      if (!this.songContent.url) return this.$message.error('还没有选择歌曲哦~')
       // 通过$nextTick()方法，确保拿到最新的DOM节点
       this.$nextTick(() => {
         if (this.$refs.player.paused) {
@@ -250,25 +271,16 @@ export default {
     },
     //列表点击播放歌曲
     cutSong(obj) {
-      obj == this.songContent ? this.togglePlay() : this.$store.commit('m_song/setSongContent', obj)
+      obj.id === this.songContent.id ? this.togglePlay() : this.$store.commit('m_song/setSongContent', obj)
     },
     // 初始化，获取链接后准备播放
-    startPlay(obj) {
-      // 播放状态
-      // this.$store.commit('m_song/setPlayStatus', true)
-      // 重置播放进度
+    startPlay() {
       // this.currentTime = '00:00'
       this.currentTime = this.formatSeconds(this.$refs.player.currentTime)
       // 设置播放时长
       this.durationTime = this.formatSeconds(this.$refs.player.duration)
-      // 设置播放进度条长度
-      // this.curLength = this.$refs.player.currentTime / this.$refs.player.duration * 100
       // 设置音量
       this.$refs.player.volume = this.volume / 100
-      // 设置当前播放歌曲
-      // this.$refs.player.src = obj.songUrl
-      // 开始播放
-      // this.$refs.player.play()
     },
     //上一首
     prevSong() {
@@ -299,7 +311,7 @@ export default {
     },
     download() {
       // this.songContent.url
-      downloadSong(this.songUrl).then(res => {
+      downloadSong(this.songContent.url).then(res => {
         const content = res.data
         let eleLink = document.createElement('a')
         eleLink.download = `${this.artist}-${this.title}.mp3`
@@ -320,6 +332,10 @@ export default {
           type: 'error'
         })
       })
+    },
+    // 播放失败
+    errorHandler() {
+      this.$message.error('播放失败, 请检查歌曲链接是否有效~')
     },
     //从播放列表中移除
     removeSong(obj) {
@@ -451,25 +467,44 @@ export default {
   }
 
   .play-list {
+    font-size: 0.8rem;
+    padding: 0.5rem 0 0.5rem 0;
+    border-bottom: 1px solid slategray;
+
+    .song-img {
+      img {
+        filter: invert(100%); // 图片反色
+        -webkit-filter: invert(100%);
+      }
+    }
+
     .el-col {
       font-size: 0.8rem;
       color: #000000;
     }
 
+    .el-col:nth-child(5):hover {
+      color: #30a4fc;
+    }
+
     .el-col:last-child:hover {
       color: red;
     }
+
+    &:hover {
+      background: rgb(180, 180, 180);
+      cursor: pointer;
+    }
   }
 
-  .play-list {
-    font-size: 0.8rem;
-    padding: 0.5rem 0 0.5rem 0;
-    border-bottom: 1px solid slategray;
-  }
+  .play-list-tips {
+    font-size: 1rem;
+    color: #f08047;
+    margin-top: 4rem;
 
-  .play-list:hover {
-    background: rgb(180, 180, 180);
-    cursor: pointer;
+    & .el-col:nth-child(n) {
+      text-align: center;
+    }
   }
 }
 </style>

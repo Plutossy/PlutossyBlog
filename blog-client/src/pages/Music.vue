@@ -110,7 +110,11 @@ export default {
       width: 100%;
 
       .el-col {
-        height: 32rem;
+        height: 40rem;
+      }
+
+      .el-col:last-child {
+        margin-right: 1rem;
       }
     }
   }
