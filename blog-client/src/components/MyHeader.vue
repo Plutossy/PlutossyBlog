@@ -1,10 +1,81 @@
+<script setup>
+import MySearch from './MySearch.vue'
+import 'element-plus/theme-chalk/display.css'
+
+import { ref, onMounted, onUnmounted, watch } from 'vue'
+
+let btnHide = ref(true) //按钮显示隐藏
+
+let navShow = ref(false)
+let scroll = ref(0) //上下滚动
+let up = ref(300) //开始隐藏位置
+let screenWidth = ref(document.body.clientWidth) //屏幕宽度
+
+let timer1 = null // 滚动防抖
+let timer2 = null // 屏幕宽度防抖
+
+onMounted(() => {
+  // 监听（绑定）滚轮 滚动事件
+  window.addEventListener('scroll', handleScroll, true)
+
+  window.addEventListener('resize', handleSize, true)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('scroll')
+  window.removeEventListener('resize')
+})
+
+watch(
+  scroll,
+  newValue => {
+    if (newValue >= up.value) {
+      navShow.value = true
+    } else {
+      navShow.value = false
+    }
+  },
+  { immediate: true }
+)
+
+watch(
+  screenWidth,
+  newValue => {
+    if (newValue <= 768) {
+      up.value = 500
+    } else {
+      up.value = 300
+    }
+  },
+  { immediate: true }
+)
+
+// 点击按钮，显示/隐藏导航栏
+const toggleEvent = () => {
+  btnHide.value = !btnHide.value
+}
+
+const handleScroll = () => {
+  // 防抖
+  clearTimeout(timer1)
+  timer1 = setTimeout(() => {
+    // 页面滚动距顶部距离
+    const scrollTop = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop
+    scroll.value = scrollTop
+  }, 200)
+}
+const handleSize = () => {
+  clearTimeout(timer2)
+  timer2 = setTimeout(() => {
+    // 页面滚动距顶部距离
+    screenWidth.value = document.body.clientWidth
+  }, 200)
+}
+</script>
+
 <template>
-  <div class="header-nav">
-    <el-row
-      class="header-container animate__animated animate__fadeInDown"
-      :gutter="20"
-      justify="space-around"
-    >
+  <div class="header-nav animate__animated animate__fadeInDown" :class="{ 'animate__fadeOutUp': navShow }">
+    <el-row class="header-container" :gutter="20" justify="space-around">
       <el-col :span="3" :xs="4" class="logo-box">
         <h2 class="logo">SSY_Blog</h2>
       </el-col>
@@ -138,30 +209,6 @@
   </div>
 </template>
 
-<script>
-import MySearch from './MySearch.vue'
-
-import 'element-plus/theme-chalk/display.css'
-
-export default {
-  name: 'MyHeader',
-  data() {
-    return {
-      btnHide: true
-    }
-  },
-  components: {
-    MySearch
-  },
-  methods: {
-    // 点击按钮，显示/隐藏导航栏
-    toggleEvent() {
-      this.btnHide = !this.btnHide
-    }
-  }
-}
-</script>
-
 <style lang="scss" scoped>
 .header-nav {
   // position: fixed;
@@ -181,10 +228,12 @@ export default {
     padding: 0.8rem 5rem;
     border-bottom: 1px solid #b2b1b1;
     box-shadow: 0 1px #ccc;
+
     .logo-box {
       display: flex;
       justify-content: center;
       align-items: center;
+
       .logo {
         font-size: 28px;
         font-weight: 700;
@@ -193,7 +242,7 @@ export default {
       }
     }
 
-    > .el-col:nth-child(2) {
+    >.el-col:nth-child(2) {
       a {
         font-size: large;
         padding: 0.7rem 0;
@@ -201,6 +250,7 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
+
         &:hover {
           color: #ffffff;
           background-color: #f2711c;
@@ -208,10 +258,12 @@ export default {
           border-radius: 5px;
           cursor: pointer;
         }
+
         i {
           vertical-align: middle;
         }
       }
+
       .router-link-active {
         color: #ffffff;
         background-color: #f2711c;
@@ -225,6 +277,7 @@ export default {
       display: flex;
       align-items: center;
     }
+
     .mobile-hide-icon {
       text-align: center;
       line-height: 100%;
@@ -233,6 +286,7 @@ export default {
       -webkit-user-select: none;
       -moz-user-focus: none;
       -moz-user-select: none;
+
       .el-dropdown {
         i {
           font-size: 30px;
@@ -246,16 +300,19 @@ export default {
 
 .el-dropdown-menu {
   background-color: rgba($color: #1982b3, $alpha: 1);
+
   .el-dropdown-menu__item {
     a {
       padding: 0.5rem 0;
       font-size: 18px;
       font-weight: 540;
       color: rgb(225, 224, 224);
+
       &:hover {
         color: #f2711c;
       }
     }
+
     .router-link-active {
       font-size: 20px;
       color: #f2711c;
@@ -266,6 +323,7 @@ export default {
       cursor: pointer;
     }
   }
+
   .input {
     padding: 1rem;
   }
