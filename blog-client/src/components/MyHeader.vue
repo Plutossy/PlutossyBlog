@@ -1,4 +1,4 @@
-<script setup>
+<script lang="ts" setup>
 import MySearch from './MySearch.vue'
 import 'element-plus/theme-chalk/display.css'
 
@@ -11,8 +11,8 @@ let scroll = ref(0) //上下滚动
 let up = ref(300) //开始隐藏位置
 let screenWidth = ref(document.body.clientWidth) //屏幕宽度
 
-let timer1 = null // 滚动防抖
-let timer2 = null // 屏幕宽度防抖
+let timer1: any = null // 滚动防抖
+let timer2: any = null // 屏幕宽度防抖
 
 onMounted(() => {
   // 监听（绑定）滚轮 滚动事件
@@ -22,8 +22,8 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
-  window.removeEventListener('scroll')
-  window.removeEventListener('resize')
+  window.removeEventListener('scroll', handleScroll)
+  window.removeEventListener('resize', handleSize)
 })
 
 watch(

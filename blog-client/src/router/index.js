@@ -1,3 +1,11 @@
+/*
+ * @Author: Plutossy pluto_ssy@outlook.com
+ * @Date: 2023-11-27 16:59:47
+ * @LastEditors: Plutossy pluto_ssy@outlook.com
+ * @LastEditTime: 2024-01-05 17:21:14
+ * @FilePath: \blog-client\src\router\index.js
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 // 导入 Vue Router
 import { createRouter, createWebHistory } from 'vue-router'
 
@@ -10,7 +18,8 @@ const routes = [
   { path: '/clone', name: 'Clone', component: () => import('../pages/Clone.vue') },
   { path: '/music', name: 'Music', component: () => import('../pages/Music.vue') },
   { path: '/picture', name: 'Picture', component: () => import('../pages/Picture.vue') },
-  { path: '/about', name: 'About', component: () => import('../pages/About.vue') }
+  { path: '/about', name: 'About', component: () => import('../pages/About.vue') },
+  { path: '/search', name: 'Search', component: () => import('../pages/Search.vue')}
 ]
 
 const router = createRouter({
