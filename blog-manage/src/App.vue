@@ -8,6 +8,7 @@
 -->
 <script setup lang="ts">
 import MyHeader from './components/MyHeader.vue'
+import MyFooter from './components/MyFooter.vue'
 
 </script>
 
@@ -15,6 +16,7 @@ import MyHeader from './components/MyHeader.vue'
   <div>
     <my-header />
     <router-view></router-view>
+    <my-footer />
   </div>
 </template>
 
