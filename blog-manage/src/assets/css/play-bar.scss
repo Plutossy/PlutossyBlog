@@ -1,0 +1,195 @@
+//Colors
+$color-light-white: #fefefe;
+$color-black: #000000;
+$color-blue-shallow: #a9dbf9;
+$color-blue: #95d2f6;
+$color-blue-active: #30a4fc;
+$color-blue-light: #2aa3ef;
+$color-blue-dark: #2796dd;
+
+// Theme Global Color
+$theme-color: $color-blue;
+$theme-background-color: #e6ecf0;
+$theme-header-color: $color-light-white;
+$theme-play-bar-color: $color-light-white;
+
+// play-bar
+$play-bar-height: 60px;
+
+// style
+$box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+
+// 上下左右居中
+@mixin layout(
+  $justify-content: flex-start,
+  $align-items: stretch,
+  $flex-direction: row,
+  $flex-wrap: nowrap
+) {
+  display: flex;
+  justify-content: $justify-content;
+  align-items: $align-items;
+  flex-direction: $flex-direction;
+  flex-wrap: $flex-wrap;
+}
+
+// 图标
+@mixin icon($size: 1.5em, $color: $color-black) {
+  width: $size;
+  height: $size;
+  font-size: $size;
+  color: $color;
+  fill: currentColor;
+  overflow: hidden;
+  position: relative;
+}
+
+@mixin box-shadow($box-shadow) {
+  -webkit-box-shadow: $box-shadow;
+  -moz-box-shadow: $box-shadow;
+  box-shadow: $box-shadow;
+}
+
+.play-bar {
+  div {
+    /* 取消div标签在移动端点击时的蓝色 */
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+    -webkit-user-select: none;
+    -moz-user-focus: none;
+    -moz-user-select: none;
+  }
+
+  z-index: 999;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: rgba(200, 200, 200, 1);
+  z-index: 999;
+  opacity: 0.5;
+  transition: all 0.5s;
+  @include box-shadow($box-shadow);
+
+  &:hover {
+    opacity: 1;
+  }
+
+  .item-up {
+    width: 1.2rem;
+    height: 1.2rem;
+    position: absolute;
+    bottom: $play-bar-height + 10px;
+    left: 20px;
+    cursor: pointer;
+    border: 2px solid #f08047;
+    border-radius: 50%;
+    i {
+      color: #f08047;
+      width: 1.2rem;
+      height: 1.2rem;
+      
+    }
+  }
+
+  .song-control {
+    @include layout(center, center);
+    bottom: 0;
+    height: $play-bar-height;
+    width: 100%;
+    background-color: $theme-play-bar-color;
+
+    .item {
+      position: relative;
+      height: 50px;
+      line-height: 60px;
+      text-align: center;
+      cursor: pointer;
+      .icon.active {
+        color: red !important;
+      }
+      .volume {
+        position: absolute;
+        display: none;
+        height: 100px;
+        bottom: 2.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+      .show-volume {
+        display: block;
+      }
+    }
+
+    .item-img {
+      width: calc($play-bar-height - 0.5rem);
+      height: calc($play-bar-height - 0.5rem);
+      text-align: center;
+      img {
+        vertical-align: middle;
+        height: 100%;
+      }
+    }
+
+    .playing-speed {
+      height: 1.2rem;
+      .current-time,
+      .last-time {
+        text-align: center;
+        font-size: 13px;
+        color: $color-black;
+        font-weight: 500;
+      }
+
+      // 进度条
+      .progress-box {
+        .item-song-title {
+          height: 20px;
+          line-height: 20px;
+          font-size: .75rem;
+          padding: 0 0.5rem 0.5rem;
+          >.el-col {
+            text-align: center;
+            overflow:hidden; 
+            white-space:nowrap;
+            text-overflow:ellipsis;
+          }
+        }
+        .progress {
+          position: relative;
+          width: 100%;
+          height: 0.4rem;
+          background: $color-blue-shallow;
+          cursor: pointer;
+          .bg {
+            width: 100%;
+            height: 100%;
+            .cur-progress {
+              height: 100%;
+              background: $color-blue-active;
+            }
+          }
+          .idot {
+            width: 0.8rem;
+            height: 0.8rem;
+            position: absolute;
+            border-radius: 50%;
+            background-color: $color-black;
+            top: -0.2rem;
+            vertical-align: middle;
+          }
+        }
+      }
+    }
+  }
+}
+
+.turn {
+  transform: rotate(180deg);
+}
+
+.show {
+  bottom: -($play-bar-height);
+}
+
+.icon {
+  @include icon(1.2em, $color-black);
+}
