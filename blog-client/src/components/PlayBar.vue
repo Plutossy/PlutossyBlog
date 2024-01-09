@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2023-12-05 14:58:01
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-01-03 16:36:16
+ * @LastEditTime: 2024-01-09 16:48:22
  * @FilePath: \blog-client\src\components\PlayBar.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -325,6 +325,17 @@ export default {
         eleLink.click()
         // 然后移除
         document.body.removeChild(eleLink)
+        /* handelExport({ portalIds: ids }).then((res) => {
+          const blob = new Blob([res], { type: 'application/zip' })
+          const url = window.URL.createObjectURL(blob)
+          const link = document.createElement('a') // 创建a标签
+          link.href = url
+          link.download = '装饰入户调查统计' // 重命名文件
+          document.body.appendChild(link)
+          link.click()
+          URL.revokeObjectURL(url) // 释放内存
+          document.body.removeChild(link)
+        }) */
       }).catch(err => {
         console.log(err)
         this.$message({
