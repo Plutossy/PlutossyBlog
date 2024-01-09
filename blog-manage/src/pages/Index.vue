@@ -8,7 +8,9 @@
 -->
 <template>
   <div>
-    <h1>后台首页</h1>
+    <div class="content-box" :class="{'content-collapse': collapse}">
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
