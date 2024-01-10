@@ -1,3 +1,11 @@
+/*
+ * @Author: Plutossy pluto_ssy@outlook.com
+ * @Date: 2023-11-27 16:56:57
+ * @LastEditors: Plutossy pluto_ssy@outlook.com
+ * @LastEditTime: 2024-01-10 14:05:17
+ * @FilePath: \blog-client\vite.config.js
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ */
 import { defineConfig } from 'vite'
 // 引入path
 import { resolve } from 'path'
@@ -13,6 +21,19 @@ export default defineConfig({
     vue()
   ],
   base: './',
+  server: {
+    port: 3000, // 端口号
+    open: true, // 自动打开浏览器
+    cors: true, // 允许跨域
+    // proxy: {
+    //   // 选项写法
+    //   '/api': 'http://localhost:3000',
+    //   // 函数写法
+    //   '/foo': {
+    //     target: '<other_url>'
+    //   }
+    // }
+  },
   /* 路径配置 */
   resolve: {
     alias: [
