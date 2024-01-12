@@ -7,7 +7,7 @@
         </div>
       </template>
 
-      <div class="card-content">
+      <div class="card-content" @click="gotoDetail(1)">
         <el-row :gutter="16" justify="space-around">
           <el-col :span="6">
             <img src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif" />
@@ -51,7 +51,12 @@
 
 <script>
 export default {
-  name: 'Introduction'
+  name: 'Introduction',
+  methods: {
+    gotoDetail(id) {
+      this.$router.push(`/article/${id}`)
+    }
+  }
 }
 </script>
 
@@ -70,6 +75,7 @@ export default {
       }
     }
     .card-content {
+      cursor: pointer;
       > .el-row {
         width: 100%;
         > .el-col:first-child {

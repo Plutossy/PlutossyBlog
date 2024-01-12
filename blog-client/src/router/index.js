@@ -19,7 +19,8 @@ const routes = [
   { path: '/music', name: 'Music', component: () => import('../pages/Music.vue') },
   { path: '/picture', name: 'Picture', component: () => import('../pages/Picture.vue') },
   { path: '/about', name: 'About', component: () => import('../pages/About.vue') },
-  { path: '/search', name: 'Search', component: () => import('../pages/Search.vue')}
+  { path: '/search', name: 'Search', component: () => import('../pages/Search.vue')},
+  { path: '/article/:id', name: 'Article', component: () => import('../pages/Article.vue')},
 ]
 
 const router = createRouter({

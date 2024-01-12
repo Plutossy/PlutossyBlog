@@ -214,7 +214,7 @@ const handleSize = () => {
   // position: fixed;
   position: sticky; // 粘性定位
   top: 0;
-  z-index: 999;
+  z-index: 100;
   width: 100%;
 
   .header-container {
