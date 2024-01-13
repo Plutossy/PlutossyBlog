@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-05 17:15:02
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-01-07 13:56:25
+ * @LastEditTime: 2024-01-13 18:39:53
  * @FilePath: \blog-client\src\pages\Search.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -22,8 +22,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="search-container">
-    <Parallax />
+  <Parallax />
+  <div class="search-container animate__animated animate__zoomIn">
     <Introduction />
     <Introduction />
     <Introduction />

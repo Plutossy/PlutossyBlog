@@ -1,5 +1,5 @@
 <template>
-  <div class="parallax-container" ref="parallax">
+  <div class="parallax-container animate__animated animate__fadeInDown" ref="parallax">
     <div class="layer" ref="layer" v-for="(item, index) in barnerImagesData" :key="index"
       :style="{ transform: `matrix(${item.transform})`, opacity: item.opacity && item.opacity[0] }">
       <img :src="item.url" :style="`width: ${item.width * compensate}px; filter: blur(${item.blur}px)`">
