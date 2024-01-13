@@ -431,7 +431,7 @@ export default {
 </style>
 
 <style lang="scss" scoped>
-@import '../assets/css/play-bar.scss';
+@import '../assets/scss/play-bar.scss';
 
 .play-list-container {
   position: absolute;

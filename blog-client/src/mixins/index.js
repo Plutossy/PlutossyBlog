@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2023-12-27 16:51:21
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2023-12-28 15:09:19
+ * @LastEditTime: 2024-01-13 17:09:51
  * @FilePath: \blog-client\src\mixins\index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -79,6 +79,33 @@ export const mixin = {
         return a[0] - b[0]
       })
       return result
+    },
+    // 返回顶部的动画
+    //性能优化，利用对象给不同的元素添加不同的定时器
+    animate(obj, target, callback) {
+      // 不断点击按钮，动画效果会越来越快，因为开启太多定时器了
+      // 解决方案，让元素只有一个定时器执行
+
+      // 清楚以前的定时器，只保留当前的
+      clearInterval(obj.timer);
+      obj.timer = setInterval(() => {
+          //步长公式
+          // 把步长值改为整数，避免小数问题
+          // var step = Math.ceil((target - obj.scrollTop) / 10); //进一法，向上取整
+          let step = (target - obj.scrollTop) / 10;
+          // 判断步长是否大于0，小于0向下取整
+          step = step > 0 ? Math.ceil(step) : Math.floor(step);
+          if(obj.scrollTop == target) {
+              // 停止动画定时器
+              clearInterval(obj.timer);
+              // 回调函数写到定时器结束位置
+              if (callback) {
+                  // 调用函数
+                  callback();
+              }
+          }
+          obj.scrollTop += step;
+      }, 15);
     }
   },
 }

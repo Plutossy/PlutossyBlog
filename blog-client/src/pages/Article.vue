@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-10 14:16:56
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-01-12 16:42:19
+ * @LastEditTime: 2024-01-13 17:57:53
  * @FilePath: \blog-client\src\components\blogDetail\blogDetail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -47,7 +47,7 @@
       <h1>标题</h1>
     </el-row>
     <el-row>
-      <div class="article-content">
+      <div ref="articleRef" class="article-content">
         <!--/*-->
         <h2 id="section1">一、关于 <i class="serif">Typo.css</i></h2>
 
@@ -439,6 +439,45 @@
         <h3 id="appendix2">2、开源许可</h3>
         <!--*/-->
       </div>
+      <!-- 导航 -->
+      <div :style="{ right: navShow ? '1.5rem' : '-3rem', bottom: navShow ? '4rem' : '-4rem' }" class="toolbar">
+        <el-popover placement="left-end" trigger="click" :width="240">
+          <template #reference>
+            <el-button type="warning" class="toc-button">目录</el-button>
+          </template>
+          <template #default>
+            <div class="article-tocbot"></div>
+          </template>
+        </el-popover>
+        <el-popover placement="left-start" trigger="hover" :width="100">
+          <template #reference>
+            <el-button class="qrcode">
+              <img src="@/assets/img/svg/qrcode.svg" alt="二维码">
+            </el-button>
+          </template>
+          <template #default>
+            <QRCodeVue3 :width="130" :height="130" :dotsOptions="{
+              type: 'dots',
+              color: '#000000',
+              gradient: {
+                type: 'linear',
+                rotation: 0,
+                colorStops: [
+                  { offset: 0, color: '#000000' },
+                  { offset: 1, color: '#000000' },
+                ],
+              },
+            }" value="http://localhost:3000/article/1" />
+          </template>
+        </el-popover>
+        <el-tooltip effect="light" content="返回顶部" placement="left-end">
+          <el-button plain class="toTop-button" @click="toTop">
+            <el-icon>
+              <ArrowUpBold />
+            </el-icon>
+          </el-button>
+        </el-tooltip>
+      </div>
     </el-row>
     <el-row align="middle">
       <el-col :span="11"></el-col>
@@ -511,25 +550,79 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted, getCurrentInstance } from 'vue'
 import { useStore } from 'vuex'
+import * as tocbot from 'tocbot';
+import QRCodeVue3 from "qrcode-vue3";
+import { mixin } from '../mixins'
 
 let heartActive = ref(true)
 let collectActive = ref(true)
 let commentDrawer = ref(false)
+const articleRef: any = ref(null) // 文章容器
+let navShow = ref(false) // 右导航条显示
+// let showToc = ref(false)
 const store = useStore()
+let timer: any = null
+
+// const showTocList = () => {
+//   showToc.value = !showToc.value
+//   if (showToc.value) {
+//     tocbot.refresh()
+//   }
+// }
 
 onMounted(() => {
   // 取消全局返回顶部按钮返回顶部按钮
   store.commit('m_back/setShowBackTop', false)
+  // 右导航条显示
+  document.addEventListener('scroll', handleScroll)
+  tocbot.init({
+    // 在何处呈现目录
+    tocSelector: '.article-tocbot',
+    // 在哪里获取标题以构建目录
+    contentSelector: '.article-content',
+    // 要在contentSelector元素内部获取的标题
+    headingSelector: 'h1, h2, h3',
+    // 用于内容中相对或绝对定位容器内的标题.
+    hasInnerContainers: true,
+  });
+  tocbot.refresh()
 })
 onUnmounted(() => {
   // 恢复全局返回顶部按钮返回顶部按钮
   store.commit('m_back/setShowBackTop', true)
+  tocbot.destroy()
+  // 右导航条隐藏
+  document.removeEventListener('scroll', handleScroll)
 })
+
+// 导航条处理函数
+const handleScroll = () => {
+  // 防抖
+  clearTimeout(timer)
+  timer = setTimeout(() => {
+    // 页面滚动距顶部距离
+    const scrollTop = document.documentElement.scrollTop || window.scrollY || document.body.scrollTop
+    // 文章可视高度
+    // const clientHeight = articleRef.value.clientHeight || articleRef.value.scrollHeight || articleRef.value.offsetHeight
+    const clientHeight = document.documentElement.scrollHeight - 1100
+    if (scrollTop >= 550 && scrollTop <= clientHeight) {
+      navShow.value = true
+    } else {
+      navShow.value = false
+    }
+  }, 100)
+}
+
+const toTop = () => {
+  mixin.methods.animate(document.documentElement, 500)
+}
 </script>
 
 <style lang="scss" scoped>
+@import url('../assets/scss/tocbot.scss');
+
 .article-container {
   background-color: rgba(255, 255, 255, 0.9);
   width: 75%;
@@ -789,10 +882,55 @@ onUnmounted(() => {
 }
 
 /* 评论标题 */
-::v-deep .commentDrawer .el-drawer__header {
+:deep(.commentDrawer) .el-drawer__header {
   margin-bottom: 0 !important;
   padding-bottom: 0.5rem;
   border-bottom: 1px solid #e8e8ed;
   color: #222226;
+}
+
+// 导航
+.toolbar {
+  width: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  right: 1.5rem;
+  bottom: 4rem;
+  transition: all 0.3s ease-in-out;
+
+  // :deep(.el-affix--fixed) {
+  //   right: 1rem;
+  // }
+
+  .el-button {
+    margin: 0;
+    padding: 1.2rem 0;
+    width: 3rem;
+    border-radius: 0;
+  }
+
+  .toc-button {
+    border-radius: 4px 4px 0 0;
+  }
+
+  .qrcode {
+    img {
+      width: 2rem;
+      height: 2rem;
+    }
+    &:active {
+      background-color: #e8e8ed;
+    }
+  }
+
+  .toTop-button {
+    border-radius: 0 0 4px 4px;
+    &:active {
+      background-color: #e8e8ed;
+    }
+  }
 }
 </style>
