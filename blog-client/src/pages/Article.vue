@@ -2,13 +2,13 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-10 14:16:56
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-01-13 17:57:53
+ * @LastEditTime: 2024-01-13 18:24:38
  * @FilePath: \blog-client\src\components\blogDetail\blogDetail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
   <div class="article-container">
-    <el-row align="middle">
+    <el-row align="middle" class="animate__animated animate__pulse">
       <div class="flag">
         <div class="flag-ss" style="border-color: transparent transparent #f2711c #f2711c;"></div>
         <div class="flag-tt" style="background-color: #f2711c;">原创</div>
@@ -40,7 +40,7 @@
         <div>标签3</div>
       </div>
     </el-row>
-    <el-row align="middle">
+    <el-row align="middle" class="animate__animated animate__zoomIn">
       <img src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif" />
     </el-row>
     <el-row align="middle">
@@ -515,7 +515,7 @@
                 <img src="@/assets/img/icon/showComment.png">
               </div>
             </el-tooltip>
-            <el-drawer v-model="commentDrawer" title="评论" :z-index="999" size="40%" custom-class="commentDrawer">
+            <el-drawer v-model="commentDrawer" title="评论" :z-index="999" size="40%" class="commentDrawer">
               <span>评论内容</span>
             </el-drawer>
             <p>20</p>
@@ -550,7 +550,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, getCurrentInstance } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import { useStore } from 'vuex'
 import * as tocbot from 'tocbot';
 import QRCodeVue3 from "qrcode-vue3";
@@ -768,9 +768,11 @@ const toTop = () => {
   }
 
   >.el-row:nth-child(2) {
-    margin: 1rem;
+    margin: 0 1rem;
+    padding: 1rem 0;
     display: flex;
     justify-content: center;
+    border-bottom: 1px solid #969595;
 
     img {
       width: 100%;
@@ -921,6 +923,7 @@ const toTop = () => {
       width: 2rem;
       height: 2rem;
     }
+
     &:active {
       background-color: #e8e8ed;
     }
@@ -928,6 +931,7 @@ const toTop = () => {
 
   .toTop-button {
     border-radius: 0 0 4px 4px;
+
     &:active {
       background-color: #e8e8ed;
     }

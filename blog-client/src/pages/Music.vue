@@ -7,7 +7,7 @@
     </div>
 
     <!-- 音乐内容区 -->
-    <div class="song-audio">
+    <div class="song-audio animate__animated animate__zoomIn">
       <el-row justify="space-between">
         <el-col :span="12">
           <song-list />
