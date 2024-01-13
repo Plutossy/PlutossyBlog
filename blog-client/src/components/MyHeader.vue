@@ -299,7 +299,7 @@ const handleSize = () => {
 }
 
 .el-dropdown-menu {
-  background-color: rgba($color: #1982b3, $alpha: 1);
+  background-color: rgba($color: rgba(0, 0, 0), $alpha: 0.6);
 
   .el-dropdown-menu__item {
     a {

@@ -19,12 +19,8 @@
       <div class="content-a">
         <ul>
           <li>
-            <el-popover
-              placement="bottom"
-              trigger="hover"
-              :width="150"
-              popper-style="box-shadow: rgb(14 18 22 / 35%) 0px 10px 38px -10px, rgb(14 18 22 / 20%) 0px 10px 20px -15px; padding: 20px;"
-            >
+            <el-popover placement="bottom" trigger="hover" :width="150"
+              popper-style="box-shadow: rgb(14 18 22 / 35%) 0px 10px 38px -10px, rgb(14 18 22 / 20%) 0px 10px 20px -15px; padding: 20px;">
               <template #reference>
                 <span></span>
               </template>
@@ -36,12 +32,8 @@
             <!-- <span></span> -->
           </li>
           <li>
-            <el-popover
-              placement="bottom"
-              trigger="hover"
-              :width="150"
-              popper-style="box-shadow: rgb(14 18 22 / 35%) 0px 10px 38px -10px, rgb(14 18 22 / 20%) 0px 10px 20px -15px; padding: 20px;"
-            >
+            <el-popover placement="bottom" trigger="hover" :width="150"
+              popper-style="box-shadow: rgb(14 18 22 / 35%) 0px 10px 38px -10px, rgb(14 18 22 / 20%) 0px 10px 20px -15px; padding: 20px;">
               <template #reference>
                 <span></span>
               </template>
@@ -52,12 +44,8 @@
             </el-popover>
           </li>
           <li>
-            <el-popover
-              placement="bottom"
-              trigger="hover"
-              :width="160"
-              popper-style="box-shadow: rgb(14 18 22 / 35%) 0px 10px 38px -10px, rgb(14 18 22 / 20%) 0px 10px 20px -15px; padding: 20px;"
-            >
+            <el-popover placement="bottom" trigger="hover" :width="160"
+              popper-style="box-shadow: rgb(14 18 22 / 35%) 0px 10px 38px -10px, rgb(14 18 22 / 20%) 0px 10px 20px -15px; padding: 20px;">
               <template #reference>
                 <a href="https://github.com/Plutossy" target="_blank"></a>
               </template>
@@ -67,12 +55,8 @@
             </el-popover>
           </li>
           <li>
-            <el-popover
-              placement="bottom"
-              trigger="hover"
-              :width="160"
-              popper-style="box-shadow: rgb(14 18 22 / 35%) 0px 10px 38px -10px, rgb(14 18 22 / 20%) 0px 10px 20px -15px; padding: 20px;"
-            >
+            <el-popover placement="bottom" trigger="hover" :width="160"
+              popper-style="box-shadow: rgb(14 18 22 / 35%) 0px 10px 38px -10px, rgb(14 18 22 / 20%) 0px 10px 20px -15px; padding: 20px;">
               <template #reference>
                 <a href="https://blog.csdn.net/Pluto_ssy" target="_blank"></a>
               </template>
@@ -82,12 +66,8 @@
             </el-popover>
           </li>
           <li>
-            <el-popover
-              placement="bottom"
-              trigger="hover"
-              :width="210"
-              popper-style="box-shadow: rgb(14 18 22 / 35%) 0px 10px 38px -10px, rgb(14 18 22 / 20%) 0px 10px 20px -15px; padding: 20px;"
-            >
+            <el-popover placement="bottom" trigger="hover" :width="210"
+              popper-style="box-shadow: rgb(14 18 22 / 35%) 0px 10px 38px -10px, rgb(14 18 22 / 20%) 0px 10px 20px -15px; padding: 20px;">
               <template #reference>
                 <span></span>
               </template>
@@ -152,10 +132,12 @@ export default {}
   width: 100%;
   height: 100%;
 }
+
 .about-container {
   display: flex;
   flex-direction: column;
   align-items: center;
+
   .top-img {
     width: 100%;
     background: url(@/assets/img/bg4.jpeg) no-repeat center center;
@@ -171,6 +153,7 @@ export default {}
     justify-content: center;
     align-items: center;
     position: relative;
+
     &::before {
       // 设置遮罩层
       content: '';
@@ -180,13 +163,16 @@ export default {}
       width: 100%;
       height: 100%;
       background: rgba(0, 0, 0, 0.5);
-      z-index: -1; /* 设置伪元素的层级为负数，保证它在元素后面 */
+      z-index: -1;
+      /* 设置伪元素的层级为负数，保证它在元素后面 */
     }
+
     div:first-child {
       font-size: 4rem;
       font-weight: 560;
       margin-bottom: 2rem;
     }
+
     div:last-child {
       font-size: 1.8rem;
       font-weight: 560;
@@ -209,29 +195,35 @@ export default {}
     flex-direction: column;
     justify-content: center;
     align-items: center;
+
     .content-avatar {
       margin-top: 2rem;
       width: 15%;
+
       img {
         width: 100%;
         border-radius: 50%;
       }
     }
+
     .content-name {
       font-family: STSong;
       margin-top: 0.6rem;
       font-size: x-large;
       text-align: center;
     }
+
     .content-a {
       width: 16rem;
       margin-top: 1.5rem;
       padding: 0 2rem 1rem;
       border-bottom: 2px solid #7a7a7a;
+
       ul {
         display: flex;
         justify-content: space-around;
         align-items: center;
+
         li {
           width: 2.5rem;
           height: 2.5rem;
@@ -247,6 +239,7 @@ export default {}
             width: 1.5rem;
             height: 1.5rem;
           }
+
           a {
             display: inline-block;
             width: 1.5rem;
@@ -257,30 +250,35 @@ export default {}
             background: #b1b1b1 none;
           }
         }
+
         li:nth-child(1) {
           span {
             background: url(@/assets/img/svg/wechat.svg) no-repeat center center;
             background-size: cover;
           }
         }
+
         li:nth-child(2) {
           span {
             background: url(@/assets/img/svg/tencentqq.svg) no-repeat center center;
             background-size: cover;
           }
         }
+
         li:nth-child(3) {
           a {
             background: url(@/assets/img/svg/github.svg) no-repeat center center;
             background-size: cover;
           }
         }
+
         li:nth-child(4) {
           a {
             background: url(@/assets/img/svg/celery.svg) no-repeat center center;
             background-size: cover;
           }
         }
+
         li:nth-child(5) {
           span {
             background: url(@/assets/img/svg/gmail.svg) no-repeat center center;
@@ -289,6 +287,7 @@ export default {}
         }
       }
     }
+
     .content-detail {
       margin-top: 4rem;
       width: 80%;
@@ -298,26 +297,31 @@ export default {}
       text-align: center;
       border-bottom: 1px solid #7a7a7a;
       box-shadow: 0 2px 0 #3c2d23;
+
       p {
         margin-bottom: 1rem;
       }
     }
+
     .content-dashang {
       font-family: STSong;
       margin: 2rem 0;
       width: 80%;
       text-align: center;
+
       h2 {
         margin-bottom: 1rem;
         font-size: xx-large;
         font-weight: bold;
         color: #f08047;
       }
-      > p {
+
+      >p {
         margin-bottom: 1rem;
         font-size: large;
         color: #f08047;
       }
+
       .pay {
         font-size: large;
         display: flex;
@@ -325,24 +329,36 @@ export default {}
         align-items: center;
         border: 1px solid #f08047;
         border-radius: 5px;
-        > div {
+
+        >div {
           margin: 1rem 0;
+
           span {
             width: 10rem;
             height: 10rem;
             display: inline-block;
           }
+
           p {
             margin-top: 0.5rem;
           }
         }
+
         .zhifubao {
           margin-right: 10rem;
+
           span {
             background: url(@/assets/img/zhifupay.jpg) no-repeat center center;
             background-size: cover;
           }
         }
+
+        @media screen and (max-width: 768px) {
+          .zhifubao {
+            margin-right: 1rem;
+          }
+        }
+
         .wechat {
           span {
             background: url(@/assets/img/wechatpay.jpg) no-repeat center center;
@@ -352,5 +368,4 @@ export default {}
       }
     }
   }
-}
-</style>
+}</style>
