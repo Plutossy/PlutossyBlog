@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-09 08:56:06
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-01-09 14:59:29
+ * @LastEditTime: 2024-01-16 09:24:21
  * @FilePath: \blog-manage\src\pages\Login.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -48,7 +48,6 @@ const rules = reactive<FormRules<RuleForm>>({
     { required: true, message: '请输入密码', trigger: 'blur' },
     { min: 6, max: 12, message: '长度在 6 到 12 个字符', trigger: 'blur' }
   ]
-
 })
 const router = useRouter();
 
@@ -94,7 +93,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
   height: 100%;
   position: absolute;
   top: 50%;
-  left: 50%;
+  left: 75%;
   transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
@@ -112,11 +111,12 @@ const submitForm = async (formEl: FormInstance | undefined) => {
 
   .ms-login {
     width: 450px;
-    height: 200px;
+    height: 250px;
     display: flex;
     align-items: center;
     border-radius: 5px;
     background-color: #fff;
+    padding: 0 1rem;
 
     .el-form {
       width: 100%;
