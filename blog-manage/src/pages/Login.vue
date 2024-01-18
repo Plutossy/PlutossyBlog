@@ -2,25 +2,63 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-09 08:56:06
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-01-16 20:14:29
+ * @LastEditTime: 2024-01-18 09:26:08
  * @FilePath: \blog-manage\src\pages\Login.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
-  <div class="login-wrap">
-    <div class="ms-title">SSY_Blog 后台管理登录</div>
-    <div class="ms-login">
-      <el-form ref="ruleFormRef" :model="ruleForm" :rules="rules" label-width="80px" size="large">
-        <el-form-item label="用户名：" prop="username" size="large">
-          <el-input v-model="ruleForm.username" placeholder="请输入用户名"></el-input>
-        </el-form-item>
-        <el-form-item label="密&nbsp;&nbsp;&nbsp;&nbsp;码：" prop="password" size="large">
-          <el-input type="password" v-model="ruleForm.password" placeholder="请输入密码" show-password></el-input>
-        </el-form-item>
-        <div class="login-btn">
-          <el-button type="primary" @click="submitForm(ruleFormRef)" size="large">登录</el-button>
-        </div>
-      </el-form>
+  <div class="container">
+    <div class="tips">
+      <div class="container-title">
+        <h1>欢迎来到 SSY_Blog 后台管理</h1>
+        <p>快来定制你的专属博客吧！</p>
+      </div>
+      <div class="container-img">
+        <img src="@/assets/img/welcome.jpg" alt="欢迎来到 SSY_Blog">
+      </div>
+      <div class="toLogin">
+        <p>已有账号？</p>
+        <el-button @click="loginToogle">去登录</el-button>
+      </div>
+    </div>
+    <div class="tips">
+      <div class="container-title">
+        <h1>欢迎来到 SSY_Blog 后台管理</h1>
+        <p>快来定制你的专属博客吧！</p>
+      </div>
+      <div class="container-img">
+        <img src="@/assets/img/welcome.jpg" alt="欢迎来到 SSY_Blog">
+      </div>
+      <div class="toRegister">
+        <p>没有账号？</p>
+        <el-button @click="loginToogle">去注册</el-button>
+      </div>
+    </div>
+
+    <div class="login-register-wrap"
+      :style="{ 'transform': tologin ? 'translate(-55.88%, -50%)' : 'translate(55.88%, -50%)' }">
+      <div v-if="tologin" class="title">LOGIN</div>
+      <div v-else class="title">REGISTER</div>
+      <div class="content">
+        <el-form ref="ruleFormRef" :model="ruleForm" :rules="rules" label-width="100px" size="large">
+          <el-form-item label="用户名：" prop="username" size="large">
+            <el-input v-model="ruleForm.username" placeholder="请输入用户名" clearable></el-input>
+          </el-form-item>
+          <el-form-item v-if="!tologin" label="昵&nbsp;&nbsp;&nbsp;&nbsp;称：" prop="nickname" size="large" class="animate__animated animate__bounceIn">
+            <el-input v-model="ruleForm.nickname" placeholder="请输入昵称" clearable></el-input>
+          </el-form-item>
+          <el-form-item label="密&nbsp;&nbsp;&nbsp;&nbsp;码：" prop="password" size="large">
+            <el-input type="password" v-model="ruleForm.password" placeholder="请输入密码" show-password></el-input>
+          </el-form-item>
+          <el-form-item v-if="!tologin" label="确认密码：" prop="confirmPwd" size="large" class="animate__animated animate__bounceIn">
+            <el-input type="password" v-model="ruleForm.confirmPwd" placeholder="请再次输入密码" show-password></el-input>
+          </el-form-item>
+          <div class="btn">
+            <el-button v-if="tologin" type="primary" @click="submitForm(ruleFormRef)" size="large">登录</el-button>
+            <el-button v-else type="primary" @click="submitForm(ruleFormRef)" size="large">注册</el-button>
+          </div>
+        </el-form>
+      </div>
     </div>
   </div>
 </template>
@@ -29,33 +67,61 @@
 import { ref, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import { FormInstance, FormRules, ElNotification } from 'element-plus'
-interface RuleForm {
+interface RuleForm { // 表单数据
   username: string
+  nickname: string
   password: string
+  confirmPwd: string
 }
-const ruleFormRef = ref<FormInstance>()
+const ruleFormRef: any = ref<FormInstance>() // 表单实例
 
-let ruleForm = reactive<RuleForm>({
+let tologin = ref(true)
+let ruleForm = reactive<RuleForm>({ // 表单数据
   username: 'admin',
-  password: '123456'
+  nickname: 'PlutoSSY',
+  password: '123456',
+  confirmPwd: '123456'
 })
-const rules = reactive<FormRules<RuleForm>>({
+const rules = reactive<FormRules<RuleForm>>({ // 表单验证规则
   username: [
     { required: true, message: '请输入用户名', trigger: 'blur' },
     { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }
   ],
   password: [
     { required: true, message: '请输入密码', trigger: 'blur' },
-    { min: 6, max: 12, message: '长度在 6 到 12 个字符', trigger: 'blur' }
-  ]
+    { min: 6, max: 12, message: '长度在 6 到 12 个字符', trigger: 'blur' },
+    { pattern: /^\S*$/, message: '密码不能包含空格', trigger: 'blur' }
+  ],
+  nickname: [
+    { required: true, message: '请输入昵称', trigger: 'blur' },
+    { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }
+  ],
+  confirmPwd: [
+    { required: true, message: '请再次输入密码', trigger: 'blur' },
+    { min: 6, max: 12, message: '长度在 6 到 12 个字符', trigger: 'blur' },
+    { pattern: /^\S*$/, message: '密码不能包含空格', trigger: 'blur' },
+    { validator: (rule, value, callback) => {
+      if (value === ruleForm.password) {
+        callback()
+      } else {
+        callback(new Error('两次输入密码不一致'))
+      }
+    }, trigger: 'blur' }
+  ],
 })
 const router = useRouter();
 
+// 切换登录注册
+const loginToogle = () => {
+  tologin.value = !tologin.value
+}
+
+// 提交表单
 const submitForm = async (formEl: FormInstance | undefined) => {
   if (!formEl) return
   await formEl.validate((valid, fields) => {
     if (valid) {
-      console.log('login success!')
+      console.log('success!')
     } else {
       console.log('error submit!', fields)
     }
@@ -65,14 +131,49 @@ const submitForm = async (formEl: FormInstance | undefined) => {
   // let params = new URLSearchParams()
   // params.append('name', ruleForm.username)
   // params.append('password', ruleForm.password)
-  if (ruleForm.username === 'admin' && ruleForm.password === '123456') {
-    router.push('/index')
+  if (tologin.value) {
+    // login() // 登录
+    if (ruleForm.username === 'admin' && ruleForm.password === '123456') {
+      ElNotification({
+        message: '登录成功！',
+        type: 'success',
+      })
+      router.push('/index')
+    } else {
+      ElNotification({
+        message: '登录失败，请重试！',
+        type: 'warning',
+      })
+    }
   } else {
-    ElNotification({
-      message: '登录失败，请重试',
-      type: 'warning',
-    })
-  }
+    // register() // 注册
+    if (ruleForm.username === 'admin') {
+      ElNotification({
+        message: '用户名重复，请尝试修改用户名！',
+        type: 'info',
+      })
+      // 聚焦到用户名输入框
+      ruleFormRef.value.validateField('username')
+    } else if (ruleForm.nickname === 'PlutoSSY') {
+      ElNotification({
+        message: '昵称重复，请尝试修改昵称！',
+        type: 'info',
+      })
+      // 聚焦到昵称输入框
+      ruleFormRef.value.validateField('nickname')
+    } else {
+      // 清空表单数据
+      // ruleForm.username = '' // 用户名不清空
+      ruleForm.nickname = ''
+      ruleForm.password = ''
+      ruleForm.confirmPwd = ''
+      ElNotification({
+        message: '注册成功，请登录吧！',
+        type: 'success',
+      })
+      tologin.value = true
+    }
+  } 
   // getLoginStatus(params).then(res => {
   //   if (res.code === 1) {
   //     sessionStorage.setItem('userName', this.ruleForm.username)
@@ -88,46 +189,127 @@ const submitForm = async (formEl: FormInstance | undefined) => {
 </script>
 
 <style lang="scss" scoped>
-.login-wrap {
-  width: 100%;
-  height: 100%;
-  position: absolute;
+.container {
+  position: relative;
   top: 50%;
-  left: 75%;
-  transform: translate(-50%, -50%);
+  transform: translateY(50%);
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
 
-  .ms-title {
-    width: 100%;
-    font-size: 30px;
-    font-weight: 600;
-    color: #f08047;
-    text-align: center;
-    margin-bottom: 5px;
+  .tips:first-child {
+    border-radius: 10px 0 0 10px;
   }
 
-  .ms-login {
-    width: 450px;
-    height: 250px;
+  .tips:nth-child(2) {
+    border-radius: 0 10px 10px 0;
+  }
+
+  .tips {
+    width: 340px;
+    height: 400px;
+    background-color: rgba(255, 255, 255, 0.1);
+    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
+    padding: 0 20px;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    border-radius: 5px;
-    background-color: #fff;
-    padding: 0 1rem;
+    justify-content: space-around;
 
-    .el-form {
+    .container-title {
       width: 100%;
-      margin: 0 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-around;
 
-      .login-btn button {
-        width: 100%;
-        height: 36px;
+      h1 {
+        font-size: 24px;
+        font-weight: 600;
+        color: #f08047;
+        margin-bottom: 5px;
+      }
+
+      p {
+        font-family: '宋体';
+        font-style: italic;
+        font-size: 12px;
+        font-weight: 400;
+        color: #fff;
       }
     }
 
+    .container-img {
+      width: 100%;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+
+    .toLogin,
+    .toRegister {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      p {
+        font-size: 16px;
+        font-weight: 400;
+        color: rgb(0, 136, 255);
+      }
+
+      .el-button {
+        width: 100px;
+        height: 36px;
+        margin-top: 10px;
+      }
+    }
   }
-}
-</style>
+
+  .login-register-wrap {
+    position: absolute;
+    top: 50%;
+    transform: translate(-55.88%, -50%);
+    width: 340px;
+    height: 480px;
+    background-color: rgba(0, 0, 0, 0.9);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.5s ease-in-out;
+
+    .title {
+      width: 100%;
+      font-size: 30px;
+      font-weight: 600;
+      color: #fff;
+      text-align: center;
+      margin: 50px auto;
+    }
+
+    .content {
+      width: 100%;
+      height: 250px;
+      display: flex;
+      align-items: center;
+      border-radius: 5px;
+      padding: 0 15px;
+
+      .el-form {
+        width: 100%;
+        margin: 0 10px;
+
+        .btn button {
+          width: 100%;
+          height: 36px;
+        }
+      }
+    }
+  }
+}</style>

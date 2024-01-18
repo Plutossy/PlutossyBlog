@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-08 19:48:58
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-01-16 20:31:55
+ * @LastEditTime: 2024-01-18 17:30:57
  * @FilePath: \blog-manage\src\components\MyHeader.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -93,6 +93,13 @@ const hadleCommand = (command: string) => {
 </template>
 
 <style lang="scss" scoped>
+* {
+  /* 取消标签点击时的蓝色 */
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+  -webkit-user-select: none;
+  -moz-user-focus: none;
+  -moz-user-select: none;
+}
 .header-container {
   position: relative;
   background-color: rgba($color: #000000, $alpha: 0.5);
