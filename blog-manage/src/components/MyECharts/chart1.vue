@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-19 09:43:27
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-01-19 21:07:48
+ * @LastEditTime: 2024-01-20 00:01:18
  * @FilePath: \blog-manage\src\components\MyECharts.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -76,6 +76,10 @@ const makeOption = (
   return {
     title: {
       text: '创作历程',
+      textStyle: {
+        fontFamily: 'STXingkai',
+        fontSize: 24,
+      },
     },
     legend: {
       selectedMode: false, // 图例组件禁止点击
@@ -185,7 +189,7 @@ const options = [
   makeOption('pictorialBar', 'diamond')
 ];
 
-const chartDom1 = ref<HTMLElement | null>(null);
+let chartDom1 = ref<HTMLElement | null>(null);
 let option: EChartsOption;
 let timer: any = null;
 
@@ -215,6 +219,7 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('resize', () => { });
   clearInterval(timer);
+  chartDom1.value = null;
 });
 
 </script>
@@ -223,5 +228,9 @@ onUnmounted(() => {
 .chart1-container {
   width: 100%;
   height: 50%;
+  margin-top: 10px;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 5px;
+  box-shadow: 2px 1px 3px 1px rgba(0, 0, 0, 0.2);
 }
 </style>

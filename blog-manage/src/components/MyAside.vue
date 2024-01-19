@@ -67,7 +67,13 @@ const routeLinks = reactive([
     index: '7',
     title: '照片管理',
     path: '/picture',
-    icon: 'picture-filled'
+    icon: 'picture'
+  },
+  {
+    index: '8',
+    title: '用户管理',
+    path: '/user',
+    icon: 'user'
   }
 ])
 
@@ -142,7 +148,7 @@ onUnmounted(() => {
 }
 
 .sidebar>ul {
-  height: 80%;
+  height: 85%;
   margin: 10px 0;
   display: flex;
   flex-direction: column;
@@ -160,7 +166,7 @@ onUnmounted(() => {
 
 .switch-light {
   position: absolute;
-  bottom: 20px;
+  bottom: 16px;
   left: 50%;
   transform: translateX(-50%);
 }

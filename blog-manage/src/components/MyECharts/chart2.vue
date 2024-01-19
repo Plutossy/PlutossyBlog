@@ -32,11 +32,16 @@ interface DataItem {
   groupId: string;
 }
 
-const chartDom2 = ref<HTMLElement | null>(null);
+let chartDom2 = ref<HTMLElement | null>(null);
 
 let option: EChartsOption = {
   title: {
     text: '博客分类',
+    textStyle: {
+      fontFamily: 'STXingkai',
+      fontSize: 24,
+      color: '#464646'
+    },
   },
   tooltip: { // 提示框组件
     trigger: 'axis', // 触发类型。可选：'item' | 'axis' | 'none'
@@ -186,6 +191,12 @@ onMounted(() => {
       myChart.setOption<EChartsOption>({
         title: {
           text: '博客标签',
+          textStyle: {
+            fontFamily: 'STXingkai',
+            fontSize: 24,
+            // 字体颜色
+            color: '#626262'
+          },
         },
         xAxis: {
           data: subData.data.map(function (item) {
@@ -209,7 +220,7 @@ onMounted(() => {
         graphic: [
           {
             type: 'text', // 图形元素类型, 可选值: 'image' | 'text' | 'circle' | 'sector' | 'ring' | 'polygon' | 'polyline' | 'rect' | 'line' | 'bezierCurve' | 'arc' | 'group'
-            left: '90',
+            left: '110',
             top: '1%',
             style: {
               text: '|',
@@ -219,7 +230,7 @@ onMounted(() => {
           },
           {
             type: 'text',
-            left: '108',
+            left: '128',
             top: '1.5%',
             style: {
               text: '返回',
@@ -245,6 +256,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   window.removeEventListener('resize', () => { });
+  chartDom2.value = null;
 });
 </script>
 
@@ -253,5 +265,8 @@ onUnmounted(() => {
   width: 100%;
   height: 50%;
   margin-top: 10px;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 5px;
+  box-shadow: 2px 1px 3px 1px rgba(0, 0, 0, 0.2);
 }
 </style>
