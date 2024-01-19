@@ -86,22 +86,26 @@ const routeHandler = (e) => {
 // 点击切换主题
 const switchHandler = () => {
   const switchIcon: any = document.querySelector('.el-switch__action')
-  // const allElement: any = document.querySelectorAll('*')
-  // const switchElement: any = document.querySelectorAll('.switch-light, .switch-light *')
+
+  // const headerElement: any = document.querySelector('.header-container')
+  const sidebarElement: any = document.querySelector('.sidebar')
+  const sidebarLis: any = document.querySelectorAll('.sidebar li')
 
   if (switchLight.value) {
     switchIcon.classList.add('el-switch__action__light')
-    // allElement.forEach((element: { classList: { add: (arg0: string) => void; }; }) => {
-    //   element.classList.add('light')
-    // });
-    // switchElement.forEach((element: { classList: { remove: (arg0: string) => void; }; }) => {
-    //   element.classList.remove('light')
-    // })
+
+    // headerElement.classList.add('light')
+    sidebarElement.classList.add('light')
+    sidebarLis.forEach((item: any) => {
+      item.style.color = '#000000'
+    })
   } else {
     switchIcon.classList.remove('el-switch__action__light')
-    // allElement.forEach((element: { classList: { remove: (arg0: string) => void; }; }) => {
-    //   element.classList.remove('light')
-    // });
+
+    sidebarElement.classList.remove('light')
+    sidebarLis.forEach((item: any) => {
+      item.style.color = '#ffffff'
+    })
   }
 }
 

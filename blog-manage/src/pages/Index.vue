@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-08 19:17:07
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-01-17 16:39:29
+ * @LastEditTime: 2024-01-19 15:17:42
  * @FilePath: \blog-manage\src\pages\Index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -18,7 +18,7 @@
   <div>
     <my-header />
     <my-aside />
-    <div class="content-box" :class="{'content-collapse': collapse}">
+    <div class="content-box" :class="{ 'content-collapse': collapse }">
       <router-view></router-view>
     </div>
   </div>
@@ -27,7 +27,7 @@
 <script setup lang="ts">
 import MyHeader from '../components/MyHeader.vue'
 import MyAside from '../components/MyAside.vue'
-import { ref , onMounted, onUnmounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import eventBus from '../assets/js/eventBus.js'
 
 let collapse = ref(false)
@@ -53,8 +53,10 @@ onUnmounted(() => {
   overflow-y: scroll;
   -webkit-transition: left .3s ease-in-out;
   transition: left .3s ease-in-out;
-  background: #f0f0f0;
+  color: rgba($color: #000000, $alpha: 0.9);
+  background: rgba(255, 255, 255, 0.8);
 }
+
 .content-collapse {
   left: 65px;
 }
