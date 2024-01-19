@@ -252,5 +252,6 @@ onUnmounted(() => {
 .chart2-container {
   width: 100%;
   height: 50%;
+  margin-top: 10px;
 }
 </style>

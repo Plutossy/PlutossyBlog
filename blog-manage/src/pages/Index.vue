@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-08 19:17:07
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-01-19 15:17:42
+ * @LastEditTime: 2024-01-19 21:27:45
  * @FilePath: \blog-manage\src\pages\Index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -50,7 +50,7 @@ onUnmounted(() => {
   right: 0;
   top: 70px;
   bottom: 0;
-  overflow-y: scroll;
+  overflow-x: hidden;
   -webkit-transition: left .3s ease-in-out;
   transition: left .3s ease-in-out;
   color: rgba($color: #000000, $alpha: 0.9);

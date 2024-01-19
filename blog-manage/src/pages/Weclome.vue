@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-09 09:42:08
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-01-19 18:31:50
+ * @LastEditTime: 2024-01-19 21:24:09
  * @FilePath: \blog-manage\src\pages\Weclome.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -25,7 +25,7 @@ import MyChart2 from '../components/MyECharts/chart2.vue';
   position: relative;
   width: 100%;
   height: 100%;
-  padding: 10px;
+  padding: 10px 10px 0;
 
   // 定义动画
   @keyframes changeLine {
@@ -46,11 +46,13 @@ import MyChart2 from '../components/MyECharts/chart2.vue';
     position: absolute;
     top: 0;
     left: 0;
+    bottom: 0;
+    right: 0;
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, .5);
     z-index: 999;
-    animation: changeLine .3s ease-in-out forwards;
+    animation: changeLine .5s ease-in-out forwards;
     // animation-fill-mode: forwards; // 停在最后一帧
   }
 }

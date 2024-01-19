@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-08 18:37:55
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-01-18 19:51:07
+ * @LastEditTime: 2024-01-19 22:12:42
  * @FilePath: \blog-manage\vite.config.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -22,6 +22,8 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 // 热更新，开发环境下使用
 import ViteRestart from 'vite-plugin-restart'
 
+import pxToViewport from 'postcss-px-to-viewport'
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -39,6 +41,18 @@ export default defineConfig({
       ]
     }),
   ],
+  // css: {
+  //   postcss: {
+  //     plugins: [
+  //       pxToViewport({
+  //         // 要转换的单位
+  //         unitToConvert: 'px',
+  //         // 设计稿的宽度
+  //         viewportWidth: 1326,
+  //       })
+  //     ]
+  //   }
+  // },
   base: './', // 设置打包路径
   server: {
     port: 3001, // 端口号

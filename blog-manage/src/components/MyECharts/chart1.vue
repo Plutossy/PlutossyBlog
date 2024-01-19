@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-19 09:43:27
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-01-19 17:57:22
+ * @LastEditTime: 2024-01-19 21:07:48
  * @FilePath: \blog-manage\src\components\MyECharts.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -145,7 +145,7 @@ const makeOption = (
         symbolRepeat: true, // 是否重复图形
         symbolSize: ['80%', '60%'], // 图形的大小
         barCategoryGap: '40%', // 柱间距离
-        color: '#7c5d48df', // 图形的颜色
+        color: 'aqua', // 图形的颜色
         universalTransition: { // 图形的动画设置
           enabled: true,
           delay: function (idx: number, total: number) {

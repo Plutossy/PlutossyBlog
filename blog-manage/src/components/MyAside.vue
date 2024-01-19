@@ -22,7 +22,7 @@ import { ref, reactive, onMounted, onUnmounted } from 'vue'
 import { View } from '@element-plus/icons-vue'
 
 const emitter = eventBus()
-let onRoutes = ref('/index')
+let onRoutes = ref('/index') // 默认路由
 let routeActive = ref('/index') // 点击后的路由
 let collapse = ref(false)
 let switchLight = ref(false)
@@ -71,11 +71,18 @@ const routeLinks = reactive([
   }
 ])
 
+
 onMounted(() => {
   // 通过eventbus监听折叠事件
   emitter.on('collapse', val => {
     collapse.value = val
   })
+  // 处理刷新页面后的路由栏目不对应的问题
+  const path = window.location.pathname
+  if (path !== '/index') {
+    onRoutes.value = path
+    routeActive.value = path
+  }
 })
 
 // 点击添加背景色
