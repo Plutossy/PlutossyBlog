@@ -6,6 +6,7 @@
   color: #2c3e50;
   background: url(assets/img/bg1.png) repeat top center fixed;
   /* margin-top: 60px; */
+  overflow-x: hidden;
 }
 
 * {
