@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-09 09:42:08
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-01-20 01:11:46
+ * @LastEditTime: 2024-01-20 13:18:10
  * @FilePath: \blog-manage\src\pages\Weclome.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -55,7 +55,7 @@
     <my-chart2 />
     <el-row :gutter="20" class="music-picture">
       <el-col :span="12"><my-chart3 :title="'照片数量'" :data="PictureData" :color="'rgb(84, 112, 198)'" /></el-col>
-      <el-col :span="12"><my-chart3 :title="'歌曲数量'" :data="SongData" :color="'#000000'" /></el-col>
+      <el-col :span="12"><my-chart3 :title="'歌曲数量'" :data="SongData" :color="'#45f3ff'" /></el-col>
     </el-row>
   </div>
 </template>

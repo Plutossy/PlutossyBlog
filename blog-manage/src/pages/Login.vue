@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-09 08:56:06
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-01-18 09:26:08
+ * @LastEditTime: 2024-01-20 13:19:36
  * @FilePath: \blog-manage\src\pages\Login.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -37,28 +37,33 @@
 
     <div class="login-register-wrap"
       :style="{ 'transform': tologin ? 'translate(-55.88%, -50%)' : 'translate(55.88%, -50%)' }">
-      <div v-if="tologin" class="title">LOGIN</div>
-      <div v-else class="title">REGISTER</div>
-      <div class="content">
-        <el-form ref="ruleFormRef" :model="ruleForm" :rules="rules" label-width="100px" size="large">
-          <el-form-item label="用户名：" prop="username" size="large">
-            <el-input v-model="ruleForm.username" placeholder="请输入用户名" clearable></el-input>
-          </el-form-item>
-          <el-form-item v-if="!tologin" label="昵&nbsp;&nbsp;&nbsp;&nbsp;称：" prop="nickname" size="large" class="animate__animated animate__bounceIn">
-            <el-input v-model="ruleForm.nickname" placeholder="请输入昵称" clearable></el-input>
-          </el-form-item>
-          <el-form-item label="密&nbsp;&nbsp;&nbsp;&nbsp;码：" prop="password" size="large">
-            <el-input type="password" v-model="ruleForm.password" placeholder="请输入密码" show-password></el-input>
-          </el-form-item>
-          <el-form-item v-if="!tologin" label="确认密码：" prop="confirmPwd" size="large" class="animate__animated animate__bounceIn">
-            <el-input type="password" v-model="ruleForm.confirmPwd" placeholder="请再次输入密码" show-password></el-input>
-          </el-form-item>
-          <div class="btn">
-            <el-button v-if="tologin" type="primary" @click="submitForm(ruleFormRef)" size="large">登录</el-button>
-            <el-button v-else type="primary" @click="submitForm(ruleFormRef)" size="large">注册</el-button>
-          </div>
-        </el-form>
+      <div class="main">
+        <div v-if="tologin" class="title">LOGIN</div>
+        <div v-else class="title">REGISTER</div>
+        <div class="content">
+          <el-form ref="ruleFormRef" :model="ruleForm" :rules="rules" label-width="100px" size="large">
+            <el-form-item label="用户名：" prop="username" size="large">
+              <el-input v-model="ruleForm.username" placeholder="请输入用户名" clearable></el-input>
+            </el-form-item>
+            <el-form-item v-if="!tologin" label="昵&nbsp;&nbsp;&nbsp;&nbsp;称：" prop="nickname" size="large"
+              class="animate__animated animate__bounceIn">
+              <el-input v-model="ruleForm.nickname" placeholder="请输入昵称" clearable></el-input>
+            </el-form-item>
+            <el-form-item label="密&nbsp;&nbsp;&nbsp;&nbsp;码：" prop="password" size="large">
+              <el-input type="password" v-model="ruleForm.password" placeholder="请输入密码" show-password></el-input>
+            </el-form-item>
+            <el-form-item v-if="!tologin" label="确认密码：" prop="confirmPwd" size="large"
+              class="animate__animated animate__bounceIn">
+              <el-input type="password" v-model="ruleForm.confirmPwd" placeholder="请再次输入密码" show-password></el-input>
+            </el-form-item>
+            <div class="btn">
+              <el-button v-if="tologin" type="primary" @click="submitForm(ruleFormRef)" size="large">登录</el-button>
+              <el-button v-else type="primary" @click="submitForm(ruleFormRef)" size="large">注册</el-button>
+            </div>
+          </el-form>
+        </div>
       </div>
+
     </div>
   </div>
 </template>
@@ -100,13 +105,15 @@ const rules = reactive<FormRules<RuleForm>>({ // 表单验证规则
     { required: true, message: '请再次输入密码', trigger: 'blur' },
     { min: 6, max: 12, message: '长度在 6 到 12 个字符', trigger: 'blur' },
     { pattern: /^\S*$/, message: '密码不能包含空格', trigger: 'blur' },
-    { validator: (rule, value, callback) => {
-      if (value === ruleForm.password) {
-        callback()
-      } else {
-        callback(new Error('两次输入密码不一致'))
-      }
-    }, trigger: 'blur' }
+    {
+      validator: (rule, value, callback) => {
+        if (value === ruleForm.password) {
+          callback()
+        } else {
+          callback(new Error('两次输入密码不一致'))
+        }
+      }, trigger: 'blur'
+    }
   ],
 })
 const router = useRouter();
@@ -173,7 +180,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
       })
       tologin.value = true
     }
-  } 
+  }
   // getLoginStatus(params).then(res => {
   //   if (res.code === 1) {
   //     sessionStorage.setItem('userName', this.ruleForm.username)
@@ -189,6 +196,8 @@ const submitForm = async (formEl: FormInstance | undefined) => {
 </script>
 
 <style lang="scss" scoped>
+@import url('@/assets/scss/loginAnimate.scss');
+
 .container {
   position: relative;
   top: 50%;
@@ -208,8 +217,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
   .tips {
     width: 340px;
     height: 400px;
-    background-color: rgba(255, 255, 255, 0.1);
-    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.5);
+    background-color: rgba(255, 255, 255, 0.6);
     padding: 0 20px;
     display: flex;
     flex-direction: column;
@@ -224,9 +232,10 @@ const submitForm = async (formEl: FormInstance | undefined) => {
       justify-content: space-around;
 
       h1 {
-        font-size: 24px;
-        font-weight: 600;
-        color: #f08047;
+        font-family: 'STXingkai';
+        font-size: 26px;
+        font-weight: 700;
+        color: #ef5508;
         margin-bottom: 5px;
       }
 
@@ -235,12 +244,12 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         font-style: italic;
         font-size: 12px;
         font-weight: 400;
-        color: #fff;
+        color: #000;
       }
     }
 
     .container-img {
-      width: 100%;
+      width: calc(100% - 10px);
 
       img {
         width: 100%;
@@ -277,39 +286,81 @@ const submitForm = async (formEl: FormInstance | undefined) => {
     transform: translate(-55.88%, -50%);
     width: 340px;
     height: 480px;
-    background-color: rgba(0, 0, 0, 0.9);
+    // background-color: rgba(0, 0, 0, 0.9);
     border-radius: 10px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
     display: flex;
     flex-direction: column;
     align-items: center;
     transition: transform 0.5s ease-in-out;
 
-    .title {
+
+    &::before {
+      content: '';
+      position: absolute;
       width: 100%;
-      font-size: 30px;
-      font-weight: 600;
-      color: #fff;
-      text-align: center;
-      margin: 50px auto;
+      height: 100%;
+      background: repeating-conic-gradient(from var(--a),
+          transparent 0%,
+          transparent 80%,
+          #45f3ff 90%,
+          #45f3ff 99.5%,
+          transparent 100%);
+      border-radius: 10px;
+      // 动画种类有：ease、linear、ease-in、ease-out、ease-in-out、step-start、step-end、steps、cubic-bezier
+      animation: animate 2.5s linear infinite;
     }
 
-    .content {
-      width: 100%;
-      height: 250px;
-      display: flex;
-      align-items: center;
-      border-radius: 5px;
-      padding: 0 15px;
+    .main {
+      position: absolute;
+      inset: 5px;
+      overflow: hidden;
+      border-radius: 10px;
+      background-color: rgb(142, 224, 61);
+      // background: url(@/assets/img/bg2.png);
+      // background-attachment: fixed;
+      // background-size: cover;
+      // background-position: center;
 
-      .el-form {
+      // &::before {
+      //   content: '';
+      //   position: absolute;
+      //   inset: 5px;
+      //   // background: url(@/assets/img/bg1.png);
+      //   // background-attachment: fixed;
+      //   // background-size: cover;
+      //   // background-position: center;
+      //   filter: blur(10px);
+      // }
+      .title {
         width: 100%;
-        margin: 0 10px;
+        font-size: 30px;
+        font-weight: 600;
+        color: #fff;
+        text-align: center;
+        margin: 50px auto;
+      }
 
-        .btn button {
+      .content {
+        // width: 100%;
+        height: 250px;
+        display: flex;
+        align-items: center;
+        border-radius: 5px;
+        padding: 0 15px;
+
+        .el-form {
           width: 100%;
-          height: 36px;
+          margin: 0 10px;
+
+          .btn button {
+            width: 100%;
+            height: 36px;
+          }
         }
       }
     }
+
   }
-}</style>
+}
+</style>
