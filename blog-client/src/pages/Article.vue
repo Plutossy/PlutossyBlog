@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-10 14:16:56
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-01-20 17:19:24
+ * @LastEditTime: 2024-01-20 17:32:07
  * @FilePath: \blog-client\src\components\blogDetail\blogDetail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -575,6 +575,8 @@ let timer: any = null
 // }
 
 onMounted(() => {
+  // 刚一进入页面就返回顶部
+  mixin.methods.animate(document.documentElement, 0)
   // 取消全局返回顶部按钮返回顶部按钮
   store.commit('m_back/setShowBackTop', false)
   // 右导航条显示
