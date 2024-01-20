@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-10 14:16:56
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-01-20 17:04:45
+ * @LastEditTime: 2024-01-20 17:19:24
  * @FilePath: \blog-client\src\components\blogDetail\blogDetail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -484,7 +484,8 @@
       <el-col :span="2">END</el-col>
       <el-col :span="11"></el-col>
     </el-row>
-    <el-affix target=".article-content" position="bottom">
+    <div class="affix-footer">
+    <!-- <el-affix target=".article-content" position="bottom"> -->
       <div class="article-footer">
         <div class="avatar-name">
           <img src="@/assets/img/avatar1.png" alt="博客主" />
@@ -545,7 +546,8 @@
           </el-col>
         </el-row>
       </div>
-    </el-affix>
+    <!-- </el-affix> -->
+    </div>
   </div>
 </template>
 
@@ -595,10 +597,10 @@ onMounted(() => {
 // 处理el-affix组件的bug处理函数
 const affixScroll = () => {
   const scrollTop = document.documentElement.scrollTop || window.scrollY || document.body.scrollTop
-  if (scrollTop >= 160 && scrollTop <= articleRef.value.clientHeight + 250) {
-    document.querySelector('.el-affix')?.firstElementChild?.classList.add('el-affix--fixed')
+  if (scrollTop >= 180 && scrollTop <= articleRef.value.clientHeight + 400) {
+    document.querySelector('.affix-footer')?.classList.add('affix-fixed')
   } else {
-    document.querySelector('.el-affix--fixed')?.classList.remove('el-affix--fixed')
+    document.querySelector('.affix-footer')?.classList.remove('affix-fixed')
   }
 }
 
@@ -820,7 +822,9 @@ onUnmounted(() => {
     }
   }
 
-  .el-affix {
+  .affix-footer {
+    position: sticky;
+    bottom: 0;
     .article-footer {
       padding: 1rem;
       color: #888686;
@@ -872,6 +876,11 @@ onUnmounted(() => {
         }
       }
     }
+  }
+  .affix-fixed {
+    position: fixed;
+    bottom: 0;
+    width: 75%;
   }
 }
 
