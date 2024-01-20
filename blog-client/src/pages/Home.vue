@@ -4,7 +4,8 @@
     <recommend />
     <el-row :gutter="20">
       <el-col :span="16" :xs="24" class="animate__animated animate__fadeInLeftBig">
-        <h2>欢迎来到我的博客星球！</h2>
+        <h2 v-show="recommend">欢迎来到我的博客星球！</h2>
+        <h2 v-show="!recommend">这有我的最新博客发布！</h2>
         <introduction />
         <introduction />
         <introduction />
@@ -32,26 +33,30 @@
   </div>
 </template>
 
-<script>
+<script lang="ts" setup>
 import MySwiper from '../components/MySwiper.vue'
 import Recommend from '../components/recommend/Recommend.vue'
 import AsideVue from './Aside.vue'
 import Introduction from '../components/introduction/Introduction.vue'
-export default {
-  components: {
-    MySwiper,
-    Recommend,
-    AsideVue,
-    Introduction
-  }
-}
+import { ref, onUnmounted } from 'vue'
+
+const recommend = ref(true)
+let timer: any = null
+
+timer = setInterval(() => {
+  recommend.value = !recommend.value
+}, 3000)
+
+onUnmounted(() => {
+  clearInterval(timer)
+})
 </script>
 
 <style lang="scss" scoped>
 .home-container {
   width: 100%;
   > .el-row {
-    margin: 1rem 5rem !important;
+    margin: 1rem !important;
     > .el-col:first-child {
       height: 100%;
       display: flex;
@@ -71,7 +76,7 @@ export default {
         width: 0;
         white-space: nowrap;
         animation: width 2s steps(11) forwards;
-        animation-delay: 2s;
+        // animation-delay: 2s;
         &::after {
           content: '';
           position: absolute;

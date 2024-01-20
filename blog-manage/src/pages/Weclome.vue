@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-09 09:42:08
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-01-20 13:18:10
+ * @LastEditTime: 2024-01-20 13:21:23
  * @FilePath: \blog-manage\src\pages\Weclome.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -61,9 +61,9 @@
 </template>
 
 <script setup lang="ts">
-import MyChart1 from '@/components/MyECharts/chart1.vue';
-import MyChart2 from '@/components/MyECharts/chart2.vue';
-import MyChart3 from '@/components/MyECharts/chart3.vue';
+import MyChart1 from '../components/MyECharts/chart1.vue';
+import MyChart2 from '../components/MyECharts/chart2.vue';
+import MyChart3 from '../components/MyECharts/chart3.vue';
 import { reactive } from 'vue';
 
 const PictureData = reactive({value: 15, name: '照片'})

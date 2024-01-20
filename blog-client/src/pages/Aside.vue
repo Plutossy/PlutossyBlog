@@ -83,7 +83,7 @@
 
     <el-card shadow="hover">
       <template #header>
-        <h3>个人成就</h3>
+        <h3><img src="@/assets/img/svg/achieve.svg">个人成就</h3>
       </template>
       <div class="card-content-achievement">
         <ul>
@@ -114,7 +114,23 @@
 
     <el-card shadow="hover">
       <template #header>
-        <h3>扫码关注我</h3>
+        <h3>
+          <el-icon color="orange"><Notebook /></el-icon>
+          最新博客
+        </h3>
+      </template>
+      <div class="card-content-newblog">
+        <el-row @click="gotoDetail(1)">博客标题1</el-row>
+        <el-row>博客标题2</el-row>
+        <el-row>博客标题3</el-row>
+        <el-row>博客标题4</el-row>
+        <el-row>博客标题5</el-row>
+      </div>
+    </el-card>
+
+    <el-card shadow="hover">
+      <template #header>
+        <h3><img src="@/assets/img/svg/hand.svg">扫码关注我</h3>
       </template>
       <div class="card-content-code">
         <img src="@/assets/img/CSDN.jpg" alt="二维码" />
@@ -123,9 +139,11 @@
   </div>
 </template>
 
-<script>
-export default {
-  name: 'AsideVue'
+<script lang="ts" setup>
+import { useRouter } from 'vue-router'
+const router = useRouter()
+const gotoDetail = (id: number) => {
+  router.push(`/article/${id}`)
 }
 </script>
 
@@ -182,7 +200,13 @@ export default {
     h3 {
       padding: 0 1rem;
       font-weight: 560;
-      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      > :first-child {
+        margin-right: 0.3rem;
+        width: 1.2rem;
+      }
     }
     .card-content-type {
       padding: 1rem;
@@ -291,6 +315,23 @@ export default {
             }
           }
         }
+      }
+    }
+
+    .card-content-newblog {
+
+      .el-row {
+        border-bottom: 1px solid #ccc;
+        padding: 1rem;
+        cursor: pointer;
+        &:hover {
+          color: #4183c4;
+          background-color: #f4f4f4;
+          border-radius: 0.5rem;
+        }
+      }
+      .el-row:last-child {
+        margin-bottom: 0;
       }
     }
 

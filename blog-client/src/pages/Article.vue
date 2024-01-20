@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-10 14:16:56
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-01-13 18:28:42
+ * @LastEditTime: 2024-01-20 17:04:45
  * @FilePath: \blog-client\src\components\blogDetail\blogDetail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -484,7 +484,7 @@
       <el-col :span="2">END</el-col>
       <el-col :span="11"></el-col>
     </el-row>
-    <el-affix position="bottom">
+    <el-affix target=".article-content" position="bottom">
       <div class="article-footer">
         <div class="avatar-name">
           <img src="@/assets/img/avatar1.png" alt="博客主" />
@@ -588,14 +588,19 @@ onMounted(() => {
     hasInnerContainers: true,
   });
   tocbot.refresh()
+
+  // 处理el-affix组件的bug
+  document.addEventListener('scroll', affixScroll)
 })
-onUnmounted(() => {
-  // 恢复全局返回顶部按钮返回顶部按钮
-  store.commit('m_back/setShowBackTop', true)
-  tocbot.destroy()
-  // 右导航条隐藏
-  document.removeEventListener('scroll', handleScroll)
-})
+// 处理el-affix组件的bug处理函数
+const affixScroll = () => {
+  const scrollTop = document.documentElement.scrollTop || window.scrollY || document.body.scrollTop
+  if (scrollTop >= 160 && scrollTop <= articleRef.value.clientHeight + 250) {
+    document.querySelector('.el-affix')?.firstElementChild?.classList.add('el-affix--fixed')
+  } else {
+    document.querySelector('.el-affix--fixed')?.classList.remove('el-affix--fixed')
+  }
+}
 
 // 导航条处理函数
 const handleScroll = () => {
@@ -606,7 +611,7 @@ const handleScroll = () => {
     const scrollTop = document.documentElement.scrollTop || window.scrollY || document.body.scrollTop
     // 文章可视高度
     // const clientHeight = articleRef.value.clientHeight || articleRef.value.scrollHeight || articleRef.value.offsetHeight
-    const clientHeight = document.documentElement.scrollHeight - 1100
+    const clientHeight = articleRef.value.clientHeight + 250 || document.documentElement.scrollHeight - 1100
     if (scrollTop >= 550 && scrollTop <= clientHeight) {
       navShow.value = true
     } else {
@@ -618,6 +623,15 @@ const handleScroll = () => {
 const toTop = () => {
   mixin.methods.animate(document.documentElement, 500)
 }
+
+onUnmounted(() => {
+  // 恢复全局返回顶部按钮返回顶部按钮
+  store.commit('m_back/setShowBackTop', true)
+  tocbot.destroy()
+  // 右导航条隐藏
+  document.removeEventListener('scroll', handleScroll)
+  document.removeEventListener('scroll', affixScroll)
+})
 </script>
 
 <style lang="scss" scoped>
@@ -903,10 +917,6 @@ const toTop = () => {
   right: 1.5rem;
   bottom: 4rem;
   transition: all 0.3s ease-in-out;
-
-  // :deep(.el-affix--fixed) {
-  //   right: 1rem;
-  // }
 
   .el-button {
     margin: 0;
