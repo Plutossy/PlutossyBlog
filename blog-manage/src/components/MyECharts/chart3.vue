@@ -3,7 +3,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, defineProps } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import * as echarts from 'echarts/core';
 import { TooltipComponent, TooltipComponentOption } from 'echarts/components';
 import { GaugeChart, GaugeSeriesOption } from 'echarts/charts';
