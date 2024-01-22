@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-09 08:56:06
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-01-20 13:19:36
+ * @LastEditTime: 2024-01-22 11:55:56
  * @FilePath: \blog-manage\src\pages\Login.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -14,7 +14,7 @@
         <p>快来定制你的专属博客吧！</p>
       </div>
       <div class="container-img">
-        <img src="@/assets/img/welcome.jpg" alt="欢迎来到 SSY_Blog">
+        <img src="@/assets/img/love.gif" alt="欢迎来到 SSY_Blog">
       </div>
       <div class="toLogin">
         <p>已有账号？</p>
@@ -27,7 +27,7 @@
         <p>快来定制你的专属博客吧！</p>
       </div>
       <div class="container-img">
-        <img src="@/assets/img/welcome.jpg" alt="欢迎来到 SSY_Blog">
+        <img src="@/assets/img/love.gif" alt="欢迎来到 SSY_Blog">
       </div>
       <div class="toRegister">
         <p>没有账号？</p>
@@ -201,7 +201,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
 .container {
   position: relative;
   top: 50%;
-  transform: translateY(50%);
+  transform: translateY(16%);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -216,9 +216,9 @@ const submitForm = async (formEl: FormInstance | undefined) => {
 
   .tips {
     width: 340px;
-    height: 400px;
+    height: 500px;
     background-color: rgba(255, 255, 255, 0.6);
-    padding: 0 20px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -253,7 +253,6 @@ const submitForm = async (formEl: FormInstance | undefined) => {
 
       img {
         width: 100%;
-        height: 100%;
         object-fit: cover;
       }
     }
@@ -285,7 +284,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
     top: 50%;
     transform: translate(-55.88%, -50%);
     width: 340px;
-    height: 480px;
+    height: 600px;
     // background-color: rgba(0, 0, 0, 0.9);
     border-radius: 10px;
     box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
