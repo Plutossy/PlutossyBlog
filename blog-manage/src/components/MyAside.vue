@@ -1,9 +1,9 @@
 <template>
   <div class="sidebar">
-    <el-menu class="sider-menu" :default-active="onRoutes" :collapse="collapse" background-color="rgba(0, 0, 0, 0)"
+    <el-menu class="sider-menu" :collapse="collapse" background-color="rgba(0, 0, 0, 0)"
       text-color="rgba(255, 255, 255, 0.9)" active-text-color="#ffffff" router>
-      <el-menu-item v-for="item in routeLinks" :key="item.index" :index="'/index' + item.path" @click="routeHandler"
-        :style="{ 'background-color': routeActive === '/index' + item.path ? '#f2711c' : '' }">
+      <el-menu-item v-for="item in routeLinks" :key="item.index" :index="item.path" @click="routeHandler"
+        :style="{ 'background-color': routeActive === item.path ? '#f2711c' : '' }">
         <el-icon size="larger">
           <component :is="item.icon"></component>
         </el-icon>
@@ -22,7 +22,7 @@ import { ref, reactive, onMounted, onUnmounted } from 'vue'
 import { View } from '@element-plus/icons-vue'
 
 const emitter = eventBus()
-let onRoutes = ref('/index') // 默认路由
+// let onRoutes = ref('/index') // 默认路由
 let routeActive = ref('/index') // 点击后的路由
 let collapse = ref(false)
 let switchLight = ref(false)
@@ -30,7 +30,7 @@ const routeLinks = reactive([
   {
     index: '1',
     title: '首页',
-    path: '',
+    path: '/info',
     icon: 'home-filled'
   },
   {
@@ -83,10 +83,10 @@ onMounted(() => {
   emitter.on('collapse', val => {
     collapse.value = val
   })
-  // 处理刷新页面后的路由栏目不对应的问题
+  // 处理刷新页面后的路由栏背景目不对应的问题
   const path = window.location.pathname
   if (path !== '/index') {
-    onRoutes.value = path
+    // onRoutes.value = path
     routeActive.value = path
   }
 })
