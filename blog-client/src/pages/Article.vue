@@ -488,7 +488,7 @@
     <!-- <el-affix target=".article-content" position="bottom"> -->
       <div class="article-footer">
         <div class="avatar-name">
-          <img src="@/assets/img/avatar1.png" alt="博客主" />
+          <img src="@/assets/img/avatar2.png" alt="博客主" />
           <a href="javascript:;">Pluto_ssy</a>
         </div>
         <el-row align="middle">
