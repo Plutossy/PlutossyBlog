@@ -16,6 +16,17 @@
   overflow: hidden;
 }
 
+
+html {
+  height: 100%; /* 为了确保 <html> 元素也被拉伸到全屏 */
+}
+
+body {
+  width: 100%; /* 设置宽度为100% */
+  min-height: 100vh; /* 最小高度为视口高度 */
+  box-sizing: border-box; /* 包括padding和border在计算尺寸时 */
+}
+
 * {
   margin: 0;
   padding: 0;

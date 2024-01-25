@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-08 18:52:14
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-01-22 14:11:16
+ * @LastEditTime: 2024-01-25 13:45:52
  * @FilePath: \PlutossyBlog\blog-manage\src\router\index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -22,7 +22,9 @@ const routes = [
       { path: '/tag', name: 'Tag', component: () => import('../pages/Tag.vue') },
       { path: '/music', name: 'Music', component: () => import('../pages/Music.vue') },
       { path: '/picture', name: 'Picture', component: () => import('../pages/Picture.vue') },
-      { path: '/user', name: 'User', component: () => import('../pages/User.vue') },
+      { path: '/user', name: 'User', component: () => import('../pages/User.vue'), children: [
+        { path: 'collect', name: 'Collect', component: () => import('../pages/Collect.vue') },
+      ]},
     ]
   },
 ]

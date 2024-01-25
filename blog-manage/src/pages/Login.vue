@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-09 08:56:06
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-01-22 11:55:56
+ * @LastEditTime: 2024-01-25 14:31:13
  * @FilePath: \blog-manage\src\pages\Login.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -72,7 +72,7 @@
 import { ref, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import { FormInstance, FormRules, ElNotification } from 'element-plus'
-interface RuleForm { // 表单数据
+interface RuleForm { // 表单数据类型
   username: string
   nickname: string
   password: string
@@ -199,10 +199,11 @@ const submitForm = async (formEl: FormInstance | undefined) => {
 @import url('@/assets/scss/loginAnimate.scss');
 
 .container {
-  position: relative;
-  top: 50%;
-  transform: translateY(16%);
+  position: absolute;
   display: flex;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   justify-content: center;
   align-items: center;
 
