@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-08 19:17:07
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-01-19 21:27:45
+ * @LastEditTime: 2024-01-25 16:08:08
  * @FilePath: \blog-manage\src\pages\Index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -19,7 +19,7 @@
     <my-header />
     <my-aside />
     <div class="content-box" :class="{ 'content-collapse': collapse }">
-      <router-view></router-view>
+      <router-view />
     </div>
   </div>
 </template>

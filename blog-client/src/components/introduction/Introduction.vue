@@ -13,7 +13,10 @@
             <img src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif" />
           </el-col>
           <el-col :span="18">
-            <p>这是一个基于Vue.js的前后端分离的博客系统，前端使用Vue.js，后端使用Spring Boot，数据库使用MySQL，使用Nginx作为反向代理服务器。这是一个基于Vue.js的前后端分离的博客系统，前端使用Vue.js，后端使用Spring Boot，数据库使用MySQL，使用Nginx作为反向代理服务器。这是一个基于Vue.js的前后端分离的博客系统，前端使用Vue.js，后端使用Spring Boot，数据库使用MySQL，使用Nginx作为反向代理服务器。</p>
+            <p>
+              这是一个基于Vue.js的前后端分离的博客系统，前端使用Vue.js，后端使用Spring Boot，数据库使用MySQL，使用Nginx作为反向代理服务器。这是一个基于Vue.js的前后端分离的博客系统，前端使用Vue.js，后端使用Spring
+              Boot，数据库使用MySQL，使用Nginx作为反向代理服务器。这是一个基于Vue.js的前后端分离的博客系统，前端使用Vue.js，后端使用Spring Boot，数据库使用MySQL，使用Nginx作为反向代理服务器。
+            </p>
           </el-col>
         </el-row>
       </div>
@@ -54,10 +57,10 @@ export default {
   name: 'Introduction',
   methods: {
     gotoDetail(id) {
-      this.$router.push(`/article/${id}`)
-    }
-  }
-}
+      this.$router.push(`/article/${id}`);
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -94,6 +97,9 @@ export default {
             /* 超出部分隐藏并显示... */
             overflow: hidden;
             text-overflow: ellipsis;
+            display: box;
+            line-clamp: 4;
+            box-orient: vertical;
             display: -webkit-box;
             -webkit-line-clamp: 5;
             -webkit-box-orient: vertical;
