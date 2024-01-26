@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-19 23:25:24
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-01-25 20:11:05
+ * @LastEditTime: 2024-01-26 08:54:57
  * @FilePath: \blog-manage\src\pages\User.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -39,7 +39,7 @@
       <el-table-column prop="birth" label="生日" width="120" />
       <el-table-column prop="introduction" label="个人简介" width="200">
         <template #default="scope">
-          <el-tooltip effect="dark" :content="scope.row.introduction" placement="top-start">
+          <el-tooltip popper-class="user-int-tool" effect="dark" :content="scope.row.introduction" placement="top-start">
             <div class="user-intro">{{ scope.row.introduction }}</div>
           </el-tooltip>
         </template>
@@ -254,5 +254,10 @@ main {
       white-space: nowrap;
     }
   }
+}
+</style>
+<style lang="scss">
+.user-int-tool {
+  max-width: 50vw;
 }
 </style>
