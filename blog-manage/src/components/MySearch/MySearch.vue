@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-22 11:33:53
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-01-26 08:58:15
+ * @LastEditTime: 2024-01-31 16:52:43
  * @FilePath: \blog-manage\src\components\MySearch\MySearch.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -21,6 +21,7 @@
   <!-- 在vue3中，.sync 双向绑定不生效 -->
   <!-- 解决用 v-model -->
   <user-detail v-model:dialogVisible="dialogVisible" :dialogTitle="dialogTitle" />
+  <!-- <picture-detail v-model:dialogVisible="dialogVisible" :dialogTitle="dialogTitle" /> -->
 </template>
 
 <script setup lang="ts">
@@ -42,7 +43,7 @@ const props = defineProps({
     type: String,
   },
 });
-let emit = defineEmits(); // 如果用的setup函数则是用 cotext.emit 去使用
+let emit = defineEmits(['searchResult']); // 如果用的setup函数则是用 cotext.emit 去使用
 const router = useRouter();
 
 const keyWord = ref('');
@@ -84,7 +85,7 @@ const delAll = () => {
 const goSearch = () => {
   console.log('goSearch--', keyWord.value);
   if (!keyWord.value)
-    return ElMessage({
+    ElMessage({
       showClose: true,
       message: '搜索内容不能为空！',
       type: 'warning',
@@ -99,6 +100,12 @@ const goSearch = () => {
     birth: '1999-01-01',
     introduction: '我是张三',
     location: '北京',
+    userId: 1,
+    picId: 1,
+    picUrl: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+    picTitle: '图片标题',
+    author: '张三',
+    description: '这是一张图片',
   });
 };
 

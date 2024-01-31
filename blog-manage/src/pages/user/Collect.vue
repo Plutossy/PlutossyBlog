@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-19 23:25:24
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-01-26 08:46:37
+ * @LastEditTime: 2024-01-31 16:01:43
  * @FilePath: \blog-manage\src\pages\User.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -11,7 +11,7 @@
     <MySearch :type="'user'" :multipleSelection="multipleSelection" @searchResult="searchResult" :back="backHistory" />
   </header>
   <main>
-    <el-table :data="userData" height="568" @selection-change="handleSelectionChange">
+    <el-table :data="collectData" height="568" @selection-change="handleSelectionChange">
       <el-table-column fixed type="selection" width="60" align="center"></el-table-column>
       <el-table-column prop="firstImg" label="博客首图" width="120" align="center">
         <template #default="scope">
@@ -42,7 +42,7 @@
       </el-table-column>
       <el-table-column fixed="right" label="操作" width="180" align="center">
         <template #default="scope">
-          <el-button size="small" type="danger" @click="handleDelete(scope.row.blogId)">删除</el-button>
+          <el-button type="primary" link @click="handleDelete(scope.row.blogId)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -62,7 +62,7 @@ import { ElNotification, ElMessageBox } from 'element-plus';
 import { beforeAvatarUpload } from '@/mixins';
 import config from '@/config';
 
-let userData: any = reactive([]); // 用户数据
+let collectData: any = reactive([]); // 用户数据
 let multipleSelection = ref([]); // 用于存放多选框选中的数据
 const route = useRoute();
 let backHistory = ref('/user'); // 返回的路由
@@ -123,7 +123,7 @@ const getData = id => {
       introduction: '博客简介',
     },
   ];
-  userData.splice(0, userData.length, ...data1);
+  collectData.splice(0, collectData.length, ...data1);
 };
 
 // 把已经选择的项赋值给multipleSelection
@@ -177,7 +177,7 @@ const handleDelete = id => {
 const searchResult = data => {
   console.log('searchResult--', data);
   // 因为 reactive 不能直接赋值，所以用 splice
-  userData.splice(0, userData.length, data);
+  collectData.splice(0, collectData.length, data);
 };
 </script>
 
@@ -186,7 +186,7 @@ main {
   .el-table {
     width: 100%;
 
-    ::v-deep .el-table__header tr th {
+    :deep(.el-table__header tr th) {
       background-color: #f0f0f0;
     }
 

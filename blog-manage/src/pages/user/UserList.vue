@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-19 23:25:24
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-01-26 08:54:57
+ * @LastEditTime: 2024-01-31 16:38:59
  * @FilePath: \blog-manage\src\pages\User.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -37,6 +37,7 @@
       <el-table-column prop="qq" label="QQ" width="120" />
       <el-table-column prop="wechat" label="WeChat" width="120" />
       <el-table-column prop="birth" label="生日" width="120" />
+      <el-table-column prop="location" label="所在地" width="140" />
       <el-table-column prop="introduction" label="个人简介" width="200">
         <template #default="scope">
           <el-tooltip popper-class="user-int-tool" effect="dark" :content="scope.row.introduction" placement="top-start">
@@ -44,15 +45,13 @@
           </el-tooltip>
         </template>
       </el-table-column>
-      <el-table-column label="收藏" width="80" align="center">
+      <el-table-column fixed="right" label="操作" width="180" align="center">
         <template #default="scope">
-          <el-button type="primary" link size="small" @click="getCollect(scope.row.id)">收藏</el-button>
-        </template>
-      </el-table-column>
-      <el-table-column fixed="right" label="操作" width="150" align="center">
-        <template #default="scope">
-          <el-button size="small" type="warning" @click="handleEdit(scope.row)">编辑</el-button>
-          <el-button size="small" type="danger" @click="handleDelete(scope.row.id)">删除</el-button>
+          <el-button type="primary" link @click="getCollect(scope.row.id)">收藏</el-button>
+          <div class="el-divider el-divider--vertical" direction="vertical" />
+          <el-button type="primary" link @click="handleEdit(scope.row)">编辑</el-button>
+          <div class="el-divider el-divider--vertical" direction="vertical" />
+          <el-button type="primary" link @click="handleDelete(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -99,6 +98,7 @@ const getData = () => {
       qq: '12345678901',
       wechat: 'PlutoSsy',
       birth: dayjs('1999-01-01').format('YYYY-MM-DD'),
+      location: '广东省深圳市',
       introduction: '我是张三我是张三我是张三我是张三我是张三我是张三我是张三我是张三我是张三我是张三我是张三我是张三我是张三我是张三我是张三我是张三我是张三我是张三我是张三我是张三我是张三我是张三',
     },
     {
@@ -112,6 +112,7 @@ const getData = () => {
       qq: '12345678901',
       wechat: 'PlutoSsy',
       birth: dayjs('1999-01-01').format('YYYY-MM-DD'),
+      location: '广东省深圳市',
       introduction: '我是张三',
     },
     {
@@ -125,6 +126,7 @@ const getData = () => {
       qq: '12345678901',
       wechat: 'PlutoSsy',
       birth: dayjs('1999-01-01').format('YYYY-MM-DD'),
+      location: '广东省深圳市',
       introduction: '我是张三',
     },
     {
@@ -138,6 +140,7 @@ const getData = () => {
       qq: '12345678901',
       wechat: 'PlutoSsy',
       birth: dayjs('1999-01-01').format('YYYY-MM-DD'),
+      location: '广东省深圳市',
       introduction: '我是张三',
     },
     {
@@ -151,6 +154,7 @@ const getData = () => {
       qq: '12345678901',
       wechat: 'PlutoSsy',
       birth: dayjs('1999-01-01').format('YYYY-MM-DD'),
+      location: '广东省深圳市',
       introduction: '我是张三',
     },
   ];
@@ -234,7 +238,7 @@ main {
   .el-table {
     width: 100%;
 
-    ::v-deep .el-table__header tr th {
+    :deep(.el-table__header tr th) {
       background-color: #f0f0f0;
     }
 

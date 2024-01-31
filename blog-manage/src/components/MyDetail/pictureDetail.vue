@@ -1,30 +1,14 @@
 <template>
   <el-dialog v-model="detailVisible" :title="props.dialogTitle">
     <el-form ref="ruleFormRef" :rules="rules" :model="detailData" label-width="80px">
-      <el-form-item label="用户名" prop="username">
-        <el-input v-model="detailData.username" autocomplete="off" />
+      <el-form-item label="作者" prop="author">
+        <el-input v-model="detailData.author" disabled />
       </el-form-item>
-      <el-form-item label="性别" prop="sex">
-        <el-radio-group v-model="detailData.sex">
-          <el-radio :label="1">男</el-radio>
-          <el-radio :label="0">女</el-radio>
-          <el-radio :label="-1">未知</el-radio>
-        </el-radio-group>
+      <el-form-item label="标题" prop="picTitle">
+        <el-input v-model="detailData.picTitle" autocomplete="off" />
       </el-form-item>
-      <el-form-item label="手机号" prop="phoneNum">
-        <el-input v-model="detailData.phoneNum" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="邮箱" prop="email">
-        <el-input v-model="detailData.email" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="生日" prop="birth">
-        <el-date-picker v-model="detailData.birth" type="date" placeholder="请选择日期" format="YYYY-MM-DD" style="width: 100%" :disabled-date="disabledDate" />
-      </el-form-item>
-      <el-form-item label="个人简介" prop="introduction">
-        <el-input type="textarea" :rows="3" v-model="detailData.introduction" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="所在地" prop="location">
-        <el-input v-model="detailData.location" autocomplete="off" />
+      <el-form-item label="描述" prop="description">
+        <el-input type="textarea" :rows="3" v-model="detailData.description" autocomplete="off" />
       </el-form-item>
     </el-form>
     <template #footer>
@@ -60,49 +44,21 @@ let detailVisible = ref(false);
 
 interface RuleForm {
   // 表单数据类型
-  username: string;
-  sex: number;
-  phoneNum: string;
-  email: string;
-  birth: string;
-  introduction: string;
-  location: string;
+  author: string;
+  picTitle: string;
+  description: string;
 }
 const ruleFormRef: any = ref<FormInstance>(); // 表单实例
 let detailData = reactive<RuleForm>({
   // 表单数据
-  username: '',
-  sex: -1,
-  phoneNum: '',
-  email: '',
-  birth: '',
-  introduction: '',
-  location: '',
+  author: '',
+  picTitle: '',
+  description: '',
 });
 const rules = reactive<FormRules<RuleForm>>({
   // 表单验证规则
-  username: [
-    { required: true, message: '请输入用户名', trigger: 'blur' },
-    { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' },
-  ],
-  sex: [{ required: true, message: '请选择性别', trigger: 'change' }],
-  phoneNum: [
-    { required: true, message: '请输入手机号', trigger: 'blur' },
-    { pattern: /^1[3456789]\d{9}$/, message: '手机号格式不正确', trigger: 'blur' },
-  ],
-  email: [
-    { required: true, message: '请输入邮箱', trigger: 'blur' },
-    { pattern: /^([a-zA-Z0-9]+[-_\.]?)+@[a-zA-Z0-9]+\.[a-z]+$/, message: '邮箱格式不正确', trigger: 'blur' },
-  ],
-  birth: [{ required: true, message: '请选择生日', trigger: 'change' }],
-  introduction: [
-    { required: true, message: '请输入个人简介', trigger: 'blur' },
-    { min: 2, max: 100, message: '长度在 2 到 100 个字符', trigger: 'blur' },
-  ],
-  location: [
-    { required: true, message: '请选择所在地', trigger: 'blur' },
-    { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' },
-  ],
+  picTitle: [{ required: true, message: '请输入照片标题', trigger: 'blur' }],
+  description: [{ message: '请输入照片描述', trigger: 'blur' }],
 });
 
 watch(
@@ -121,11 +77,6 @@ watch(
 watch(detailVisible, val => {
   emit('update:dialogVisible', val);
 });
-
-// 禁用未来的时间
-const disabledDate = (time: Date) => {
-  return time.getTime() > Date.now();
-};
 
 const cancel = () => {
   detailVisible.value = false;
