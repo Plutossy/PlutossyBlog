@@ -14,7 +14,7 @@
         <p>快来定制你的专属博客吧！</p>
       </div>
       <div class="container-img">
-        <img src="@/assets/img/love.gif" alt="欢迎来到 SSY_Blog">
+        <img src="@/assets/img/love.gif" alt="欢迎来到 SSY_Blog" />
       </div>
       <div class="toLogin">
         <p>已有账号？</p>
@@ -27,7 +27,7 @@
         <p>快来定制你的专属博客吧！</p>
       </div>
       <div class="container-img">
-        <img src="@/assets/img/love.gif" alt="欢迎来到 SSY_Blog">
+        <img src="@/assets/img/love.gif" alt="欢迎来到 SSY_Blog" />
       </div>
       <div class="toRegister">
         <p>没有账号？</p>
@@ -35,8 +35,7 @@
       </div>
     </div>
 
-    <div class="login-register-wrap"
-      :style="{ 'transform': tologin ? 'translate(-55.88%, -50%)' : 'translate(55.88%, -50%)' }">
+    <div class="login-register-wrap" :style="{ transform: tologin ? 'translate(-55.88%, -50%)' : 'translate(55.88%, -50%)' }">
       <div class="main">
         <div v-if="tologin" class="title">LOGIN</div>
         <div v-else class="title">REGISTER</div>
@@ -45,15 +44,13 @@
             <el-form-item label="用户名：" prop="username" size="large">
               <el-input v-model="ruleForm.username" placeholder="请输入用户名" clearable></el-input>
             </el-form-item>
-            <el-form-item v-if="!tologin" label="昵&nbsp;&nbsp;&nbsp;&nbsp;称：" prop="nickname" size="large"
-              class="animate__animated animate__bounceIn">
+            <el-form-item v-if="!tologin" label="昵&nbsp;&nbsp;&nbsp;&nbsp;称：" prop="nickname" size="large" class="animate__animated animate__bounceIn">
               <el-input v-model="ruleForm.nickname" placeholder="请输入昵称" clearable></el-input>
             </el-form-item>
             <el-form-item label="密&nbsp;&nbsp;&nbsp;&nbsp;码：" prop="password" size="large">
               <el-input type="password" v-model="ruleForm.password" placeholder="请输入密码" show-password></el-input>
             </el-form-item>
-            <el-form-item v-if="!tologin" label="确认密码：" prop="confirmPwd" size="large"
-              class="animate__animated animate__bounceIn">
+            <el-form-item v-if="!tologin" label="确认密码：" prop="confirmPwd" size="large" class="animate__animated animate__bounceIn">
               <el-input type="password" v-model="ruleForm.confirmPwd" placeholder="请再次输入密码" show-password></el-input>
             </el-form-item>
             <div class="btn">
@@ -63,43 +60,43 @@
           </el-form>
         </div>
       </div>
-
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, reactive } from 'vue';
-import { useRouter } from 'vue-router';
-import { FormInstance, FormRules, ElNotification } from 'element-plus'
-interface RuleForm { // 表单数据类型
-  username: string
-  nickname: string
-  password: string
-  confirmPwd: string
+import { FormInstance, FormRules, ElNotification } from 'element-plus';
+interface RuleForm {
+  // 表单数据类型
+  username: string;
+  nickname: string;
+  password: string;
+  confirmPwd: string;
 }
-const ruleFormRef: any = ref<FormInstance>() // 表单实例
+const ruleFormRef: any = ref<FormInstance>(); // 表单实例
 
-let tologin = ref(true)
-let ruleForm = reactive<RuleForm>({ // 表单数据
+let tologin = ref(true);
+let ruleForm = reactive<RuleForm>({
+  // 表单数据
   username: 'admin',
   nickname: 'PlutoSSY',
   password: '123456',
-  confirmPwd: '123456'
-})
-const rules = reactive<FormRules<RuleForm>>({ // 表单验证规则
+  confirmPwd: '123456',
+});
+const rules = reactive<FormRules<RuleForm>>({
+  // 表单验证规则
   username: [
     { required: true, message: '请输入用户名', trigger: 'blur' },
-    { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }
+    { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' },
   ],
   password: [
     { required: true, message: '请输入密码', trigger: 'blur' },
     { min: 6, max: 12, message: '长度在 6 到 12 个字符', trigger: 'blur' },
-    { pattern: /^\S*$/, message: '密码不能包含空格', trigger: 'blur' }
+    { pattern: /^\S*$/, message: '密码不能包含空格', trigger: 'blur' },
   ],
   nickname: [
     { required: true, message: '请输入昵称', trigger: 'blur' },
-    { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' }
+    { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' },
   ],
   confirmPwd: [
     { required: true, message: '请再次输入密码', trigger: 'blur' },
@@ -108,31 +105,32 @@ const rules = reactive<FormRules<RuleForm>>({ // 表单验证规则
     {
       validator: (rule, value, callback) => {
         if (value === ruleForm.password) {
-          callback()
+          callback();
         } else {
-          callback(new Error('两次输入密码不一致'))
+          callback(new Error('两次输入密码不一致'));
         }
-      }, trigger: 'blur'
-    }
+      },
+      trigger: 'blur',
+    },
   ],
-})
+});
 const router = useRouter();
 
 // 切换登录注册
 const loginToogle = () => {
-  tologin.value = !tologin.value
-}
+  tologin.value = !tologin.value;
+};
 
 // 提交表单
 const submitForm = async (formEl: FormInstance | undefined) => {
-  if (!formEl) return
+  if (!formEl) return;
   await formEl.validate((valid, fields) => {
     if (valid) {
-      console.log('success!')
+      console.log('success!');
     } else {
-      console.log('error submit!', fields)
+      console.log('error submit!', fields);
     }
-  })
+  });
   // alert('登录成功')
   // URLSearchParams 是一个对象，它主要用来处理 URL 的查询字符串
   // let params = new URLSearchParams()
@@ -144,13 +142,13 @@ const submitForm = async (formEl: FormInstance | undefined) => {
       ElNotification({
         message: '登录成功！',
         type: 'success',
-      })
-      router.push('/index')
+      });
+      router.push('/index');
     } else {
       ElNotification({
         message: '登录失败，请重试！',
         type: 'warning',
-      })
+      });
     }
   } else {
     // register() // 注册
@@ -158,27 +156,27 @@ const submitForm = async (formEl: FormInstance | undefined) => {
       ElNotification({
         message: '用户名重复，请尝试修改用户名！',
         type: 'info',
-      })
+      });
       // 聚焦到用户名输入框
-      ruleFormRef.value.validateField('username')
+      ruleFormRef.value.validateField('username');
     } else if (ruleForm.nickname === 'PlutoSSY') {
       ElNotification({
         message: '昵称重复，请尝试修改昵称！',
         type: 'info',
-      })
+      });
       // 聚焦到昵称输入框
-      ruleFormRef.value.validateField('nickname')
+      ruleFormRef.value.validateField('nickname');
     } else {
       // 清空表单数据
       // ruleForm.username = '' // 用户名不清空
-      ruleForm.nickname = ''
-      ruleForm.password = ''
-      ruleForm.confirmPwd = ''
+      ruleForm.nickname = '';
+      ruleForm.password = '';
+      ruleForm.confirmPwd = '';
       ElNotification({
         message: '注册成功，请登录吧！',
         type: 'success',
-      })
-      tologin.value = true
+      });
+      tologin.value = true;
     }
   }
   // getLoginStatus(params).then(res => {
@@ -192,7 +190,7 @@ const submitForm = async (formEl: FormInstance | undefined) => {
   //     this.notify('登录失败', 'error')
   //   }
   // })
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -294,18 +292,12 @@ const submitForm = async (formEl: FormInstance | undefined) => {
     align-items: center;
     transition: transform 0.5s ease-in-out;
 
-
     &::before {
       content: '';
       position: absolute;
       width: 100%;
       height: 100%;
-      background: repeating-conic-gradient(from var(--a),
-          transparent 0%,
-          transparent 80%,
-          #45f3ff 90%,
-          #45f3ff 99.5%,
-          transparent 100%);
+      background: repeating-conic-gradient(from var(--a), transparent 0%, transparent 80%, #45f3ff 90%, #45f3ff 99.5%, transparent 100%);
       border-radius: 10px;
       // 动画种类有：ease、linear、ease-in、ease-out、ease-in-out、step-start、step-end、steps、cubic-bezier
       animation: animate 2.5s linear infinite;
@@ -360,7 +352,6 @@ const submitForm = async (formEl: FormInstance | undefined) => {
         }
       }
     }
-
   }
 }
 </style>

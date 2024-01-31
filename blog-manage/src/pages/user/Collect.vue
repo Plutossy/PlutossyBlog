@@ -2,13 +2,13 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-19 23:25:24
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-01-31 16:01:43
+ * @LastEditTime: 2024-01-31 17:12:46
  * @FilePath: \blog-manage\src\pages\User.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
   <header>
-    <MySearch :type="'user'" :multipleSelection="multipleSelection" @searchResult="searchResult" :back="backHistory" />
+    <MySearch :type="'collect'" :multipleSelection="multipleSelection" @searchResult="searchResult" :back="backHistory" />
   </header>
   <main>
     <el-table :data="collectData" height="568" @selection-change="handleSelectionChange">
@@ -54,10 +54,6 @@
 // import VueOfficePdf from '@vue-office/pdf';
 //引入相关样式
 // import '@vue-office/pdf/lib/index.css';
-
-import MySearch from '@/components/MySearch/MySearch.vue';
-import { ref, toRaw, reactive, nextTick, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
 import { ElNotification, ElMessageBox } from 'element-plus';
 import { beforeAvatarUpload } from '@/mixins';
 import config from '@/config';

@@ -14,7 +14,6 @@
 
 <script lang="ts" setup>
 import eventBus from '../assets/js/eventBus';
-import { ref, reactive, onMounted, onUnmounted } from 'vue';
 import { View } from '@element-plus/icons-vue';
 
 const emitter = eventBus();

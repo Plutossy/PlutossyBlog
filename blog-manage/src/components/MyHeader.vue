@@ -7,13 +7,11 @@
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
 import eventBus from '../assets/js/eventBus';
-import { useRouter } from 'vue-router';
 
-let collapse = ref(false) //不折叠
-const emitter = eventBus()
-let fullscreen = ref(false) //不全屏
+let collapse = ref(false); //不折叠
+const emitter = eventBus();
+let fullscreen = ref(false); //不全屏
 const router = useRouter();
 
 // 全屏后点击esc退出全屏，也能监听到
@@ -26,60 +24,68 @@ onMounted(() => {
       document.webkitIsFullScreen ||
       document.webkitRequestFullScreen ||
       document.mozRequestFullScreen ||
-      document.msFullscreenEnabled
+      document.msFullscreenEnabled;
     if (isFull !== undefined) {
-      fullscreen.value = true
+      fullscreen.value = true;
     } else {
-      fullscreen.value = false
+      fullscreen.value = false;
     }
-  })
-})
+  });
+});
 
 onUnmounted(() => {
-  window.removeEventListener('resize', () => {})
-})
+  window.removeEventListener('resize', () => {});
+});
 
 // 折叠事件
 const collapseChange = () => {
-  collapse.value = !collapse.value
-  emitter.emit('collapse', collapse.value)
-}
+  collapse.value = !collapse.value;
+  emitter.emit('collapse', collapse.value);
+};
 
 // 全屏事件
 const handleFullScreen = () => {
-  if (fullscreen.value) { // 取消全屏
+  if (fullscreen.value) {
+    // 取消全屏
     if (document.exitFullscreen) {
-      document.exitFullscreen()
-    } else if (document.mozCancelFullScreen) { // Firefox (works in nightly)
-      document.mozCancelFullScreen()
-    } else if (document.webkitCancelFullScreen) { // Webkit (works in Safari5.1 and Chrome 15)
-      document.webkitCancelFullScreen()
-    } else if (document.msExitFullscreen) { // IE11
-      document.msExitFullscreen()
+      document.exitFullscreen();
+    } else if (document.mozCancelFullScreen) {
+      // Firefox (works in nightly)
+      document.mozCancelFullScreen();
+    } else if (document.webkitCancelFullScreen) {
+      // Webkit (works in Safari5.1 and Chrome 15)
+      document.webkitCancelFullScreen();
+    } else if (document.msExitFullscreen) {
+      // IE11
+      document.msExitFullscreen();
     }
-    fullscreen.value = false
-  } else { // 全屏
-    let element = document.documentElement
+    fullscreen.value = false;
+  } else {
+    // 全屏
+    let element = document.documentElement;
     if (element.requestFullscreen) {
-      element.requestFullscreen()
-    } else if (element.mozRequestFullScreen) { // Firefox (works in nightly)
-      element.mozRequestFullScreen()
-    } else if (element.webkitRequestFullScreen) { // Webkit (works in Safari5.1 and Chrome 15)
-      element.webkitRequestFullScreen()
-    } else if (element.msRequestFullscreen) { // IE11
-      element.msRequestFullscreen()
+      element.requestFullscreen();
+    } else if (element.mozRequestFullScreen) {
+      // Firefox (works in nightly)
+      element.mozRequestFullScreen();
+    } else if (element.webkitRequestFullScreen) {
+      // Webkit (works in Safari5.1 and Chrome 15)
+      element.webkitRequestFullScreen();
+    } else if (element.msRequestFullscreen) {
+      // IE11
+      element.msRequestFullscreen();
     }
-    fullscreen.value = true
+    fullscreen.value = true;
   }
-}
+};
 
 // 退出登录
 const hadleCommand = (command: string) => {
   if (command === 'logout') {
-    console.log('退出登录成功！')
-    router.push('/login')
+    console.log('退出登录成功！');
+    router.push('/login');
   }
-}
+};
 </script>
 
 <template>
@@ -102,7 +108,7 @@ const hadleCommand = (command: string) => {
         </el-tooltip>
       </div>
       <div class="user-avator">
-        <img src="@/assets/img/head.jpg" alt="管理员头像">
+        <img src="@/assets/img/head.jpg" alt="管理员头像" />
       </div>
       <el-dropdown class="user-name" trigger="click" @command="hadleCommand">
         <span class="el-dropdown-link">

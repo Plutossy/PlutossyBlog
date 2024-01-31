@@ -2,27 +2,27 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-08 18:37:55
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-01-19 22:12:42
+ * @LastEditTime: 2024-01-31 19:11:58
  * @FilePath: \blog-manage\vite.config.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vite';
 // 引入path
-import { resolve } from 'path'
-import vue from '@vitejs/plugin-vue'
+import { resolve } from 'path';
+import vue from '@vitejs/plugin-vue';
 
 // 导入commonjs模块
-import commonjs from '@rollup/plugin-commonjs'
+import commonjs from '@rollup/plugin-commonjs';
 
 // 按需导入element-plus
-import AutoImport from 'unplugin-auto-import/vite'
-import Components from 'unplugin-vue-components/vite'
-import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import AutoImport from 'unplugin-auto-import/vite';
+import Components from 'unplugin-vue-components/vite';
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
 
 // 热更新，开发环境下使用
-import ViteRestart from 'vite-plugin-restart'
+import ViteRestart from 'vite-plugin-restart';
 
-import pxToViewport from 'postcss-px-to-viewport'
+import pxToViewport from 'postcss-px-to-viewport';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -31,14 +31,17 @@ export default defineConfig({
     vue(),
     AutoImport({
       resolvers: [ElementPlusResolver()],
+      imports: ['vue', 'vue-router', 'vuex', '@vueuse/head'],
+      // 可以选择auto-import.d.ts生成的位置，使用ts建议设置为'src/auto-import.d.ts'
+      dts: 'src/auto-import.d.ts',
     }),
     Components({
+      dit: true, // 自动导入组件，默认为false
+      dirs: ['src/components'], // 组件存放的文件夹，默认为 src/components
       resolvers: [ElementPlusResolver()],
     }),
     ViteRestart({
-      restart: [
-        'vite.config.js',
-      ]
+      restart: ['vite.config.js'],
     }),
   ],
   // css: {
@@ -73,17 +76,16 @@ export default defineConfig({
       {
         find: '@',
         replacement: resolve(__dirname, './src'),
-      }
-    ]
+      },
+    ],
   },
   build: {
     minify: 'terser', // 启用 terser 压缩
     terserOptions: {
       compress: {
         drop_console: true, // 删除所有 console
-        drop_debugger: true,// 删除 debugger
-      }
-    }
+        drop_debugger: true, // 删除 debugger
+      },
+    },
   },
-})
-
+});

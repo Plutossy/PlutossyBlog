@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-22 11:33:53
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-01-31 16:52:43
+ * @LastEditTime: 2024-01-31 19:13:15
  * @FilePath: \blog-manage\src\components\MySearch\MySearch.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -20,13 +20,12 @@
   </div>
   <!-- 在vue3中，.sync 双向绑定不生效 -->
   <!-- 解决用 v-model -->
-  <user-detail v-model:dialogVisible="dialogVisible" :dialogTitle="dialogTitle" />
-  <!-- <picture-detail v-model:dialogVisible="dialogVisible" :dialogTitle="dialogTitle" /> -->
+  <user-detail v-model:dialogVisible="dialogVisible['user']" :dialogTitle="dialogTitle" />
+  <picture-detail v-model:dialogVisible="dialogVisible['picture']" :dialogTitle="dialogTitle" />
+  <collect-detail v-model:dialogVisible="dialogVisible['collect']" :dialogTitle="dialogTitle" />
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import { useRouter } from 'vue-router';
 import { ElMessage, ElMessageBox, ElNotification } from 'element-plus';
 
 const props = defineProps({
@@ -47,7 +46,7 @@ let emit = defineEmits(['searchResult']); // 如果用的setup函数则是用 co
 const router = useRouter();
 
 const keyWord = ref('');
-let dialogVisible = ref(false); // 详情弹窗是否显示
+let dialogVisible = reactive({}); // 详情弹窗是否显示
 let dialogTitle = ref('详情'); // 详情弹窗标题
 let backHistory = ref(props.back); // 返回路由
 
@@ -115,7 +114,18 @@ const reset = () => {
 };
 
 const add = () => {
-  dialogVisible.value = true;
+  switch (props.type) {
+    case 'user':
+      dialogVisible['user'] = true;
+      break;
+    case 'picture':
+      dialogVisible['picture'] = true;
+      break;
+    case 'collect':
+      dialogVisible['collect'] = true;
+    default:
+      break;
+  }
   dialogTitle.value = '新增';
 };
 

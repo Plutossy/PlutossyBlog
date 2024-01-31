@@ -3,29 +3,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue';
 import * as echarts from 'echarts/core';
-import {
-  GridComponent,
-  GridComponentOption,
-  GraphicComponent,
-  GraphicComponentOption
-} from 'echarts/components';
+import { GridComponent, GridComponentOption, GraphicComponent, GraphicComponentOption } from 'echarts/components';
 import { BarChart, BarSeriesOption } from 'echarts/charts';
 import { UniversalTransition } from 'echarts/features';
 import { SVGRenderer } from 'echarts/renderers';
 
-echarts.use([
-  GridComponent,
-  GraphicComponent,
-  BarChart,
-  SVGRenderer,
-  UniversalTransition
-]);
+echarts.use([GridComponent, GraphicComponent, BarChart, SVGRenderer, UniversalTransition]);
 
-type EChartsOption = echarts.ComposeOption<
-  GridComponentOption | GraphicComponentOption | BarSeriesOption
->;
+type EChartsOption = echarts.ComposeOption<GridComponentOption | GraphicComponentOption | BarSeriesOption>;
 
 interface DataItem {
   value: number;
@@ -40,44 +26,41 @@ let option: EChartsOption = {
     textStyle: {
       fontFamily: 'STXingkai',
       fontSize: 24,
-      color: '#464646'
+      color: '#464646',
     },
   },
-  tooltip: { // 提示框组件
+  tooltip: {
+    // 提示框组件
     trigger: 'axis', // 触发类型。可选：'item' | 'axis' | 'none'
-    axisPointer: { // 坐标轴指示器配置项
-      type: 'line' // 指示器类型。可选：'line' | 'shadow' | 'none' | 'cross'
+    axisPointer: {
+      // 坐标轴指示器配置项
+      type: 'line', // 指示器类型。可选：'line' | 'shadow' | 'none' | 'cross'
     },
-    formatter: (params) => {
-      let str = '<center>' + params[0].axisValue + '</center>'
+    formatter: params => {
+      let str = '<center>' + params[0].axisValue + '</center>';
       params.forEach(item => {
         if (item.seriesName === 'type') {
-          str +=
-            '<span style="display:inline-block;margin-right:5px;border-radius:50%;width:10px;height:10px;left:5px;background-color:' +
-            item.color + '"></span>' + '数量（篇）：' +
-            item.value + '<br />'
+          str += '<span style="display:inline-block;margin-right:5px;border-radius:50%;width:10px;height:10px;left:5px;background-color:' + item.color + '"></span>' + '数量（篇）：' + item.value + '<br />';
         } else {
-          str +=
-            '<span style="display:inline-block;margin-right:5px;width:10px;height:10px;left:5px;background-color:' +
-            item.color + '"></span>' + '数量（篇）：' +
-            item.value + '<br />'
+          str += '<span style="display:inline-block;margin-right:5px;width:10px;height:10px;left:5px;background-color:' + item.color + '"></span>' + '数量（篇）：' + item.value + '<br />';
         }
-      })
-      return str
+      });
+      return str;
     },
   },
   xAxis: {
     type: 'category',
-    data: ['分类1', '分类2', '分类3', '分类4', '分类5']
+    data: ['分类1', '分类2', '分类3', '分类4', '分类5'],
   },
   yAxis: {
     name: '数量（篇）', // y轴名称
-    splitLine: { // y轴分割线设置
+    splitLine: {
+      // y轴分割线设置
       show: true,
       lineStyle: {
         type: 'dashed', // y轴分割线虚线类型
-        color: '#999'
-      }
+        color: '#999',
+      },
     },
   },
   dataGroupId: '', // 数据分组的id
@@ -90,45 +73,46 @@ let option: EChartsOption = {
     data: [
       {
         value: 5,
-        groupId: 'type1'
+        groupId: 'type1',
       },
       {
         value: 2,
-        groupId: 'type2'
+        groupId: 'type2',
       },
       {
         value: 4,
-        groupId: 'type3'
+        groupId: 'type3',
       },
       {
         value: 5,
-        groupId: 'type4'
+        groupId: 'type4',
       },
       {
         value: 8,
-        groupId: 'type5'
-      }
+        groupId: 'type5',
+      },
     ] as DataItem[],
     universalTransition: {
       enabled: true,
-      divideShape: 'clone'
-    }
+      divideShape: 'clone',
+    },
   },
   graphic: [
-    { // 图形元素组件，提供了在任意位置绘制图形的能力，例如图片、文字等。
+    {
+      // 图形元素组件，提供了在任意位置绘制图形的能力，例如图片、文字等。
       type: 'text',
       style: {
         text: '',
       },
     },
-    { // 图形元素组件，提供了在任意位置绘制图形的能力，例如图片、文字等。
+    {
+      // 图形元素组件，提供了在任意位置绘制图形的能力，例如图片、文字等。
       type: 'text',
       style: {
         text: '',
       },
-    }
-  ]
-
+    },
+  ],
 };
 
 const drilldownData = [
@@ -139,45 +123,45 @@ const drilldownData = [
       ['标签2', 2],
       ['标签3', 1],
       ['标签4', 2],
-      ['标签5', 1]
-    ]
+      ['标签5', 1],
+    ],
   },
   {
     dataGroupId: 'type2',
     data: [
       ['标签2', 4],
-      ['标签5', 2]
-    ]
+      ['标签5', 2],
+    ],
   },
   {
     dataGroupId: 'type3',
     data: [
       ['标签6', 4],
       ['标签1', 2],
-      ['标签4', 2]
-    ]
+      ['标签4', 2],
+    ],
   },
   {
     dataGroupId: 'type4',
     data: [
       ['标签2', 4],
       ['标签1', 8],
-      ['标签8', 2]
-    ]
+      ['标签8', 2],
+    ],
   },
   {
     dataGroupId: 'type5',
     data: [
       ['标签2', 9],
       ['标签10', 12],
-      ['标签1', 1]
-    ]
-  }
+      ['标签1', 1],
+    ],
+  },
 ];
 
 onMounted(() => {
   let myChart = echarts.init(chartDom2.value, null, {
-    renderer: 'svg'
+    renderer: 'svg',
   });
 
   myChart.on('click', function (event) {
@@ -195,13 +179,13 @@ onMounted(() => {
             fontFamily: 'STXingkai',
             fontSize: 24,
             // 字体颜色
-            color: '#626262'
+            color: '#626262',
           },
         },
         xAxis: {
           data: subData.data.map(function (item) {
             return item[0];
-          })
+          }),
         },
         series: {
           name: 'tag',
@@ -214,8 +198,8 @@ onMounted(() => {
           }),
           universalTransition: {
             enabled: true,
-            divideShape: 'clone'
-          }
+            divideShape: 'clone',
+          },
         },
         graphic: [
           {
@@ -239,9 +223,9 @@ onMounted(() => {
             },
             onclick: function () {
               myChart.setOption<EChartsOption>(option);
-            }
-          }
-        ]
+            },
+          },
+        ],
       });
     }
   });
@@ -255,7 +239,7 @@ onMounted(() => {
 });
 
 onUnmounted(() => {
-  window.removeEventListener('resize', () => { });
+  window.removeEventListener('resize', () => {});
   chartDom2.value = null;
 });
 </script>
