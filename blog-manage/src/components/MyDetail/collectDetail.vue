@@ -1,14 +1,8 @@
 <template>
   <el-dialog v-model="detailVisible" :title="props.dialogTitle">
     <el-form ref="ruleFormRef" :rules="rules" :model="detailData" label-width="80px">
-      <el-form-item label="作者" prop="author">
-        <el-input v-model="detailData.author" :disabled="props.dialogTitle !== '新增'" />
-      </el-form-item>
-      <el-form-item label="标题" prop="picTitle">
-        <el-input v-model="detailData.picTitle" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="描述" prop="description">
-        <el-input type="textarea" :rows="3" v-model="detailData.description" autocomplete="off" />
+      <el-form-item label="标题" prop="title">
+        <el-input v-model.trim="detailData.title" @keyup="goSearch" :suffix-icon="Search" clearable />
       </el-form-item>
     </el-form>
     <template #footer>
@@ -21,8 +15,8 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, watch } from 'vue';
 import { ElMessageBox, ElNotification } from 'element-plus';
+import { Search } from '@element-plus/icons-vue';
 import type { FormInstance, FormRules } from 'element-plus';
 
 const props = defineProps({
@@ -44,25 +38,16 @@ let detailVisible = ref(false);
 
 interface RuleForm {
   // 表单数据类型
-  author: string;
-  picTitle: string;
-  description: string;
+  title: string;
 }
 const ruleFormRef: any = ref<FormInstance>(); // 表单实例
 let detailData = reactive<RuleForm>({
   // 表单数据
-  author: '',
-  picTitle: '',
-  description: '',
+  title: '',
 });
 const rules = reactive<FormRules<RuleForm>>({
   // 表单验证规则
-  author: [
-    { required: true, message: '请输入作者', trigger: 'blur' },
-    { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' },
-  ],
-  picTitle: [{ required: true, message: '请输入照片标题', trigger: 'blur' }],
-  description: [{ message: '请输入照片描述', trigger: 'blur' }],
+  title: [{ required: true, message: '请输入标题', trigger: 'blur' }],
 });
 
 watch(
@@ -81,6 +66,10 @@ watch(
 watch(detailVisible, val => {
   emit('update:dialogVisible', val);
 });
+
+const goSearch = () => {
+  console.log('goSearch-', detailData.title);
+};
 
 const cancel = () => {
   detailVisible.value = false;
