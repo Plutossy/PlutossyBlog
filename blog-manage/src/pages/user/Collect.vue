@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-19 23:25:24
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-01-31 17:12:46
+ * @LastEditTime: 2024-02-01 10:58:47
  * @FilePath: \blog-manage\src\pages\User.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -19,9 +19,6 @@
             <!-- <img :src="scope.row.firstImg" alt="博客首图" /> -->
             <img src="@/assets/img/spaceAvatar.jpg" alt="博客首图" />
           </div>
-          <el-upload :action="uploadUrl(scope.row.blogId)" :before-upload="beforeAvatarUpload" :on-success="handleAvatarSuccess">
-            <el-button size="small">更新图片</el-button>
-          </el-upload>
         </template>
       </el-table-column>
       <el-table-column prop="title" label="标题" min-width="200">
@@ -55,7 +52,6 @@
 //引入相关样式
 // import '@vue-office/pdf/lib/index.css';
 import { ElNotification, ElMessageBox } from 'element-plus';
-import { beforeAvatarUpload } from '@/mixins';
 import config from '@/config';
 
 let collectData: any = reactive([]); // 用户数据
@@ -125,26 +121,6 @@ const getData = id => {
 // 把已经选择的项赋值给multipleSelection
 const handleSelectionChange = val => {
   multipleSelection.value = val;
-};
-
-// 更新图片
-const uploadUrl = id => {
-  return `${config.HOST}/user/updateUserPic?id=${id}`;
-};
-// 上传图片之后要做的事情
-const handleAvatarSuccess = (res, file) => {
-  if (res.code === 1) {
-    ElNotification({
-      message: '头像上传成功',
-      type: 'success',
-    });
-    getData(userId); // 重新获取数据
-  } else {
-    ElNotification({
-      message: '头像上传失败',
-      type: 'error',
-    });
-  }
 };
 
 const handleDelete = id => {

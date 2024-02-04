@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-19 23:25:24
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-01-31 17:54:53
+ * @LastEditTime: 2024-02-01 10:56:40
  * @FilePath: \blog-manage\src\pages\User.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -19,7 +19,7 @@
             <!-- <img :src="getUrl(scope.row.avatar)" alt="用户图片" width="100%" /> -->
             <img src="@/assets/img/spaceAvatar.jpg" alt="用户头像" />
           </div>
-          <el-upload :action="uploadUrl(scope.row.id)" :before-upload="beforeAvatarUpload" :on-success="handleAvatarSuccess">
+          <el-upload :action="uploadUrl(scope.row.id)" :before-upload="beforeImgUpload" :on-success="handleImgSuccess">
             <el-button size="small">更新图片</el-button>
           </el-upload>
         </template>
@@ -63,7 +63,7 @@
 
 <script setup lang="ts">
 import { dayjs, ElNotification, ElMessageBox } from 'element-plus';
-import { handleSex, beforeAvatarUpload } from '@/mixins';
+import { handleSex, beforeImgUpload } from '@/mixins';
 import config from '@/config';
 
 let userData: any = reactive([]); // 用户数据
@@ -167,7 +167,7 @@ const uploadUrl = id => {
   return `${config.HOST}/user/updateUserPic?id=${id}`;
 };
 // 上传图片之后要做的事情
-const handleAvatarSuccess = (res, file) => {
+const handleImgSuccess = (res, file) => {
   if (res.code === 1) {
     ElNotification({
       message: '头像上传成功',

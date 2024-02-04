@@ -41,7 +41,7 @@
       <el-table-column fixed="right" label="操作" width="200" align="center">
         <template #default="scope">
           <div class="operate">
-            <el-upload :action="uploadUrl(scope.row.picId)" :before-upload="beforeAvatarUpload" :on-success="handleAvatarSuccess">
+            <el-upload :action="uploadUrl(scope.row.picId)" :before-upload="beforeImgUpload" :on-success="handleImgSuccess">
               <el-button type="primary" link>更新图片</el-button>
             </el-upload>
             <div class="el-divider el-divider--vertical" direction="vertical" />
@@ -61,7 +61,7 @@
 
 <script setup lang="ts">
 import { ElNotification, ElMessageBox } from 'element-plus';
-import { beforeAvatarUpload } from '@/mixins';
+import { beforeImgUpload } from '@/mixins';
 import config from '@/config';
 // 导入透明图片
 import touming from '@/assets/img/touming.png';
@@ -130,7 +130,7 @@ const uploadUrl = id => {
   return `${config.HOST}/user/updateUserPic?id=${id}`;
 };
 // 上传图片之后要做的事情
-const handleAvatarSuccess = (res: { code: number }, file: any) => {
+const handleImgSuccess = (res: { code: number }, file: any) => {
   if (res.code === 1) {
     ElNotification({
       message: '头像上传成功',

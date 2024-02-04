@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-22 11:33:53
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-01-31 19:13:15
+ * @LastEditTime: 2024-02-04 09:55:37
  * @FilePath: \blog-manage\src\components\MySearch\MySearch.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -23,6 +23,7 @@
   <user-detail v-model:dialogVisible="dialogVisible['user']" :dialogTitle="dialogTitle" />
   <picture-detail v-model:dialogVisible="dialogVisible['picture']" :dialogTitle="dialogTitle" />
   <collect-detail v-model:dialogVisible="dialogVisible['collect']" :dialogTitle="dialogTitle" />
+  <music-detail v-model:dialogVisible="dialogVisible['music']" :dialogTitle="dialogTitle" />
 </template>
 
 <script setup lang="ts">
@@ -123,6 +124,10 @@ const add = () => {
       break;
     case 'collect':
       dialogVisible['collect'] = true;
+      break;
+    case 'music':
+      dialogVisible['music'] = true;
+      break;
     default:
       break;
   }
