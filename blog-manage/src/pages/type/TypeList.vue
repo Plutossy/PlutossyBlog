@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-08 19:17:21
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-02-29 18:34:43
+ * @LastEditTime: 2024-02-29 19:05:09
  * @FilePath: \PlutossyBlog\blog-manage\src\pages\Blog.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -11,7 +11,7 @@
     <MySearch type="type" :multipleSelection="multipleSelection" @searchResult="searchResult" />
   </header>
   <main>
-    <el-table :data="typeData" height="568" @selection-change="handleSelectionChange">
+    <el-table :data="typeData" max-height="568" @selection-change="handleSelectionChange">
       <el-table-column fixed type="selection" width="60" align="center"></el-table-column>
       <el-table-column prop="name" label="分类名称" min-width="500" show-overflow-tooltip />
       <el-table-column fixed="right" label="操作" min-width="500" align="center">
@@ -70,6 +70,66 @@ const getData = () => {
     {
       id: 5,
       name: '分类5',
+    },
+    {
+      id: 6,
+      name: '分类6',
+    },
+    {
+      id: 7,
+      name: '分类7',
+    },
+    {
+      id: 8,
+      name: '分类8',
+    },
+    {
+      id: 9,
+      name: '分类9',
+    },
+    {
+      id: 10,
+      name: '分类10',
+    },
+    {
+      id: 11,
+      name: '分类11',
+    },
+    {
+      id: 12,
+      name: '分类12',
+    },
+    {
+      id: 13,
+      name: '分类13',
+    },
+    {
+      id: 14,
+      name: '分类14',
+    },
+    {
+      id: 15,
+      name: '分类15',
+    },
+    {
+      id: 16,
+      name: '分类16',
+    },
+    {
+      id: 17,
+      name: '分类17',
+    },
+    {
+      id: 18,
+      name: '分类18',
+    },
+    {
+      id: 19,
+      name: '分类19',
+    },
+    {
+      id: 20,
+      name: '分类20',
     },
   ];
   typeData.splice(0, typeData.length, ...data1);

@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-08 19:17:21
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-02-29 18:50:37
+ * @LastEditTime: 2024-02-29 19:05:24
  * @FilePath: \PlutossyBlog\blog-manage\src\pages\Blog.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -11,7 +11,7 @@
     <MySearch type="tag" :multipleSelection="multipleSelection" @searchResult="searchResult" />
   </header>
   <main>
-    <el-table :data="tagData" height="568" @selection-change="handleSelectionChange">
+    <el-table :data="tagData" max-height="568" @selection-change="handleSelectionChange">
       <el-table-column fixed type="selection" width="60" align="center"></el-table-column>
       <el-table-column prop="name" label="标签名称" min-width="500" show-overflow-tooltip />
       <el-table-column fixed="right" label="操作" min-width="500" align="center">
