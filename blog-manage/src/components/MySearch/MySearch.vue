@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-22 11:33:53
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-02-04 09:55:37
+ * @LastEditTime: 2024-02-29 18:40:14
  * @FilePath: \blog-manage\src\components\MySearch\MySearch.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -22,7 +22,9 @@
   <!-- 解决用 v-model -->
   <user-detail v-model:dialogVisible="dialogVisible['user']" :dialogTitle="dialogTitle" />
   <picture-detail v-model:dialogVisible="dialogVisible['picture']" :dialogTitle="dialogTitle" />
-  <collect-detail v-model:dialogVisible="dialogVisible['collect']" :dialogTitle="dialogTitle" />
+  <type-detail v-model:dialogVisible="dialogVisible['type']" :dialogTitle="dialogTitle" />
+  <tag-detail v-model:dialogVisible="dialogVisible['tag']" :dialogTitle="dialogTitle" />
+  <blog-search-detail v-model:dialogVisible="dialogVisible['blog-search']" :dialogTitle="dialogTitle" :type="props.type" />
   <music-detail v-model:dialogVisible="dialogVisible['music']" :dialogTitle="dialogTitle" />
 </template>
 
@@ -46,8 +48,11 @@ const props = defineProps({
 let emit = defineEmits(['searchResult']); // 如果用的setup函数则是用 cotext.emit 去使用
 const router = useRouter();
 
+type VisibleType = {
+  [K: string]: boolean;
+};
 const keyWord = ref('');
-let dialogVisible = reactive({}); // 详情弹窗是否显示
+let dialogVisible: VisibleType = reactive({}); // 详情弹窗是否显示
 let dialogTitle = ref('详情'); // 详情弹窗标题
 let backHistory = ref(props.back); // 返回路由
 
@@ -122,8 +127,20 @@ const add = () => {
     case 'picture':
       dialogVisible['picture'] = true;
       break;
+    case 'type':
+      dialogVisible['type'] = true;
+      break;
+    case 'tag':
+      dialogVisible['tag'] = true;
+      break;
     case 'collect':
-      dialogVisible['collect'] = true;
+      dialogVisible['blog-search'] = true;
+      break;
+    case 'type-blog':
+      dialogVisible['blog-search'] = true;
+      break;
+    case 'tag-blog':
+      dialogVisible['blog-search'] = true;
       break;
     case 'music':
       dialogVisible['music'] = true;

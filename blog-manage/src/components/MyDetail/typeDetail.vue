@@ -1,12 +1,8 @@
 <template>
   <el-dialog v-model="detailVisible" :title="props.dialogTitle">
     <el-form ref="ruleFormRef" :rules="rules" :model="detailData" label-width="80px">
-      <el-form-item label="标题" prop="title">
-        <el-autocomplete v-model.trim="detailData.title" :fetch-suggestions="querySearch" @select="handleSelect" @input="handleSelect" placeholder="请输入博客标题" :suffix-icon="Search" clearable>
-          <template #default="{ item }">
-            <div class="title">{{ item }}</div>
-          </template>
-        </el-autocomplete>
+      <el-form-item label="分类名称" prop="name">
+        <el-input v-model="detailData.name" autocomplete="off" />
       </el-form-item>
     </el-form>
     <template #footer>
@@ -20,7 +16,6 @@
 
 <script setup lang="ts">
 import { ElMessageBox, ElNotification } from 'element-plus';
-import { Search } from '@element-plus/icons-vue';
 import type { FormInstance, FormRules } from 'element-plus';
 
 const props = defineProps({
@@ -32,22 +27,26 @@ const props = defineProps({
     type: String,
     default: '详情',
   },
+  dialogData: {
+    type: Object,
+    default: () => ({}),
+  },
 });
-let emit = defineEmits(['update:dialogVisible']); // 如果用的setup函数则是用 cotext.emit 去使用
+let emit = defineEmits(); // 如果用的setup函数则是用 cotext.emit 去使用
 let detailVisible = ref(false);
 
 interface RuleForm {
   // 表单数据类型
-  title: string;
+  name: string;
 }
 const ruleFormRef: any = ref<FormInstance>(); // 表单实例
 let detailData = reactive<RuleForm>({
   // 表单数据
-  title: '',
+  name: '',
 });
 const rules = reactive<FormRules<RuleForm>>({
   // 表单验证规则
-  title: [{ required: true, message: '请输入博客标题', trigger: 'change' }],
+  name: [{ required: true, message: '请输入分类名称', trigger: 'blur' }],
 });
 
 watch(
@@ -56,132 +55,16 @@ watch(
     detailVisible.value = val;
   }
 );
+watch(
+  () => props.dialogData,
+  val => {
+    // detailData.value = val
+    detailData = val as RuleForm;
+  }
+);
 watch(detailVisible, val => {
   emit('update:dialogVisible', val);
 });
-
-const createFilter = (queryString: string) => {
-  return (item: string) => {
-    return item.toLowerCase().indexOf(queryString.toLowerCase()) === 0;
-  };
-};
-
-const querySearch = (queryString: string, cb: (arg0: any[]) => void) => {
-  const queryTitles = [
-    'vue',
-    'react',
-    'angular',
-    'js',
-    'ts',
-    'css',
-    'html',
-    'node',
-    'webpack',
-    'vite',
-    'rollup',
-    'gulp',
-    'grunt',
-    'parcel',
-    'deno',
-    'koa',
-    'egg',
-    'express',
-    'mongodb',
-    'mysql',
-    'redis',
-    'nginx',
-    'docker',
-    'k8s',
-    'linux',
-    'mac',
-    'windows',
-    'git',
-    'svn',
-    'github',
-    'gitlab',
-    'gitee',
-    'coding',
-    'vscode',
-    'webstorm',
-    'sublime',
-    'vim',
-    'emacs',
-    'chrome',
-    'firefox',
-    'safari',
-    'ie',
-    'edge',
-    'postman',
-    'charles',
-    'fiddler',
-    'wireshark',
-    'xshell',
-    'securecrt',
-    'xftp',
-    'navicat',
-    'typora',
-    'markdown',
-    'office',
-    'excel',
-    'word',
-    'ppt',
-    'outlook',
-    'onenote',
-    'visio',
-    'project',
-    'photoshop',
-    'sketch',
-    'axure',
-    'pr',
-    'ae',
-    'c4d',
-    '3dmax',
-    'maya',
-    'blender',
-    'premiere',
-    'finalcut',
-    'cad',
-    'proe',
-    'ug',
-    'solidworks',
-    'catia',
-    'rhino',
-    'autocad',
-    'office',
-    'excel',
-    'word',
-    'ppt',
-    'outlook',
-    'onenote',
-    'visio',
-    'project',
-    'photoshop',
-    'sketch',
-    'axure',
-    'pr',
-    'ae',
-    'c4d',
-    '3dmax',
-    'maya',
-    'blender',
-    'premiere',
-    'finalcut',
-    'cad',
-    'proe',
-    'ug',
-    'solidworks',
-    'catia',
-    'rhino',
-    'autocad',
-  ];
-  const results = queryString ? queryTitles.filter(createFilter(queryString)) : queryTitles;
-  // 调用 callback 返回建议列表的数据
-  cb(results);
-};
-
-const handleSelect = (val: string) => {
-  detailData.title = val;
-};
 
 const cancel = () => {
   detailVisible.value = false;
@@ -192,7 +75,7 @@ const confirm = async (formEl: FormInstance | undefined) => {
   await formEl.validate((valid, fields) => {
     if (valid) {
       console.log('验证成功!');
-      ElMessageBox.confirm('是否确定新增?', '提示', {
+      ElMessageBox.confirm(props.dialogTitle === '编辑' ? '此操作将修改此信息, 是否确定修改?' : '是否确定新增?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
@@ -243,10 +126,4 @@ const confirm = async (formEl: FormInstance | undefined) => {
 };
 </script>
 
-<style lang="scss" scoped>
-:deep(.el-form-item) {
-  .el-autocomplete {
-    width: 85%;
-  }
-}
-</style>
+<style lang="scss" scoped></style>
