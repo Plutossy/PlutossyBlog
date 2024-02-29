@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-19 23:25:24
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-01-31 19:07:58
+ * @LastEditTime: 2024-02-29 14:46:39
  * @FilePath: \blog-manage\src\pages\User.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -15,11 +15,12 @@
       <el-table-column fixed type="selection" width="60" align="center"></el-table-column>
       <el-table-column prop="picUrl" label="图片预览" width="150" align="center">
         <template #default="scope">
-          <el-tooltip class="item" effect="dark" content="点击预览" placement="top">
-            <div class="preview-pic" @click="previewPic(scope.row.picUrl)">
+          <!-- <el-tooltip class="item" effect="dark" content="点击预览" placement="top"> -->
+          <!-- <div class="preview-pic" @click="previewPic(scope.row.picUrl)">
               <img alt="照片" :src="scope.row.picUrl" />
-            </div>
-          </el-tooltip>
+            </div> -->
+          <el-image :src="scope.row.picUrl" :zoom-rate="1.2" :max-scale="7" :min-scale="0.2" :preview-src-list="picUrlList" :initial-index="scope.$index" fit="contain" />
+          <!-- </el-tooltip> -->
         </template>
       </el-table-column>
       <el-table-column prop="picTitle" label="照片标题" min-width="200">
@@ -53,9 +54,9 @@
       </el-table-column>
     </el-table>
   </main>
-  <preview-img v-model:visible="previewShow">
+  <!-- <preview-img v-model:visible="previewShow">
     <img :src="previewUrl" alt="预览图片加载失败" />
-  </preview-img>
+  </preview-img> -->
   <picture-detail v-model:dialogVisible="dialogVisible" :dialogTitle="dialogTitle" :dialogData="dialogData" />
 </template>
 
@@ -64,16 +65,17 @@ import { ElNotification, ElMessageBox } from 'element-plus';
 import { beforeImgUpload } from '@/mixins';
 import config from '@/config';
 // 导入透明图片
-import touming from '@/assets/img/touming.png';
+// import touming from '@/assets/img/touming.png';
 
 let pictureData: any = reactive([]); // 用户数据
 let multipleSelection = ref([]); // 用于存放多选框选中的数据
-let previewShow = ref(false); // 预览图片的弹窗是否显示
-let previewUrl = ref(touming); // 预览图片的url, 默认透明图片
+// let previewShow = ref(false); // 预览图片的弹窗是否显示
+// let previewUrl = ref(touming); // 预览图片的url, 默认透明图片
 
 let dialogVisible = ref(false); // 详情弹窗是否显示
 let dialogTitle = ref('详情'); // 详情弹窗标题
 let dialogData = ref({}); // 详情弹窗数据
+let picUrlList: string[] = reactive([]); // 图片预览列表
 
 onMounted(() => {
   nextTick(() => {
@@ -112,6 +114,7 @@ const getData = () => {
     },
   ];
   pictureData.splice(0, pictureData.length, ...data1);
+  picUrlList.splice(0, picUrlList.length, ...data1.map(item => item.picUrl));
 };
 
 // 把已经选择的项赋值给multipleSelection
@@ -119,11 +122,11 @@ const handleSelectionChange = val => {
   multipleSelection.value = val;
 };
 
-const previewPic = (url: string) => {
-  console.log('previewPic--', url);
-  previewUrl.value = url;
-  previewShow.value = true;
-};
+// const previewPic = (url: string) => {
+//   console.log('previewPic--', url);
+//   previewUrl.value = url;
+//   previewShow.value = true;
+// };
 
 // 更新图片
 const uploadUrl = id => {
@@ -186,6 +189,9 @@ const searchResult = data => {
 
 <style lang="scss" scoped>
 main {
+  :deep(.el-table .el-table__cell) {
+    z-index: auto;
+  }
   .el-table {
     width: 100%;
 
@@ -233,6 +239,9 @@ main {
       }
     }
   }
+}
+:deep(.el-image-viewer__close:hover) {
+  background-color: rgb(212, 8, 8);
 }
 </style>
 <style lang="scss">
