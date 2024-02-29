@@ -2,16 +2,16 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-19 23:25:24
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-02-01 10:56:40
+ * @LastEditTime: 2024-02-29 16:59:54
  * @FilePath: \blog-manage\src\pages\User.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
   <header>
-    <MySearch :type="'user'" :multipleSelection="multipleSelection" @searchResult="searchResult" />
+    <MySearch type="user" :multipleSelection="multipleSelection" @searchResult="searchResult" />
   </header>
   <main>
-    <el-table :data="userData" height="568" @selection-change="handleSelectionChange">
+    <el-table :data="userData" max-height="568" @selection-change="handleSelectionChange">
       <el-table-column fixed type="selection" width="40" align="center"></el-table-column>
       <el-table-column prop="avatar" label="用户头像" width="100" align="center">
         <template #default="scope">
@@ -31,14 +31,38 @@
         </template>
       </el-table-column>
       <el-table-column prop="phoneNum" label="手机号" width="120" />
-      <el-table-column prop="email" label="Email" width="140" />
-      <el-table-column prop="github" label="GitHub" width="140" />
-      <el-table-column prop="csdn" label="CSDN" width="140" />
+      <el-table-column prop="email" label="Email" min-width="140">
+        <template #default="scope">
+          <el-tooltip effect="dark" :content="scope.row.email" placement="top">
+            <el-link type="primary" :underline="false" :href="'mailto:' + scope.row.email">
+              <div class="over-email">{{ scope.row.email }}</div>
+            </el-link>
+          </el-tooltip>
+        </template>
+      </el-table-column>
+      <el-table-column prop="github" label="GitHub" min-width="140">
+        <template #default="scope">
+          <el-tooltip effect="dark" :content="scope.row.github" placement="top">
+            <el-link type="primary" :underline="false" :href="scope.row.github" target="_blank">
+              <div class="over-github">{{ scope.row.github }}</div>
+            </el-link>
+          </el-tooltip>
+        </template>
+      </el-table-column>
+      <el-table-column prop="csdn" label="CSDN" min-width="140">
+        <template #default="scope">
+          <el-tooltip effect="dark" :content="scope.row.csdn" placement="top">
+            <el-link type="primary" :underline="false" :href="scope.row.csdn" target="_blank">
+              <div class="over-csdn">{{ scope.row.csdn }}</div>
+            </el-link>
+          </el-tooltip>
+        </template>
+      </el-table-column>
       <el-table-column prop="qq" label="QQ" width="120" />
       <el-table-column prop="wechat" label="WeChat" width="120" />
-      <el-table-column prop="birth" label="生日" width="120" />
+      <el-table-column prop="birth" label="生日" width="120" :formatter="formatterDate" />
       <el-table-column prop="location" label="所在地" width="140" />
-      <el-table-column prop="introduction" label="个人简介" width="200">
+      <el-table-column prop="introduction" label="个人简介" min-width="200">
         <template #default="scope">
           <el-tooltip popper-class="user-int-tool" effect="dark" :content="scope.row.introduction" placement="top-start">
             <div class="user-intro">{{ scope.row.introduction }}</div>
@@ -56,6 +80,9 @@
       </el-table-column>
     </el-table>
   </main>
+  <footer>
+    <my-page />
+  </footer>
   <!-- 在vue3中，.sync 双向绑定不生效 -->
   <!-- 解决用 v-model -->
   <user-detail v-model:dialogVisible="dialogVisible" :dialogTitle="dialogTitle" :dialogData="dialogData" />
@@ -93,7 +120,7 @@ const getData = () => {
       csdn: 'https://blog.csdn.net/qq_41893274',
       qq: '12345678901',
       wechat: 'PlutoSsy',
-      birth: dayjs('1999-01-01').format('YYYY-MM-DD'),
+      birth: '2020-10-1',
       location: '广东省深圳市',
       introduction: '我是张三我是张三我是张三我是张三我是张三我是张三我是张三我是张三我是张三我是张三我是张三我是张三我是张三我是张三我是张三我是张三我是张三我是张三我是张三我是张三我是张三我是张三',
     },
@@ -107,7 +134,7 @@ const getData = () => {
       csdn: 'https://blog.csdn.net/qq_41893274',
       qq: '12345678901',
       wechat: 'PlutoSsy',
-      birth: dayjs('1999-01-01').format('YYYY-MM-DD'),
+      birth: '2020-10-1',
       location: '广东省深圳市',
       introduction: '我是张三',
     },
@@ -121,7 +148,7 @@ const getData = () => {
       csdn: 'https://blog.csdn.net/qq_41893274',
       qq: '12345678901',
       wechat: 'PlutoSsy',
-      birth: dayjs('1999-01-01').format('YYYY-MM-DD'),
+      birth: '2020-10-1',
       location: '广东省深圳市',
       introduction: '我是张三',
     },
@@ -135,7 +162,7 @@ const getData = () => {
       csdn: 'https://blog.csdn.net/qq_41893274',
       qq: '12345678901',
       wechat: 'PlutoSsy',
-      birth: dayjs('1999-01-01').format('YYYY-MM-DD'),
+      birth: '2020-10-1',
       location: '广东省深圳市',
       introduction: '我是张三',
     },
@@ -149,7 +176,63 @@ const getData = () => {
       csdn: 'https://blog.csdn.net/qq_41893274',
       qq: '12345678901',
       wechat: 'PlutoSsy',
-      birth: dayjs('1999-01-01').format('YYYY-MM-DD'),
+      birth: '2020-10-1',
+      location: '广东省深圳市',
+      introduction: '我是张三',
+    },
+    {
+      id: 6,
+      username: '张三',
+      sex: -1,
+      phoneNum: '18345678901',
+      email: '12345678901@qq.com',
+      github: 'https://github.com/Plutossy',
+      csdn: 'https://blog.csdn.net/qq_41893274',
+      qq: '12345678901',
+      wechat: 'PlutoSsy',
+      birth: '2020-10-1',
+      location: '广东省深圳市',
+      introduction: '我是张三',
+    },
+    {
+      id: 7,
+      username: '张三',
+      sex: -1,
+      phoneNum: '18345678901',
+      email: '12345678901@qq.com',
+      github: 'https://github.com/Plutossy',
+      csdn: 'https://blog.csdn.net/qq_41893274',
+      qq: '12345678901',
+      wechat: 'PlutoSsy',
+      birth: '2020-10-1',
+      location: '广东省深圳市',
+      introduction: '我是张三',
+    },
+    {
+      id: 8,
+      username: '张三',
+      sex: -1,
+      phoneNum: '18345678901',
+      email: '12345678901@qq.com',
+      github: 'https://github.com/Plutossy',
+      csdn: 'https://blog.csdn.net/qq_41893274',
+      qq: '12345678901',
+      wechat: 'PlutoSsy',
+      birth: '1999-1-1',
+      location: '广东省深圳市',
+      introduction: '我是张三',
+    },
+    {
+      id: 9,
+      username: '张三',
+      sex: -1,
+      phoneNum: '18345678901',
+      email: '12345678901@qq.com',
+      github: 'https://github.com/Plutossy',
+      csdn: 'https://blog.csdn.net/qq_41893274',
+      qq: '12345678901',
+      wechat: 'PlutoSsy',
+      birth: '1990-10-1',
       location: '广东省深圳市',
       introduction: '我是张三',
     },
@@ -182,13 +265,18 @@ const handleImgSuccess = (res, file) => {
   }
 };
 
+// 格式化时间
+const formatterDate = (row, column, cellValue) => {
+  return dayjs(cellValue).format('YYYY-MM-DD');
+};
+
 // 收藏
-const getCollect = userId => {
-  console.log('getCollect--', userId);
+const getCollect = id => {
+  console.log('getCollect--', id);
   router.push({
     path: '/user/collect',
     query: {
-      userId,
+      id,
     },
   });
 };
@@ -247,11 +335,23 @@ main {
         height: 100%;
       }
     }
+    .over-email,
+    .over-github,
+    .over-csdn,
     .user-intro {
       width: 100%;
+      line-height: 2;
       overflow: hidden;
       text-overflow: ellipsis;
-      white-space: nowrap;
+      display: box;
+      line-clamp: 2;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
+    .user-intro {
+      line-clamp: 3;
+      -webkit-line-clamp: 3;
     }
   }
 }
