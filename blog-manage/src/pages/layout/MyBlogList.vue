@@ -43,7 +43,6 @@
 // import VueOfficePdf from '@vue-office/pdf';
 //引入相关样式
 // import '@vue-office/pdf/lib/index.css';
-import { number } from 'echarts/core';
 import { ElNotification, ElMessageBox } from 'element-plus';
 
 const props = defineProps({
@@ -56,7 +55,8 @@ const props = defineProps({
     type: String,
   },
   id: {
-    type: [Number, String],
+    type: [String, Number],
+    default: '',
   },
 });
 
@@ -69,7 +69,7 @@ onMounted(() => {
   });
 });
 
-const getData = id => {
+const getData = (id: string | number) => {
   console.log('getData', id);
   // getUserCollect(id)
   let data1 = [
@@ -143,7 +143,7 @@ const handleDelete = id => {
         message: '已取消删除',
       });
     });
-  getData(userId);
+  getData(id);
 };
 
 const searchResult = data => {

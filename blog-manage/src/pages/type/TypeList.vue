@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-08 19:17:21
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-02-29 19:05:09
+ * @LastEditTime: 2024-03-01 09:09:24
  * @FilePath: \PlutossyBlog\blog-manage\src\pages\Blog.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -29,6 +29,7 @@
 </template>
 
 <script setup lang="ts">
+import { number } from 'echarts/core';
 import { ElNotification, ElMessageBox } from 'element-plus';
 
 let typeData: any = reactive([]); // 用户数据
@@ -136,28 +137,28 @@ const getData = () => {
 };
 
 // 把已经选择的项赋值给multipleSelection
-const handleSelectionChange = val => {
+const handleSelectionChange = (val: any[]) => {
   multipleSelection.value = val;
 };
 
-const goDetail = id => {
+const goDetail = (id: number | string) => {
   console.log('goDetail--', id);
   router.push({
-    path: '/type/BlogList',
+    path: '/type/typeBlog',
     query: {
       id,
     },
   });
 };
 
-const handleEdit = row => {
+const handleEdit = (row: {}) => {
   console.log('handleEdit--', row);
   dialogVisible.value = true;
   dialogTitle.value = '编辑';
   dialogData.value = row;
 };
 
-const handleDelete = id => {
+const handleDelete = (id: any) => {
   console.log(id);
   ElMessageBox.confirm('此操作将永久删除该文件, 是否继续?', '提示', {
     confirmButtonText: '确定',
@@ -181,7 +182,7 @@ const handleDelete = id => {
   getData();
 };
 
-const searchResult = data => {
+const searchResult = (data: any) => {
   console.log('searchResult--', data);
   // 因为 reactive 不能直接赋值，所以用 splice
   typeData.splice(0, typeData.length, data);

@@ -1,7 +1,7 @@
 <template>
   <div class="sidebar">
     <el-menu class="sider-menu" :collapse="collapse" background-color="rgba(0, 0, 0, 0)" text-color="rgba(255, 255, 255, 0.9)" active-text-color="#ffffff" router>
-      <el-menu-item v-for="item in routeLinks" :key="item.index" :index="item.path" @click="routeHandler" :style="{ 'background-color': routeActive === item.path ? '#f2711c' : '' }">
+      <el-menu-item v-for="item in routeLinks" :key="item.index" :index="item.path" @click="routeHandler" :style="{ 'background-color': routeActive.includes(item.path) ? '#f2711c' : '' }">
         <el-icon size="larger">
           <component :is="item.icon"></component>
         </el-icon>

@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-08 18:52:14
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-02-29 18:42:47
+ * @LastEditTime: 2024-03-01 09:21:27
  * @FilePath: \PlutossyBlog\blog-manage\src\router\index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -27,7 +27,7 @@ const routes = [
         component: () => import('../pages/Type.vue'),
         children: [
           { path: '', name: 'TypeList', component: () => import('../pages/type/TypeList.vue') },
-          { path: 'blogList', name: 'BlogList', component: () => import('../pages/type/BlogList.vue') },
+          { path: 'typeBlog', name: 'TypeBlog', component: () => import('../pages/type/TypeBlog.vue') },
         ],
       },
       {
@@ -36,7 +36,7 @@ const routes = [
         component: () => import('../pages/Tag.vue'),
         children: [
           { path: '', name: 'TagList', component: () => import('../pages/tag/TagList.vue') },
-          { path: 'blogList', name: 'BlogList', component: () => import('../pages/tag/BlogList.vue') },
+          { path: 'tagBlog', name: 'TagBlog', component: () => import('../pages/tag/TagBlog.vue') },
         ],
       },
       { path: '/music', name: 'Music', component: () => import('../pages/Music.vue') },
