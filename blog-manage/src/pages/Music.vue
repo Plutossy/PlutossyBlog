@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-08 19:17:21
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-02-04 14:09:25
+ * @LastEditTime: 2024-03-01 10:06:56
  * @FilePath: \PlutossyBlog\blog-manage\src\pages\Blog.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -14,7 +14,7 @@
     <div class="my-freemp3-show">
       <span @click="drawer = true">点击我搜索音乐吧！</span>
     </div>
-    <el-table :data="musicData" height="568" @selection-change="handleSelectionChange">
+    <el-table :data="musicData" max-height="568" @selection-change="handleSelectionChange">
       <el-table-column fixed type="selection" width="60" align="center"></el-table-column>
       <el-table-column prop="songImg" label="歌曲图片" width="100" align="center">
         <template #default="scope">

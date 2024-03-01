@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-19 23:25:24
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-02-29 14:46:39
+ * @LastEditTime: 2024-03-01 10:06:16
  * @FilePath: \blog-manage\src\pages\User.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -11,7 +11,7 @@
     <MySearch :type="'picture'" :multipleSelection="multipleSelection" @searchResult="searchResult" />
   </header>
   <main>
-    <el-table :data="pictureData" height="568" @selection-change="handleSelectionChange">
+    <el-table :data="pictureData" max-height="568" @selection-change="handleSelectionChange">
       <el-table-column fixed type="selection" width="60" align="center"></el-table-column>
       <el-table-column prop="picUrl" label="图片预览" width="150" align="center">
         <template #default="scope">
