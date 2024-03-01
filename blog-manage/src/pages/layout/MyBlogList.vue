@@ -3,7 +3,7 @@
     <MySearch :type="props.type" :multipleSelection="multipleSelection" @searchResult="searchResult" :back="props.backHistory" />
   </header>
   <main>
-    <el-table :data="blogData" height="568" @selection-change="handleSelectionChange">
+    <el-table :data="blogData" max-height="568" @selection-change="handleSelectionChange">
       <el-table-column fixed type="selection" width="60" align="center"></el-table-column>
       <el-table-column prop="firstImg" label="博客首图" width="120" align="center">
         <template #default="scope">
