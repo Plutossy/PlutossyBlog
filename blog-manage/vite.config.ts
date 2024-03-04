@@ -1,15 +1,15 @@
 /*
  * @Author: Plutossy pluto_ssy@outlook.com
- * @Date: 2024-01-08 18:37:55
+ * @Date: 2024-03-04 10:53:37
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-01-31 19:11:58
- * @FilePath: \blog-manage\vite.config.js
+ * @LastEditTime: 2024-03-04 11:01:40
+ * @FilePath: \blog-manage\vite.config.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vite'
 // 引入path
 import { resolve } from 'path';
-import vue from '@vitejs/plugin-vue';
+import vue from '@vitejs/plugin-vue'
 
 // 导入commonjs模块
 import commonjs from '@rollup/plugin-commonjs';
@@ -21,8 +21,6 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
 
 // 热更新，开发环境下使用
 import ViteRestart from 'vite-plugin-restart';
-
-import pxToViewport from 'postcss-px-to-viewport';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -36,12 +34,11 @@ export default defineConfig({
       dts: 'src/auto-import.d.ts',
     }),
     Components({
-      dit: true, // 自动导入组件，默认为false
       dirs: ['src/components'], // 组件存放的文件夹，默认为 src/components
       resolvers: [ElementPlusResolver()],
     }),
     ViteRestart({
-      restart: ['vite.config.js'],
+      restart: ['vite.config.ts'],
     }),
   ],
   // css: {
@@ -88,4 +85,4 @@ export default defineConfig({
       },
     },
   },
-});
+})
