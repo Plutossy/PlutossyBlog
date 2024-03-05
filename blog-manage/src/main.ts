@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-03-04 10:53:37
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-03-04 11:13:07
+ * @LastEditTime: 2024-03-04 12:18:11
  * @FilePath: \blog-manage\src\main.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -22,6 +22,8 @@ import 'animate.css';
 // 导入markdown编辑器
 import VMdEditor from '@kangc/v-md-editor/lib/codemirror-editor';
 import vuepressTheme from '@kangc/v-md-editor/lib/theme/vuepress.js';
+import '@kangc/v-md-editor/lib/style/base-editor.css';
+import '@kangc/v-md-editor/lib/theme/style/vuepress.css';
 
 // highlightjs
 import hljs from 'highlight.js';

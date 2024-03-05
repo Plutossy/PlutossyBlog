@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-03-04 10:53:37
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-03-04 11:01:40
+ * @LastEditTime: 2024-03-04 14:38:41
  * @FilePath: \blog-manage\vite.config.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -18,6 +18,10 @@ import commonjs from '@rollup/plugin-commonjs';
 import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
+
+// import { pxToViewport } from 'postcss-px-to-viewport';
+
+import prismjs from 'vite-plugin-prismjs';
 
 // 热更新，开发环境下使用
 import ViteRestart from 'vite-plugin-restart';
@@ -36,6 +40,9 @@ export default defineConfig({
     Components({
       dirs: ['src/components'], // 组件存放的文件夹，默认为 src/components
       resolvers: [ElementPlusResolver()],
+    }),
+    prismjs({
+      languages: 'all',
     }),
     ViteRestart({
       restart: ['vite.config.ts'],

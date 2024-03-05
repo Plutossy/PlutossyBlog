@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-22 11:33:53
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-02-29 18:40:14
+ * @LastEditTime: 2024-03-01 11:42:43
  * @FilePath: \blog-manage\src\components\MySearch\MySearch.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -14,8 +14,8 @@
     <el-button type="info" plain @click="reset">重置</el-button>
     <div class="header-right">
       <el-button type="primary" @click="add">新增</el-button>
-      <div v-if="backHistory" class="el-divider el-divider--vertical" direction="vertical" />
-      <el-button v-if="backHistory" @click="goBack">返回</el-button>
+      <div v-if="backHistory || props.goComBack" class="el-divider el-divider--vertical" direction="vertical" />
+      <el-button v-if="backHistory || props.goComBack" @click="goBack">返回</el-button>
     </div>
   </div>
   <!-- 在vue3中，.sync 双向绑定不生效 -->
@@ -44,7 +44,15 @@ const props = defineProps({
   back: {
     type: String,
   },
+  goCom: {
+    type: Function,
+    default: () => {},
+  },
+  goComBack: {
+    type: Function,
+  },
 });
+
 let emit = defineEmits(['searchResult']); // 如果用的setup函数则是用 cotext.emit 去使用
 const router = useRouter();
 
@@ -124,6 +132,11 @@ const add = () => {
     case 'user':
       dialogVisible['user'] = true;
       break;
+    case 'blog':
+      if (props.goCom) {
+        props.goCom();
+      }
+      break;
     case 'picture':
       dialogVisible['picture'] = true;
       break;
@@ -154,6 +167,7 @@ const add = () => {
 const goBack = () => {
   console.log('goBack--');
   if (backHistory.value) return router.replace(backHistory.value);
+  if (props.goComBack) return props.goComBack;
 };
 </script>
 
