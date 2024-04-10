@@ -1,12 +1,11 @@
-import Axios from 'axios'
-import { get, post } from './http'
-// ================歌曲相关========================
-// 查询所有歌曲
-export const getSongList = () => get(`song/getSongList`)
+const modulesFiles = require.context('.', false, /\.js$/);
+const modules = modulesFiles.keys().reduce((modules, modulePath) => {
+  if (modulePath !== './index.js') {
+    const moduleName = modulePath.replace(/^\.\/(.*)\.\w+$/, '$1');
+    const value = modulesFiles(modulePath);
+    modules[moduleName] = value.default || value;
+  }
+  return modules;
+}, {});
 
-// 下载音乐
-export const downloadSong = url => Axios({
-  method: 'get',
-  url: url,
-  responseType: 'blob'
-})
+export default modules;
