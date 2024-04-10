@@ -16,7 +16,7 @@ public class UserController {
     private UserService userService;
 
     /* 判断是否登陆成功 */
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/login", method = RequestMethod.POST)
     public Object login(HttpServletRequest request, HttpSession session) {
         JSONObject jsonObject = new JSONObject();
         String nickname = request.getParameter("nickname");
