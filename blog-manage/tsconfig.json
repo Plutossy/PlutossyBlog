@@ -32,8 +32,8 @@
     "src/**/*.ts",
     "src/**/*.tsx",
     "src/**/*.vue",
-    "src/plugins/apis.js",
-    "src/plugins/common.js"
+    "src/plugins/modules/apis.js",
+    "src/plugins/modules/common.js"
   ],
   "references": [
     {
