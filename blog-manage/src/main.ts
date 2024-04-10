@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-03-04 10:53:37
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-10 15:21:23
+ * @LastEditTime: 2024-04-10 18:33:24
  * @FilePath: \blog-manage\src\main.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -20,7 +20,7 @@ import * as ElementPlusIconsVue from '@element-plus/icons-vue';
 import 'animate.css';
 
 // custom自定义插件（plugins目录）
-import { apiPlugin, commonPlugin } from '@/plugins'; // 全局注册plugins插件
+import { commonPlugin } from '@/plugins'; // 全局注册plugins插件
 
 // 导入markdown编辑器
 import VMdEditor from '@kangc/v-md-editor/lib/codemirror-editor';
@@ -47,7 +47,7 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 
 // app.use(ElementPlus)
 // 引入自定义插件
-app.use(apiPlugin).use(commonPlugin);
+app.use(commonPlugin);
 
 // 通过 `use` 方法安装路由实例
 app.use(router);

@@ -38,5 +38,8 @@ export default {
       }
       return false;
     },
+    removeToken(context) {
+      context.commit('setToken', '');
+    },
   },
 };
