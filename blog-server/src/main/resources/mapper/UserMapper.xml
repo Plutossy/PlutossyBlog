@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.psmusic.dao.UserMapper">
+    <resultMap id="BaseResultMap" type="com.example.psmusic.domain.User" >
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="nickname" jdbcType="VARCHAR" property="nickname"/>
+        <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="type" jdbcType="BIT" property="type"/>
+        <result column="create_time" jdbcType="DATETIME" property="createTime"/>
+        <result column="update_time" jdbcType="DATETIME" property="updateTime"/>
+        <result column="sex" jdbcType="VARCHAR" property="sex"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="github" jdbcType="VARCHAR" property="github"/>
+        <result column="csdn" jdbcType="VARCHAR" property="csdn"/>
+        <result column="qq" jdbcType="VARCHAR" property="qq"/>
+        <result column="wechat" jdbcType="VARCHAR" property="wechat"/>
+        <result column="birth" jdbcType="DATETIME" property="birth"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="introduction" jdbcType="VARCHAR" property="introduction"/>
+    </resultMap>
+
+    <select id="verifyPassword" resultType="java.lang.Integer">
+        select count(*) from admin where nickname = #{nickname} and password = #{password}
+    </select>
+</mapper>
