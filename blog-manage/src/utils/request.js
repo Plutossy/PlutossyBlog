@@ -2,7 +2,7 @@
  * @Author: sunshuangyin sunshuangyin@seewintech.com
  * @Date: 2024-04-10 10:57:18
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-10 11:44:46
+ * @LastEditTime: 2024-04-10 15:38:09
  * @FilePath: \blog-manage\src\utils\request.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -12,12 +12,12 @@ import router from '@/router';
 import store from '@/store';
 import { getToken } from '@/utils/auth';
 
-axios.defaults.timeout = 10000; // 超时时间是10秒
-axios.defaults.withCredentials = true; // 允许跨域
+// axios.defaults.timeout = 10000; // 超时时间是10秒
+// axios.defaults.withCredentials = true; // 允许跨域
 // Content-Type 响应头
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
 // 基础url
-axios.defaults.baseURL = 'http://localhost:3003';
+// axios.defaults.baseURL = 'http://localhost:3002';
 
 // // 响应拦截器
 // axios.interceptors.response.use(
@@ -94,7 +94,7 @@ const removePending = config => {
   }
 };
 
-// create an axios instance
+// 创建axios实例
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // 请求地址url = base url + request url
   // withCredentials: true, // 发送请求时携带cookie
