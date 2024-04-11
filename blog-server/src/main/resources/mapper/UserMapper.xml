@@ -6,8 +6,8 @@
     <resultMap id="BaseResultMap" type="com.plutossy.domain.User" >
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="nickname" jdbcType="VARCHAR" property="nickname"/>
-<!--        <result column="avatar" jdbcType="VARCHAR" property="avatar"/>-->
-<!--        <result column="username" jdbcType="VARCHAR" property="username"/>-->
+        <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
         <result column="password" jdbcType="VARCHAR" property="password"/>
 <!--        <result column="type" jdbcType="BIT" property="type"/>-->
 <!--        <result column="create_time" jdbcType="DATETIME" property="createTime"/>-->

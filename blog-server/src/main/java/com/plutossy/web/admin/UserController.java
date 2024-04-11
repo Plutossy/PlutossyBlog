@@ -1,4 +1,4 @@
-package com.plutossy.controller;
+package com.plutossy.web.admin;
 
 import com.alibaba.fastjson.JSONObject;
 import com.plutossy.service.UserService;
