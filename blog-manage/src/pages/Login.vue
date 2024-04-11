@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-09 08:56:06
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-11 09:41:46
+ * @LastEditTime: 2024-04-11 12:51:26
  * @FilePath: \blog-manage\src\pages\Login.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -66,6 +66,7 @@
 
 <script setup lang="ts">
 import { login } from '@/api/modules/user';
+import store from '@/store/store';
 import { FormInstance, FormRules, ElNotification } from 'element-plus';
 interface RuleForm {
   // 表单数据类型
@@ -144,20 +145,22 @@ const submitForm = async (formEl: FormInstance | undefined) => {
     // login() // 登录
     login({ nickname: ruleForm.nickname, password: ruleForm.password })
       .then(res => {
-        console.log(res);
         if (res.code === 200) {
-          sessionStorage.setItem('nickname', ruleForm.nickname);
-          const token = 'Bearer ' + ruleForm.username + '-' + res.code;
-          window.localStorage.setItem('token', token);
-          router.push('/index');
+          const token = 'Bearer ' + res.token;
+          store.commit('user/setToken', token);
           ElNotification({
             message: '登录成功！',
             type: 'success',
+            duration: 2000,
+            showClose: true,
           });
+          router.push('/index');
         } else {
           ElNotification({
             message: '登录失败，请重试！',
             type: 'warning',
+            duration: 2000,
+            showClose: true,
           });
         }
       })

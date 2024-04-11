@@ -27,14 +27,24 @@ public class UserController {
         if (flag) {
             jsonObject.put(Consts.CODE, 200);
             jsonObject.put(Consts.MSG, "登陆成功！");
-            session.setAttribute(Consts.NICKNAME, nickname);
             // 生成一个有效期为24小时的token
             String token = JwtUtil.generateToken(nickname, MD5Utils.code(password), (long) (60*60*24));
             jsonObject.put(Consts.TOKEN, token);
+            session.setAttribute(Consts.NICKNAME, nickname);
             return jsonObject;
         }
         jsonObject.put(Consts.CODE, 400);
         jsonObject.put(Consts.MSG, "用户名或密码错误！");
+        return jsonObject;
+    }
+
+    /* 退出登录 */
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public Object logout(HttpSession session) {
+        session.removeAttribute(Consts.NICKNAME);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put(Consts.CODE, 200);
+        jsonObject.put(Consts.MSG, "退出成功！");
         return jsonObject;
     }
 }

@@ -2,12 +2,14 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-08 19:48:58
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-01-19 22:40:26
+ * @LastEditTime: 2024-04-11 16:05:00
  * @FilePath: \blog-manage\src\components\MyHeader.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <script setup lang="ts">
+import { logout } from '@/api/modules/user';
 import eventBus from '../assets/js/eventBus';
+import store from '@/store/store';
 
 let collapse = ref(false); //不折叠
 const emitter = eventBus();
@@ -82,8 +84,18 @@ const handleFullScreen = () => {
 // 退出登录
 const hadleCommand = (command: string) => {
   if (command === 'logout') {
-    console.log('退出登录成功！');
-    router.push('/login');
+    logout()
+      .then(res => {
+        if (res.code == 200) {
+          console.log(res.msg);
+          store.dispatch('user/removeToken');
+          router.push('/login');
+        }
+      })
+      .catch(err => {
+        console.log(err);
+        console.log('退出登录失败！');
+      });
   }
 };
 </script>

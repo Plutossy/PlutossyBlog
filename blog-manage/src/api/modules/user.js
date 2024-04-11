@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-04-10 11:16:32
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-11 09:15:20
+ * @LastEditTime: 2024-04-11 16:20:20
  * @FilePath: \blog-manage\src\api\modules\user.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -13,5 +13,12 @@ export function login(data) {
     url: '/login',
     method: 'post',
     data,
+  });
+}
+
+export function logout() {
+  return request({
+    url: '/logout',
+    method: 'get',
   });
 }

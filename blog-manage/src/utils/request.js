@@ -2,7 +2,7 @@
  * @Author: sunshuangyin sunshuangyin@seewintech.com
  * @Date: 2024-04-10 10:57:18
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-11 09:42:37
+ * @LastEditTime: 2024-04-11 13:47:41
  * @FilePath: \blog-manage\src\utils\request.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -11,7 +11,6 @@ import router from '@/router';
 import { ElMessage } from 'element-plus';
 
 import store from '@/store/store';
-import { getToken } from '@/utils/auth';
 
 // 创建axios实例
 const service = axios.create({
@@ -24,13 +23,7 @@ const service = axios.create({
 // request 请求拦截器
 service.interceptors.request.use(
   config => {
-    if (store.getters['user/token']) {
-      // let each request carry token
-      // ['X-Token'] is a custom headers key
-      // please modify it according to the actual situation
-      config.headers['token'] = getToken();
-      /* config.headers.Authorization = accessToken; */
-    }
+    config.headers['Authorization'] = store.getters['user/token'];
     return config;
   },
   error => {

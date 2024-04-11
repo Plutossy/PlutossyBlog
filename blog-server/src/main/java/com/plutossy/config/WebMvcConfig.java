@@ -18,6 +18,7 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(jwtIntercepter)
                 .addPathPatterns("/manage/**")
+                .addPathPatterns("/logout")
                 .excludePathPatterns("/login");
     }
 
