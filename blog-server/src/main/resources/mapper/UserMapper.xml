@@ -32,4 +32,12 @@
     <select id="verifyPassword" resultType="java.lang.Integer">
         select count(*) from t_user where nickname = #{nickname} and password = #{password}
     </select>
+
+    <select id="selectAllUser" resultMap="BaseResultMap">
+        select * from t_user order by create_time desc
+    </select>
+
+    <select id="selectUserByIdAndType" resultMap="BaseResultMap">
+        select * from t_user where type = #{type} and id = #{id} order by create_time desc
+    </select>
 </mapper>

@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -46,5 +47,30 @@ public class UserController {
         jsonObject.put(Consts.CODE, 200);
         jsonObject.put(Consts.MSG, "退出成功！");
         return jsonObject;
+    }
+
+    /* 查询所有用户信息 */
+    @RequestMapping(value = "/manage/allUserInfo", method = RequestMethod.POST)
+    public Object selectAllUser(@RequestParam(defaultValue = "1") int pageNum,
+                                @RequestParam(defaultValue = "10") int pageSize, HttpServletRequest request) {
+        JSONObject jsonObject = new JSONObject();
+        String id = request.getParameter("id");
+        String type = request.getParameter("type");
+        // 如果type为空或者为false，则只查询当前用户信息
+        if (!Boolean.parseBoolean(type) || type == null || "".equals(type)) {
+            jsonObject.put(Consts.CODE, 200);
+            jsonObject.put(Consts.MSG, "查询成功！");
+            jsonObject.put(Consts.DATA, userService.selectUserByIdAndType(Long.parseLong(id), Boolean.parseBoolean(type)));
+            return jsonObject;
+        } else {
+            jsonObject.put(Consts.CODE, 200);
+            jsonObject.put(Consts.MSG, "查询成功！");
+            jsonObject.put(Consts.TOTAL, userService.selectAllUser(pageNum, pageSize).getTotal());
+            jsonObject.put(Consts.PAGES, userService.selectAllUser(pageNum, pageSize).getPages());
+            jsonObject.put(Consts.PAGE_NUM, userService.selectAllUser(pageNum, pageSize).getPageNum());
+            jsonObject.put(Consts.PAGE_SIZE, userService.selectAllUser(pageNum, pageSize).getPageSize());
+            jsonObject.put(Consts.DATA, userService.selectAllUser(pageNum, pageSize).getList());
+            return jsonObject;
+        }
     }
 }

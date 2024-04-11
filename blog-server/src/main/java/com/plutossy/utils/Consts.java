@@ -9,6 +9,14 @@ public class Consts {
     public static final String CODE = "code";
     //    返回消息
     public static final String MSG = "msg";
+    //    返回数量
+    public static final String TOTAL = "total";
+    //    返回页数
+    public static final String PAGES = "pages";
+    //    返回当前页
+    public static final String PAGE_NUM = "pageNum";
+    //    返回每页数量
+    public static final String PAGE_SIZE = "pageSize";
     //    返回数据
     public static final String DATA = "data";
 }
