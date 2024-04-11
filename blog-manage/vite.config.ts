@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-03-04 10:53:37
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-10 15:42:47
+ * @LastEditTime: 2024-04-11 09:39:12
  * @FilePath: \blog-manage\vite.config.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -71,6 +71,7 @@ export default defineConfig(({ mode }) => {
     // },
     base: './', // 设置打包路径
     server: {
+      host: '0.0.0.0', // 监听所有网络地址
       port: Number(env.VITE_APP_PORT), // 端口号 3001
       open: true, // 自动打开浏览器
       cors: true, // 允许跨域
@@ -85,10 +86,17 @@ export default defineConfig(({ mode }) => {
       proxy: {
         /** 代理前缀为 /api 的请求  */
         [env.VITE_APP_BASE_API]: {
-          changeOrigin: true,
           // 接口地址
           target: env.VITE_APP_API_URL,
+          // 是否重写请求
+          changeOrigin: true,
+          // 重写路径
           rewrite: path => path.replace(new RegExp('^' + env.VITE_APP_BASE_API), ''),
+          bypass(req, res, options: any) {
+            const realUrl = options.target + (options.rewrite ? options.rewrite(req.url) : '');
+            console.log(realUrl); // 在终端显示
+            res.setHeader('A-Real-Url', realUrl); // 添加响应标头(A-Real-Url为自定义命名)，在浏览器中显示
+          },
         },
       },
     },

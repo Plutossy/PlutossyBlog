@@ -2,7 +2,7 @@
  * @Author: sunshuangyin sunshuangyin@seewintech.com
  * @Date: 2024-04-10 10:57:18
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-10 18:43:30
+ * @LastEditTime: 2024-04-11 09:42:37
  * @FilePath: \blog-manage\src\utils\request.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -15,9 +15,9 @@ import { getToken } from '@/utils/auth';
 
 // 创建axios实例
 const service = axios.create({
-  baseURL: import.meta.env.VITE_APP_BASE_API, // 请求地址代理 从.env文件中获取
+  baseURL: import.meta.env.VITE_APP_BASE_API, // 请求地址代理 /api 从.env文件中获取
   // withCredentials: true, // 发送请求时携带cookie
-  timeout: 10000, // request 超时
+  timeout: 10000, // 请求超时时间
   headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8' },
 });
 
