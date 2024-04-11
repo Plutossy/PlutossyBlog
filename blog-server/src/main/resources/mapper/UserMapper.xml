@@ -9,25 +9,25 @@
         <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
         <result column="username" jdbcType="VARCHAR" property="username"/>
         <result column="password" jdbcType="VARCHAR" property="password"/>
-<!--        <result column="type" jdbcType="BIT" property="type"/>-->
-<!--        <result column="create_time" jdbcType="DATETIME" property="createTime"/>-->
-<!--        <result column="update_time" jdbcType="DATETIME" property="updateTime"/>-->
-<!--        <result column="sex" jdbcType="VARCHAR" property="sex"/>-->
-<!--        <result column="phone" jdbcType="VARCHAR" property="phone"/>-->
-<!--        <result column="email" jdbcType="VARCHAR" property="email"/>-->
-<!--        <result column="github" jdbcType="VARCHAR" property="github"/>-->
-<!--        <result column="csdn" jdbcType="VARCHAR" property="csdn"/>-->
-<!--        <result column="qq" jdbcType="VARCHAR" property="qq"/>-->
-<!--        <result column="wechat" jdbcType="VARCHAR" property="wechat"/>-->
-<!--        <result column="birth" jdbcType="DATETIME" property="birth"/>-->
-<!--        <result column="address" jdbcType="VARCHAR" property="address"/>-->
-<!--        <result column="introduction" jdbcType="VARCHAR" property="introduction"/>-->
+        <result column="type" jdbcType="BIT" property="type"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+        <result column="sex" jdbcType="VARCHAR" property="sex"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="github" jdbcType="VARCHAR" property="github"/>
+        <result column="csdn" jdbcType="VARCHAR" property="csdn"/>
+        <result column="qq" jdbcType="VARCHAR" property="qq"/>
+        <result column="wechat" jdbcType="VARCHAR" property="wechat"/>
+        <result column="birth" jdbcType="TIMESTAMP" property="birth"/>
+        <result column="address" jdbcType="VARCHAR" property="address"/>
+        <result column="introduction" jdbcType="VARCHAR" property="introduction"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
-<!--    <sql id="Base_Column_List">-->
-<!--        id, nickname, avatar, username, password, type, create_time, update_time, sex, phone, email, github, csdn, qq, wechat, birth, address, introduction-->
-<!--    </sql>-->
+    <sql id="Base_Column_List">
+        id, nickname, avatar, username, password, type, create_time, update_time, sex, phone, email, github, csdn, qq, wechat, birth, address, introduction
+    </sql>
 
     <select id="verifyPassword" resultType="java.lang.Integer">
         select count(*) from t_user where nickname = #{nickname} and password = #{password}
