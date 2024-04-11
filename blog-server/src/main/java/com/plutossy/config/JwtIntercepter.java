@@ -21,7 +21,7 @@ public class JwtIntercepter implements HandlerInterceptor {
             String token = authorization.substring(7);
             try {
                 Claims claims = JwtUtil.parseToken(token);
-                request.setAttribute("nickname", claims.getSubject());
+                request.setAttribute("nickname", claims.get("nickname"));
                 return true;
             } catch (Exception e) {
                 response.sendError(HttpServletResponse.SC_FORBIDDEN, e.getMessage());

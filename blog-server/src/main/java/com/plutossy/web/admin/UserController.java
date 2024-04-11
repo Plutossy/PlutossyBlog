@@ -3,6 +3,8 @@ package com.plutossy.web.admin;
 import com.alibaba.fastjson.JSONObject;
 import com.plutossy.service.UserService;
 import com.plutossy.utils.Consts;
+import com.plutossy.utils.JwtUtil;
+import com.plutossy.utils.MD5Utils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,9 @@ public class UserController {
             jsonObject.put(Consts.CODE, 200);
             jsonObject.put(Consts.MSG, "登陆成功！");
             session.setAttribute(Consts.NICKNAME, nickname);
+            // 生成一个有效期为24小时的token
+            String token = JwtUtil.generateToken(nickname, MD5Utils.code(password), (long) (60*60*24));
+            jsonObject.put(Consts.TOKEN, token);
             return jsonObject;
         }
         jsonObject.put(Consts.CODE, 400);

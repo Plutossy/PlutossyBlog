@@ -1,6 +1,8 @@
 package com.plutossy.utils;
 
 public class Consts {
+    //    token
+    public static final String TOKEN = "token";
     //    登录名
     public static final String NICKNAME = "nickname";
     //    返回状态码
