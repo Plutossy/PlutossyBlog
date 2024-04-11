@@ -1,6 +1,8 @@
 package com.plutossy.web.admin;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageInfo;
+import com.plutossy.domain.User;
 import com.plutossy.service.UserService;
 import com.plutossy.utils.Consts;
 import com.plutossy.utils.JwtUtil;
@@ -63,13 +65,15 @@ public class UserController {
             jsonObject.put(Consts.DATA, userService.selectUserByIdAndType(Long.parseLong(id), Boolean.parseBoolean(type)));
             return jsonObject;
         } else {
+            // 查询所有用户信息
+            PageInfo<User> pageData = userService.selectAllUser(pageNum, pageSize);
             jsonObject.put(Consts.CODE, 200);
             jsonObject.put(Consts.MSG, "查询成功！");
-            jsonObject.put(Consts.TOTAL, userService.selectAllUser(pageNum, pageSize).getTotal());
-            jsonObject.put(Consts.PAGES, userService.selectAllUser(pageNum, pageSize).getPages());
-            jsonObject.put(Consts.PAGE_NUM, userService.selectAllUser(pageNum, pageSize).getPageNum());
-            jsonObject.put(Consts.PAGE_SIZE, userService.selectAllUser(pageNum, pageSize).getPageSize());
-            jsonObject.put(Consts.DATA, userService.selectAllUser(pageNum, pageSize).getList());
+            jsonObject.put(Consts.TOTAL, pageData.getTotal());
+            jsonObject.put(Consts.PAGES, pageData.getPages());
+            jsonObject.put(Consts.PAGE_NUM, pageData.getPageNum());
+            jsonObject.put(Consts.PAGE_SIZE, pageData.getPageSize());
+            jsonObject.put(Consts.DATA, pageData.getList());
             return jsonObject;
         }
     }
