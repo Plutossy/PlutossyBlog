@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-09 08:56:06
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-12 12:58:25
+ * @LastEditTime: 2024-04-12 16:10:34
  * @FilePath: \blog-manage\src\pages\Login.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -105,7 +105,7 @@ const rules = reactive<FormRules<RuleForm>>({
     { min: 6, max: 12, message: '长度在 6 到 12 个字符', trigger: 'blur' },
     { pattern: /^\S*$/, message: '密码不能包含空格', trigger: 'blur' },
     {
-      validator: (rule, value, callback) => {
+      validator: (_rule, value, callback) => {
         if (value === ruleForm.password) {
           callback();
         } else {
@@ -131,12 +131,12 @@ const submitForm = async (formEl: FormInstance | undefined) => {
   if (!formEl) return;
   await formEl.validate((valid, fields) => {
     if (valid) {
-      console.log('success!');
       if (tologin.value) {
         toLogin();
       } else {
         toRegister();
       }
+      console.log('success!');
     } else {
       console.log('error submit!', fields);
       return false;

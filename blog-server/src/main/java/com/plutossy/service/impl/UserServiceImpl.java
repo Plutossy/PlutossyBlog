@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
-    public List<User> selectUserByIdAndType(Long id, Boolean type) {
-        return userMapper.selectUserByIdAndType(id, type);
+    public PageInfo<User> selectUserByIdAndType(Integer pageNum, Integer pageSize,Long id, Boolean type) {
+        return userMapper.selectUserByIdAndType(pageNum, pageSize, id, type);
     }
 }

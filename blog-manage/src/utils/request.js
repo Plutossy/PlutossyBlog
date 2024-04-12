@@ -2,7 +2,7 @@
  * @Author: sunshuangyin sunshuangyin@seewintech.com
  * @Date: 2024-04-10 10:57:18
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-11 13:47:41
+ * @LastEditTime: 2024-04-12 15:59:58
  * @FilePath: \blog-manage\src\utils\request.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -17,13 +17,13 @@ const service = axios.create({
   baseURL: import.meta.env.VITE_APP_BASE_API, // 请求地址代理 /api 从.env文件中获取
   // withCredentials: true, // 发送请求时携带cookie
   timeout: 10000, // 请求超时时间
-  headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8' },
+  headers: { 'Content-Type': 'application/json;charset=utf-8' },
 });
 
 // request 请求拦截器
 service.interceptors.request.use(
   config => {
-    config.headers['Authorization'] = store.getters['user/token'];
+    config.headers['Authorization'] = store.getters['user/token'] || JSON.parse(localStorage.getItem('token'));
     return config;
   },
   error => {
@@ -66,7 +66,7 @@ service.interceptors.response.use(
     }
   },
   error => {
-    // console.log('err' + error); // for debug
+    console.log('err' + error); // for debug
     if (error.response && error.response.status) {
       switch (error.response.status) {
         // 401: 未登录

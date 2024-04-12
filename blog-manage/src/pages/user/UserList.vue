@@ -1,9 +1,9 @@
 <!--
  * @Author: Plutossy pluto_ssy@outlook.com
- * @Date: 2024-01-19 23:25:24
+ * @Date: 2024-04-12 08:55:00
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-12 12:48:48
- * @FilePath: \blog-manage\src\pages\User.vue
+ * @LastEditTime: 2024-04-12 16:10:08
+ * @FilePath: \blog-manage\src\pages\user\UserList.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
@@ -78,7 +78,7 @@
     </el-table>
   </main>
   <footer>
-    <my-page v-model:queryParam="queryParam" :total="newTotal" @tempParams="getTempParams" />
+    <my-page v-model:queryParam="queryParam" :disabled="!queryParam.type" :total="newTotal" @tempParams="getTempParams" />
   </footer>
   <!-- 在vue3中，.sync 双向绑定不生效 -->
   <!-- 解决用 v-model -->
@@ -95,7 +95,7 @@ let queryParam = reactive({
   pageNum: 1,
   pageSize: 10,
   type: true,
-  id: 1,
+  id: '1',
 });
 
 let newTotal = ref(0); // 总数

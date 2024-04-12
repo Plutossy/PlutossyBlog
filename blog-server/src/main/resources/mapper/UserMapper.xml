@@ -3,7 +3,7 @@
         "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.plutossy.dao.UserMapper">
-    <resultMap id="BaseResultMap" type="com.plutossy.domain.User" >
+    <resultMap id="BaseResultMap" type="com.plutossy.domain.User">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="nickname" jdbcType="VARCHAR" property="nickname"/>
         <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
@@ -26,18 +26,75 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, nickname, avatar, username, password, type, create_time, update_time, sex, phone, email, github, csdn, qq, wechat, birth, address, introduction
+                id, nickname, avatar, username, type, create_time, update_time, sex, phone, email, github, csdn, qq,
+                wechat, birth, address, introduction
     </sql>
 
-    <select id="verifyPassword" resultType="java.lang.Integer">
-        select count(*) from t_user where nickname = #{nickname} and password = #{password}
+    <select id="verifyPassword" resultType="java.lang.Long">
+        select id
+        from t_user
+        where nickname = #{nickname}
+          and password = #{password}
     </select>
 
     <select id="selectAllUser" resultMap="BaseResultMap">
-        select * from t_user order by create_time desc
+        select
+        <include refid="Base_Column_List"/>
+        from t_user order by create_time
     </select>
 
     <select id="selectUserByIdAndType" resultMap="BaseResultMap">
-        select * from t_user where type = #{type} and id = #{id} order by create_time desc
+        select
+        <include refid="Base_Column_List"/>
+        from t_user
+        where type = #{type}
+        and id = #{id}
+        order by create_time
     </select>
+
+    <select id="selectUserById" resultMap="BaseResultMap">
+        select *
+        from t_user
+        where id = #{id}
+    </select>
+
+    <!--    <insert id="insert" parameterType="com.example.psmusic.domain.Collect">-->
+    <!--        insert into collect-->
+    <!--        <trim prefix="(" suffix=")" suffixOverrides=",">-->
+    <!--            <if test="id != null">-->
+    <!--                id,-->
+    <!--            </if>-->
+    <!--            <if test="userId != null">-->
+    <!--                user_id,-->
+    <!--            </if>-->
+    <!--            <if test="type != null">-->
+    <!--                type,-->
+    <!--            </if>-->
+    <!--            <if test="songId != null">-->
+    <!--                song_id,-->
+    <!--            </if>-->
+    <!--            <if test="songListId != null">-->
+    <!--                song_list_id,-->
+    <!--            </if>-->
+    <!--            create_time,-->
+    <!--        </trim>-->
+    <!--        <trim prefix=" values (" suffix=")" suffixOverrides=",">-->
+    <!--            <if test="id != null">-->
+    <!--                #{id},-->
+    <!--            </if>-->
+    <!--            <if test="userId != null">-->
+    <!--                #{userId},-->
+    <!--            </if>-->
+    <!--            <if test="type != null">-->
+    <!--                #{type},-->
+    <!--            </if>-->
+    <!--            <if test="songId != null">-->
+    <!--                #{songId},-->
+    <!--            </if>-->
+    <!--            <if test="songListId != null">-->
+    <!--                #{songListId},-->
+    <!--            </if>-->
+    <!--            now(),-->
+    <!--        </trim>-->
+    <!--    </insert>-->
 </mapper>

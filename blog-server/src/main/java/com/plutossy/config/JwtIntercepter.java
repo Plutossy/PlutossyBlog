@@ -29,7 +29,7 @@ public class JwtIntercepter implements HandlerInterceptor {
                 return false;
             }
         } else {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "No token provided in the request header");
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "请求头未携带token！");
             return false;
         }
     }

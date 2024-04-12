@@ -14,5 +14,5 @@ public interface UserService {
     public PageInfo<User> selectAllUser(Integer pageNum, Integer pageSize);
 
     //    根据用户id和type查询用户信息
-    public List<User> selectUserByIdAndType(Long id, Boolean type);
+    public PageInfo<User> selectUserByIdAndType(Integer pageNum, Integer pageSize, Long id, Boolean type);
 }

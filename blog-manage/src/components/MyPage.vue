@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-02-05 09:43:12
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-12 12:25:46
+ * @LastEditTime: 2024-04-12 15:50:44
  * @FilePath: \blog-manage\src\components\MyPage.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -13,7 +13,7 @@
       v-model:page-size="queryParam.pageSize"
       :page-sizes="[10, 20, 50, 100]"
       :small="small"
-      :disabled="disabled"
+      :disabled="props.disabled"
       :background="background"
       :layout="layout"
       :total="props.total"
@@ -64,7 +64,6 @@ const props = defineProps({
 let queryParam = reactive(props.queryParam);
 let small = ref(props.small);
 let background = ref(props.background);
-let disabled = ref(props.disabled);
 let layout = ref(props.layout);
 let total = ref(props.total);
 

@@ -10,12 +10,10 @@ import com.plutossy.utils.MD5Utils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class UserController {
@@ -24,15 +22,15 @@ public class UserController {
 
     /* 判断是否登陆成功 */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public Object login(HttpServletRequest request, HttpSession session) {
+    public Object login(@RequestBody Map<String, Object> jsonData, HttpSession session) {
+        String nickname = (String) jsonData.get("nickname");
+        String password = (String) jsonData.get("password");
+        Long id = userService.verifyPassword(nickname, password);
         JSONObject jsonObject = new JSONObject();
-        String nickname = request.getParameter("nickname");
-        String password = request.getParameter("password");
-        boolean flag = userService.verifyPassword(nickname, password) != null;
-        if (flag) {
+        if (id != null) {
             // 封装返回数据 id，封装到data中
             JSONObject data = new JSONObject();
-            data.put(Consts.ID, userService.verifyPassword(nickname, password));
+            data.put(Consts.ID, id);
             jsonObject.put(Consts.CODE, 200);
             jsonObject.put(Consts.MSG, "登陆成功！");
             jsonObject.put(Consts.DATA, data);
@@ -57,18 +55,24 @@ public class UserController {
         return jsonObject;
     }
 
-    /* 查询所有用户信息 */
-    @RequestMapping(value = "/manage/allUserInfo", method = RequestMethod.POST)
-    public Object selectAllUser(@RequestParam(defaultValue = "1") Integer pageNum,
-                                @RequestParam(defaultValue = "10") Integer pageSize, HttpServletRequest request) {
+    /* 查询用户信息 */
+    @RequestMapping(value = "/manage/userList", method = RequestMethod.POST)
+    public Object selectUserInfo(@RequestParam(defaultValue = "1") Integer pageNum,
+                                @RequestParam(defaultValue = "10") Integer pageSize, @RequestBody Map<String, Object> jsonData) {
+        Long id = Long.valueOf((String) jsonData.get("id"));
+        Boolean type = (Boolean) jsonData.get("type");
         JSONObject jsonObject = new JSONObject();
-        String id = request.getParameter("id");
-        String type = request.getParameter("type");
         // 如果type为空或者为false，则只查询当前用户信息
-        if (!Boolean.parseBoolean(type) || type == null || "".equals(type)) {
+        if (!type) {
+            // 查询当前用户信息
+            PageInfo<User> pageData = userService.selectUserByIdAndType(pageNum, pageSize, id, false);
             jsonObject.put(Consts.CODE, 200);
             jsonObject.put(Consts.MSG, "查询成功！");
-            jsonObject.put(Consts.DATA, userService.selectUserByIdAndType(Long.parseLong(id), Boolean.parseBoolean(type)));
+            jsonObject.put(Consts.TOTAL, pageData.getTotal());
+            jsonObject.put(Consts.PAGES, pageData.getPages());
+            jsonObject.put(Consts.PAGE_NUM, pageData.getPageNum());
+            jsonObject.put(Consts.PAGE_SIZE, pageData.getPageSize());
+            jsonObject.put(Consts.DATA, pageData.getList());
             return jsonObject;
         } else {
             // 查询所有用户信息

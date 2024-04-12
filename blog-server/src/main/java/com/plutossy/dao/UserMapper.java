@@ -27,5 +27,11 @@ public interface UserMapper {
     }
 
     // 根据用户id和type查询用户信息
-    public List<User> selectUserByIdAndType(Long id, Boolean type);
+    @Select("select * from t_user where id = #{id} and type = #{type} order by create_time")
+    public List<User> selectAllUserByIdAndTypeByCondition(Long id, Boolean type);
+    default PageInfo<User> selectUserByIdAndType(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize, @Param("id") Long id, @Param("type") Boolean type) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<User> users = selectAllUserByIdAndTypeByCondition(id, type);
+        return new PageInfo<>(users);
+    }
 }
