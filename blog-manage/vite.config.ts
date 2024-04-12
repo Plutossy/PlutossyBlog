@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-03-04 10:53:37
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-11 09:39:12
+ * @LastEditTime: 2024-04-12 10:10:15
  * @FilePath: \blog-manage\vite.config.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -94,7 +94,6 @@ export default defineConfig(({ mode }) => {
           rewrite: path => path.replace(new RegExp('^' + env.VITE_APP_BASE_API), ''),
           bypass(req, res, options: any) {
             const realUrl = options.target + (options.rewrite ? options.rewrite(req.url) : '');
-            console.log(realUrl); // 在终端显示
             res.setHeader('A-Real-Url', realUrl); // 添加响应标头(A-Real-Url为自定义命名)，在浏览器中显示
           },
         },

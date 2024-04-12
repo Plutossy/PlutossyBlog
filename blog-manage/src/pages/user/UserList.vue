@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-19 23:25:24
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-11 18:08:08
+ * @LastEditTime: 2024-04-12 12:24:42
  * @FilePath: \blog-manage\src\pages\User.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -24,13 +24,10 @@
           </el-upload>
         </template>
       </el-table-column>
+      <el-table-column prop="nickname" label="昵称" width="80" />
       <el-table-column prop="username" label="用户名" width="80" />
-      <el-table-column prop="sex" label="性别" width="60" align="center">
-        <template #default="scope">
-          {{ handleSex(scope.row.sex) }}
-        </template>
-      </el-table-column>
-      <el-table-column prop="phoneNum" label="手机号" width="120" />
+      <el-table-column prop="sex" label="性别" width="60" align="center" />
+      <el-table-column prop="phone" label="手机号" width="120" />
       <el-table-column prop="email" label="Email" min-width="140">
         <template #default="scope">
           <el-tooltip effect="dark" :content="scope.row.email" placement="top">
@@ -81,7 +78,7 @@
     </el-table>
   </main>
   <footer>
-    <my-page />
+    <my-page v-model:queryParam="queryParam" :total="newTotal" @tempParams="getTempParams" />
   </footer>
   <!-- 在vue3中，.sync 双向绑定不生效 -->
   <!-- 解决用 v-model -->
@@ -91,8 +88,17 @@
 <script setup lang="ts">
 import { getUserList } from '@/api/modules/user';
 import { dayjs, ElNotification, ElMessageBox } from 'element-plus';
-import { handleSex, beforeImgUpload } from '@/mixins';
+import { beforeImgUpload } from '@/mixins';
 import config from '@/config';
+
+let queryParam = reactive({
+  pageNum: 1,
+  pageSize: 10,
+  type: true,
+  id: 1,
+});
+
+let newTotal = ref(0); // 总数
 
 let userData: any = reactive([]); // 用户数据
 let multipleSelection = ref([]); // 用于存放多选框选中的数据
@@ -108,143 +114,20 @@ onMounted(() => {
 });
 
 const getData = async () => {
-  console.log('getData');
-  const queryParam = {
-    pageNum: 1,
-    pageSize: 10,
-    type: true,
-    id: 1,
-  };
-  const { data } = await getUserList(queryParam);
-  let data1 = [
-    {
-      id: 1,
-      username: '张三',
-      sex: 1,
-      phoneNum: '13845678901',
-      email: '12345678901@qq.com',
-      github: 'https://github.com/Plutossy',
-      csdn: 'https://blog.csdn.net/qq_41893274',
-      qq: '12345678901',
-      wechat: 'PlutoSsy',
-      birth: '2020-10-1',
-      location: '广东省深圳市',
-      introduction: '我是张三我是张三我是张三我是张三我是张三我是张三我是张三我是张三我是张三我是张三我是张三我是张三我是张三我是张三我是张三我是张三我是张三我是张三我是张三我是张三我是张三我是张三',
-    },
-    {
-      id: 2,
-      username: '张三',
-      sex: 0,
-      phoneNum: '13845678901',
-      email: '12345678901@qq.com',
-      github: 'https://github.com/Plutossy',
-      csdn: 'https://blog.csdn.net/qq_41893274',
-      qq: '12345678901',
-      wechat: 'PlutoSsy',
-      birth: '2020-10-1',
-      location: '广东省深圳市',
-      introduction: '我是张三',
-    },
-    {
-      id: 3,
-      username: '张三',
-      sex: -1,
-      phoneNum: '18245678901',
-      email: '12345678901@qq.com',
-      github: 'https://github.com/Plutossy',
-      csdn: 'https://blog.csdn.net/qq_41893274',
-      qq: '12345678901',
-      wechat: 'PlutoSsy',
-      birth: '2020-10-1',
-      location: '广东省深圳市',
-      introduction: '我是张三',
-    },
-    {
-      id: 4,
-      username: '张三',
-      sex: -1,
-      phoneNum: '18345678901',
-      email: '12345678901@qq.com',
-      github: 'https://github.com/Plutossy',
-      csdn: 'https://blog.csdn.net/qq_41893274',
-      qq: '12345678901',
-      wechat: 'PlutoSsy',
-      birth: '2020-10-1',
-      location: '广东省深圳市',
-      introduction: '我是张三',
-    },
-    {
-      id: 5,
-      username: '张三',
-      sex: -1,
-      phoneNum: '18345678901',
-      email: '12345678901@qq.com',
-      github: 'https://github.com/Plutossy',
-      csdn: 'https://blog.csdn.net/qq_41893274',
-      qq: '12345678901',
-      wechat: 'PlutoSsy',
-      birth: '2020-10-1',
-      location: '广东省深圳市',
-      introduction: '我是张三',
-    },
-    {
-      id: 6,
-      username: '张三',
-      sex: -1,
-      phoneNum: '18345678901',
-      email: '12345678901@qq.com',
-      github: 'https://github.com/Plutossy',
-      csdn: 'https://blog.csdn.net/qq_41893274',
-      qq: '12345678901',
-      wechat: 'PlutoSsy',
-      birth: '2020-10-1',
-      location: '广东省深圳市',
-      introduction: '我是张三',
-    },
-    {
-      id: 7,
-      username: '张三',
-      sex: -1,
-      phoneNum: '18345678901',
-      email: '12345678901@qq.com',
-      github: 'https://github.com/Plutossy',
-      csdn: 'https://blog.csdn.net/qq_41893274',
-      qq: '12345678901',
-      wechat: 'PlutoSsy',
-      birth: '2020-10-1',
-      location: '广东省深圳市',
-      introduction: '我是张三',
-    },
-    {
-      id: 8,
-      username: '张三',
-      sex: -1,
-      phoneNum: '18345678901',
-      email: '12345678901@qq.com',
-      github: 'https://github.com/Plutossy',
-      csdn: 'https://blog.csdn.net/qq_41893274',
-      qq: '12345678901',
-      wechat: 'PlutoSsy',
-      birth: '1999-1-1',
-      location: '广东省深圳市',
-      introduction: '我是张三',
-    },
-    {
-      id: 9,
-      username: '张三',
-      sex: -1,
-      phoneNum: '18345678901',
-      email: '12345678901@qq.com',
-      github: 'https://github.com/Plutossy',
-      csdn: 'https://blog.csdn.net/qq_41893274',
-      qq: '12345678901',
-      wechat: 'PlutoSsy',
-      birth: '1990-10-1',
-      location: '广东省深圳市',
-      introduction: '我是张三',
-    },
-  ];
-  userData.splice(0, userData.length, ...data1);
+  try {
+    const { data, code, total } = await getUserList(queryParam);
+    if (code === 200) {
+      userData.splice(0, userData.length, ...data);
+      newTotal.value = total;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// 页面变换页发起请求
+const getTempParams = () => {
+  getData();
 };
 
 // 把已经选择的项赋值给multipleSelection

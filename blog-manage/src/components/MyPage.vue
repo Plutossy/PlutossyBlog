@@ -2,21 +2,21 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-02-05 09:43:12
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-02-29 10:31:36
+ * @LastEditTime: 2024-04-12 12:25:46
  * @FilePath: \blog-manage\src\components\MyPage.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
   <el-config-provider :locale="zhCn">
     <el-pagination
-      v-model:current-page="currentPage"
-      v-model:page-size="pageSize"
+      v-model:current-page="queryParam.pageNum"
+      v-model:page-size="queryParam.pageSize"
       :page-sizes="[10, 20, 50, 100]"
       :small="small"
       :disabled="disabled"
       :background="background"
-      layout="total, sizes, prev, pager, next, jumper"
-      :total="total"
+      :layout="layout"
+      :total="props.total"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
     />
@@ -33,13 +33,12 @@ zhCn.el.pagination.total = '共 ' + `{total}` + ' 条';
 zhCn.el.pagination.goto = '跳转至';
 
 const props = defineProps({
-  currentPage: {
-    type: Number,
-    default: 1,
-  },
-  pageSize: {
-    type: Number,
-    default: 10,
+  queryParam: {
+    type: Object,
+    default: () => ({
+      pageNum: 1,
+      pageSize: 10,
+    }),
   },
   small: {
     type: Boolean,
@@ -53,24 +52,46 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  layout: {
+    type: String,
+    default: 'total, sizes, prev, pager, next, jumper',
+  },
   total: {
     type: Number,
     default: 0,
   },
 });
-let currentPage = ref(props.currentPage);
-let pageSize = ref(props.pageSize);
+let queryParam = reactive(props.queryParam);
 let small = ref(props.small);
 let background = ref(props.background);
 let disabled = ref(props.disabled);
+let layout = ref(props.layout);
 let total = ref(props.total);
 
-const handleSizeChange = (val: number) => {
-  console.log(`${val} items per page`);
+let emit = defineEmits(['update:queryParam', 'tempParams']);
+const instance: any = getCurrentInstance();
+
+// 发送参数
+const sendParams = () => {
+  const tempParams = instance.appContext.config.globalProperties.$deepClone(queryParam);
+  emit('update:queryParam', tempParams);
+  emit('tempParams', queryParam);
 };
-const handleCurrentChange = (val: number) => {
-  console.log(`current page: ${val}`);
+
+const handleSizeChange = () => {
+  console.log(total.value);
+  sendParams();
+};
+
+const handleCurrentChange = () => {
+  sendParams();
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.el-pagination {
+  margin-top: 16px;
+  margin-right: 20px;
+  float: right;
+}
+</style>
