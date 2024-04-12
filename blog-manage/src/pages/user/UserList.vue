@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-19 23:25:24
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-12 12:24:42
+ * @LastEditTime: 2024-04-12 12:48:48
  * @FilePath: \blog-manage\src\pages\User.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -58,7 +58,7 @@
       <el-table-column prop="qq" label="QQ" width="120" />
       <el-table-column prop="wechat" label="WeChat" width="120" />
       <el-table-column prop="birth" label="生日" width="120" :formatter="formatterDate" />
-      <el-table-column prop="location" label="所在地" width="140" />
+      <el-table-column prop="address" label="所在地" width="140" />
       <el-table-column prop="introduction" label="个人简介" min-width="200">
         <template #default="scope">
           <el-tooltip popper-class="user-int-tool" effect="dark" :content="scope.row.introduction" placement="top-start">

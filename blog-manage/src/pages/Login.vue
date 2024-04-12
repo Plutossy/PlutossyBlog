@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-09 08:56:06
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-11 12:51:26
+ * @LastEditTime: 2024-04-12 12:58:25
  * @FilePath: \blog-manage\src\pages\Login.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -132,81 +132,75 @@ const submitForm = async (formEl: FormInstance | undefined) => {
   await formEl.validate((valid, fields) => {
     if (valid) {
       console.log('success!');
+      if (tologin.value) {
+        toLogin();
+      } else {
+        toRegister();
+      }
     } else {
       console.log('error submit!', fields);
+      return false;
     }
   });
-  // alert('登录成功')
+};
+
+const toLogin = async () => {
   // URLSearchParams 是一个对象，它主要用来处理 URL 的查询字符串
   // let params = new URLSearchParams()
-  // params.append('name', ruleForm.username)
+  // params.append('nickname', ruleForm.nickname)
   // params.append('password', ruleForm.password)
-  if (tologin.value) {
-    // login() // 登录
-    login({ nickname: ruleForm.nickname, password: ruleForm.password })
-      .then(res => {
-        if (res.code === 200) {
-          const token = 'Bearer ' + res.token;
-          store.commit('user/setToken', token);
-          ElNotification({
-            message: '登录成功！',
-            type: 'success',
-            duration: 2000,
-            showClose: true,
-          });
-          router.push('/index');
-        } else {
-          ElNotification({
-            message: '登录失败，请重试！',
-            type: 'warning',
-            duration: 2000,
-            showClose: true,
-          });
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  } else {
-    // register() // 注册
-    if (ruleForm.username === 'admin') {
+  try {
+    const res = await login({ nickname: ruleForm.nickname, password: ruleForm.password });
+    if (res.code === 200) {
+      const token = 'Bearer ' + res.token;
+      store.commit('user/setToken', token);
       ElNotification({
-        message: '用户名重复，请尝试修改用户名！',
-        type: 'info',
-      });
-      // 聚焦到用户名输入框
-      ruleFormRef.value.validateField('username');
-    } else if (ruleForm.nickname === 'PlutoSSY') {
-      ElNotification({
-        message: '昵称重复，请尝试修改昵称！',
-        type: 'info',
-      });
-      // 聚焦到昵称输入框
-      ruleFormRef.value.validateField('nickname');
-    } else {
-      // 清空表单数据
-      // ruleForm.username = '' // 用户名不清空
-      ruleForm.nickname = '';
-      ruleForm.password = '';
-      ruleForm.confirmPwd = '';
-      ElNotification({
-        message: '注册成功，请登录吧！',
+        message: '登录成功！',
         type: 'success',
+        duration: 2000,
+        showClose: true,
       });
-      tologin.value = true;
+      router.push('/index');
+    } else {
+      ElNotification({
+        message: '登录失败，请重试！',
+        type: 'warning',
+        duration: 2000,
+        showClose: true,
+      });
     }
+  } catch (err) {
+    console.log(err);
   }
-  // getLoginStatus(params).then(res => {
-  //   if (res.code === 1) {
-  //     sessionStorage.setItem('userName', this.ruleForm.username)
-  //     const token = 'Bearer ' + this.ruleForm.username + '-' + res.code
-  //     window.localStorage.setItem('token', token)
-  //     this.$router.push('/index')
-  //     this.notify('登录成功', 'success')
-  //   } else {
-  //     this.notify('登录失败', 'error')
-  //   }
-  // })
+};
+const toRegister = async () => {
+  // register() // 注册
+  if (ruleForm.username === 'admin') {
+    ElNotification({
+      message: '用户名重复，请尝试修改用户名！',
+      type: 'info',
+    });
+    // 聚焦到用户名输入框
+    ruleFormRef.value.validateField('username');
+  } else if (ruleForm.nickname === 'PlutoSSY') {
+    ElNotification({
+      message: '昵称重复，请尝试修改昵称！',
+      type: 'info',
+    });
+    // 聚焦到昵称输入框
+    ruleFormRef.value.validateField('nickname');
+  } else {
+    // 清空表单数据
+    // ruleForm.username = '' // 用户名不清空
+    ruleForm.nickname = '';
+    ruleForm.password = '';
+    ruleForm.confirmPwd = '';
+    ElNotification({
+      message: '注册成功，请登录吧！',
+      type: 'success',
+    });
+    tologin.value = true;
+  }
 };
 </script>
 
