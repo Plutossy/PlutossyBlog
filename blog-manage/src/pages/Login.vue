@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-09 08:56:06
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-12 16:10:34
+ * @LastEditTime: 2024-04-12 18:01:28
  * @FilePath: \blog-manage\src\pages\Login.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -154,6 +154,8 @@ const toLogin = async () => {
     if (res.code === 200) {
       const token = 'Bearer ' + res.token;
       store.commit('user/setToken', token);
+      store.commit('user/setUserInfoId', res.data.id);
+      // store.commit('user/setUserInfo', );
       ElNotification({
         message: '登录成功！',
         type: 'success',

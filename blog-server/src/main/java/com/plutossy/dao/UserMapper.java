@@ -14,11 +14,13 @@ import java.util.List;
 //@Repository
 @Mapper
 public interface UserMapper {
+    String Base_Columns = "id, nickname, avatar, username, type, create_time, update_time, sex, phone, email, github, csdn, qq, wechat, birth, address, introduction";
+
     // 验证用户密码是否正确
     public Long verifyPassword(String nickname, String password);
 
     // 查询所有用户信息
-    @Select("select * from t_user order by create_time")
+    @Select("select " + Base_Columns + " from t_user order by create_time")
     public List<User> selectAllUserByCondition();
     default PageInfo<User> selectAllUser(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
@@ -27,11 +29,14 @@ public interface UserMapper {
     }
 
     // 根据用户id和type查询用户信息
-    @Select("select * from t_user where id = #{id} and type = #{type} order by create_time")
+    @Select("select " + Base_Columns + " from t_user where id = #{id} and type = #{type} order by create_time")
     public List<User> selectAllUserByIdAndTypeByCondition(Long id, Boolean type);
     default PageInfo<User> selectUserByIdAndType(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize, @Param("id") Long id, @Param("type") Boolean type) {
         PageHelper.startPage(pageNum, pageSize);
         List<User> users = selectAllUserByIdAndTypeByCondition(id, type);
         return new PageInfo<>(users);
     }
+
+    // 根据用户id查询用户信息
+    public User selectUserById(Long id);
 }

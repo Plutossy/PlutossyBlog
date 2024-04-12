@@ -2,17 +2,16 @@ package com.plutossy.web.admin;
 
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
+import com.plutossy.utils.PageDefault;
 import com.plutossy.domain.User;
 import com.plutossy.service.UserService;
 import com.plutossy.utils.Consts;
 import com.plutossy.utils.JwtUtil;
 import com.plutossy.utils.MD5Utils;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -57,9 +56,11 @@ public class UserController {
 
     /* 查询用户信息 */
     @RequestMapping(value = "/manage/userList", method = RequestMethod.POST)
-    public Object selectUserInfo(@RequestParam(defaultValue = "1") Integer pageNum,
-                                @RequestParam(defaultValue = "10") Integer pageSize, @RequestBody Map<String, Object> jsonData) {
+    public Object selectUserInfo(@RequestBody Map<String, Object> jsonData) {
         Long id = Long.valueOf((String) jsonData.get("id"));
+        // 通过PageDefault为pageNum和pageSize设置默认值
+        Integer pageNum = jsonData.get("pageNum") == null ? PageDefault.PAGE_NUM : (Integer) jsonData.get("pageNum");
+        Integer pageSize = jsonData.get("pageSize") == null ? PageDefault.PAGE_SIZE : (Integer) jsonData.get("pageSize");
         Boolean type = (Boolean) jsonData.get("type");
         JSONObject jsonObject = new JSONObject();
         // 如果type为空或者为false，则只查询当前用户信息
@@ -86,5 +87,16 @@ public class UserController {
             jsonObject.put(Consts.DATA, pageData.getList());
             return jsonObject;
         }
+    }
+
+    /* 根据id查询用户信息 */
+    @RequestMapping(value = "/manage/userInfoById", method = RequestMethod.GET)
+    public Object selectUserInfoById(@RequestParam("id") Long id) {
+        JSONObject jsonObject = new JSONObject();
+        User userInfo = userService.selectUserById(id);
+        jsonObject.put(Consts.CODE, 200);
+        jsonObject.put(Consts.MSG, "查询成功！");
+        jsonObject.put(Consts.DATA, userInfo);
+        return jsonObject;
     }
 }

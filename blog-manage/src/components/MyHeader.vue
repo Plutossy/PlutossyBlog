@@ -2,12 +2,12 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-08 19:48:58
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-12 14:24:44
+ * @LastEditTime: 2024-04-12 18:31:33
  * @FilePath: \blog-manage\src\components\MyHeader.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <script setup lang="ts">
-import { logout } from '@/api/modules/user';
+import { logout, getUserInfo } from '@/api/modules/user';
 import eventBus from '@/assets/js/eventBus';
 import store from '@/store/store';
 
@@ -16,8 +16,14 @@ const emitter = eventBus();
 let fullscreen = ref(false); //不全屏
 const router = useRouter();
 
+let userInfo = reactive({
+  username: 'PlutoSsy',
+});
+let drawer = ref(false);
+
 // 全屏后点击esc退出全屏，也能监听到
 onMounted(() => {
+  getCurUserInfo();
   window.addEventListener('resize', () => {
     // fullscreenElement属性是当前全屏的元素，如果当前没有元素全屏，返回null
     let isFull =
@@ -40,6 +46,18 @@ onMounted(() => {
 onUnmounted(() => {
   window.removeEventListener('resize', () => {});
 });
+
+const getCurUserInfo = async () => {
+  try {
+    const userId = store.getters['user/userInfo'].id;
+    const { code, data } = await getUserInfo({ id: userId });
+    if (code === 200) {
+      userInfo = data;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 // 折叠事件
 const collapseChange = () => {
@@ -97,6 +115,9 @@ const hadleCommand = async (command: string) => {
       console.log(error);
       console.log('退出登录失败！');
     }
+  } else if (command === 'setPassword') {
+    // router.push('/setPassword');
+    drawer.value = true;
   }
 };
 </script>
@@ -125,18 +146,23 @@ const hadleCommand = async (command: string) => {
       </div>
       <el-dropdown class="user-name" trigger="click" @command="hadleCommand">
         <span class="el-dropdown-link">
-          Plutossy<el-icon class="el-icon--right">
+          {{ userInfo.username }}
+          <el-icon class="el-icon--right">
             <CaretBottom />
           </el-icon>
         </span>
         <template #dropdown>
           <el-dropdown-menu>
+            <el-dropdown-item command="setPassword">修改密码</el-dropdown-item>
             <el-dropdown-item command="logout">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
     </div>
   </div>
+  <el-drawer v-model="drawer" title="修改密码" direction="rtl">
+    <span>Hi, there!</span>
+  </el-drawer>
 </template>
 
 <style lang="scss" scoped>

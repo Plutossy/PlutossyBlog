@@ -25,9 +25,8 @@
     </resultMap>
 
     <!-- 通用查询结果列 -->
-    <sql id="Base_Column_List">
-                id, nickname, avatar, username, type, create_time, update_time, sex, phone, email, github, csdn, qq,
-                wechat, birth, address, introduction
+    <sql id="Base_Columns">
+        id, nickname, avatar, username, type, create_time, update_time, sex, phone, email, github, csdn, qq, wechat, birth, address, introduction
     </sql>
 
     <select id="verifyPassword" resultType="java.lang.Long">
@@ -39,13 +38,14 @@
 
     <select id="selectAllUser" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
-        from t_user order by create_time
+        <include refid="Base_Columns"/>
+        from t_user
+        order by create_time
     </select>
 
     <select id="selectUserByIdAndType" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List"/>
+        <include refid="Base_Columns"/>
         from t_user
         where type = #{type}
         and id = #{id}
