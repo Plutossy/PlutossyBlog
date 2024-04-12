@@ -24,8 +24,8 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
-    public boolean verifyPassword(String nickname, String password) {
-        return userMapper.verifyPassword(nickname, MD5Utils.code(password)) > 0;
+    public Long verifyPassword(String nickname, String password) {
+        return userMapper.verifyPassword(nickname, MD5Utils.code(password));
     }
 
     /**
@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
-    public PageInfo<User> selectAllUser(int pageNum, int pageSize) {
+    public PageInfo<User> selectAllUser(Integer pageNum, Integer pageSize) {
         return userMapper.selectAllUser(pageNum, pageSize);
     }
 

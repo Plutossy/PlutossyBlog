@@ -19,4 +19,6 @@ public class Consts {
     public static final String PAGE_SIZE = "pageSize";
     //    返回数据
     public static final String DATA = "data";
+    //    返回数据 id
+    public static final String ID = "id";
 }

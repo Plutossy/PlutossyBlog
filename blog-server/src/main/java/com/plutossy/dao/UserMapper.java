@@ -15,12 +15,12 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
     // 验证用户密码是否正确
-    public int verifyPassword(String nickname, String password);
+    public Long verifyPassword(String nickname, String password);
 
     // 查询所有用户信息
-    @Select("select * from t_user")
+    @Select("select * from t_user order by create_time")
     public List<User> selectAllUserByCondition();
-    default PageInfo<User> selectAllUser(int pageNum, int pageSize) {
+    default PageInfo<User> selectAllUser(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
         List<User> users = selectAllUserByCondition();
         return new PageInfo<>(users);

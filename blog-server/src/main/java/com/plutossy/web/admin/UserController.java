@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 public class UserController {
     @Autowired
@@ -26,12 +28,16 @@ public class UserController {
         JSONObject jsonObject = new JSONObject();
         String nickname = request.getParameter("nickname");
         String password = request.getParameter("password");
-        boolean flag = userService.verifyPassword(nickname, password);
+        boolean flag = userService.verifyPassword(nickname, password) != null;
         if (flag) {
+            // 封装返回数据 id，封装到data中
+            JSONObject data = new JSONObject();
+            data.put(Consts.ID, userService.verifyPassword(nickname, password));
             jsonObject.put(Consts.CODE, 200);
             jsonObject.put(Consts.MSG, "登陆成功！");
+            jsonObject.put(Consts.DATA, data);
             // 生成一个有效期为24小时的token
-            String token = JwtUtil.generateToken(nickname, MD5Utils.code(password), (long) (60*60*24));
+            String token = JwtUtil.generateToken(nickname, MD5Utils.code(password), (long) (60 * 60 * 24));
             jsonObject.put(Consts.TOKEN, token);
             session.setAttribute(Consts.NICKNAME, nickname);
             return jsonObject;
@@ -53,8 +59,8 @@ public class UserController {
 
     /* 查询所有用户信息 */
     @RequestMapping(value = "/manage/allUserInfo", method = RequestMethod.POST)
-    public Object selectAllUser(@RequestParam(defaultValue = "1") int pageNum,
-                                @RequestParam(defaultValue = "10") int pageSize, HttpServletRequest request) {
+    public Object selectAllUser(@RequestParam(defaultValue = "1") Integer pageNum,
+                                @RequestParam(defaultValue = "10") Integer pageSize, HttpServletRequest request) {
         JSONObject jsonObject = new JSONObject();
         String id = request.getParameter("id");
         String type = request.getParameter("type");
