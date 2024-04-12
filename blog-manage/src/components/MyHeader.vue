@@ -2,13 +2,13 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-08 19:48:58
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-11 16:05:00
+ * @LastEditTime: 2024-04-12 14:24:44
  * @FilePath: \blog-manage\src\components\MyHeader.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <script setup lang="ts">
 import { logout } from '@/api/modules/user';
-import eventBus from '../assets/js/eventBus';
+import eventBus from '@/assets/js/eventBus';
 import store from '@/store/store';
 
 let collapse = ref(false); //不折叠
@@ -19,7 +19,9 @@ const router = useRouter();
 // 全屏后点击esc退出全屏，也能监听到
 onMounted(() => {
   window.addEventListener('resize', () => {
+    // fullscreenElement属性是当前全屏的元素，如果当前没有元素全屏，返回null
     let isFull =
+      document.fullscreenElement ||
       document.fullScreen ||
       document.mozFullScreen ||
       //谷歌浏览器及Webkit内核浏览器
@@ -82,20 +84,19 @@ const handleFullScreen = () => {
 };
 
 // 退出登录
-const hadleCommand = (command: string) => {
+const hadleCommand = async (command: string) => {
   if (command === 'logout') {
-    logout()
-      .then(res => {
-        if (res.code == 200) {
-          console.log(res.msg);
-          store.dispatch('user/removeToken');
-          router.push('/login');
-        }
-      })
-      .catch(err => {
-        console.log(err);
-        console.log('退出登录失败！');
-      });
+    try {
+      const { code } = await logout();
+      if (code === 200) {
+        console.log('退出登录成功！');
+        store.dispatch('user/removeToken');
+        router.push('/login');
+      }
+    } catch (error) {
+      console.log(error);
+      console.log('退出登录失败！');
+    }
   }
 };
 </script>
