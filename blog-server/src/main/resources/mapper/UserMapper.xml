@@ -22,6 +22,7 @@
         <result column="birth" jdbcType="TIMESTAMP" property="birth"/>
         <result column="address" jdbcType="VARCHAR" property="address"/>
         <result column="introduction" jdbcType="VARCHAR" property="introduction"/>
+        <result column="captcha" jdbcType="VARCHAR" property="captcha"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
@@ -58,15 +59,27 @@
         where id = #{id}
     </select>
 
+    <update id="updateCaptcha" parameterType="com.plutossy.domain.User">
+        update t_user
+        <set>
+            <if test="captcha != null">
+                password = #{captcha},
+            </if>
+            update_time = now(),
+        </set>
+        where id = #{id} and email = #{email}
+    </update>
+
     <update id="updatePwd" parameterType="com.plutossy.domain.User">
         update t_user
         <set>
             <if test="password != null">
                 password = #{newPassword},
             </if>
+            captcha = null,
             update_time = now(),
         </set>
-        where id = #{id} and password = #{password} and email = #{email}
+        where id = #{id} and password = #{password} and email = #{email} and captcha = #{captcha}
     </update>
     <!--    <insert id="insert" parameterType="com.example.psmusic.domain.Collect">-->
     <!--        insert into collect-->

@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-08 19:48:58
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-15 17:38:08
+ * @LastEditTime: 2024-04-15 18:29:54
  * @FilePath: \blog-manage\src\components\MyHeader.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -280,7 +280,7 @@ const setPassword = async (formEl: FormInstance | undefined) => {
 const sendCaptcha = async () => {
   loadingCaptcha.value = true;
   try {
-    const { code } = await sendEmail({ email: setPwdform.email });
+    const { code } = await sendEmail({ id: userInfo.id, email: setPwdform.email });
     if (code === 200) {
       showCaptcha.value = true;
       loadingCaptcha.value = false;

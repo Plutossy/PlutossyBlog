@@ -111,9 +111,12 @@ public class UserController {
 
     @RequestMapping(value = "/manage/send-email", method = RequestMethod.POST)
     public ResponseEntity<?> sendEmail(@RequestBody Map<String, Object> jsonData) throws MessagingException {
+        Long id = Long.valueOf((Integer) jsonData.get("id"));
         String email = (String) jsonData.get("email");
         // 生成随机验证码
         String verificationCode = RandomStringUtils.randomNumeric(6);
+        // 保存到数据库
+        userService.updateCaptcha(verificationCode, id, email);
 
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         // 配置邮件
@@ -157,7 +160,14 @@ public class UserController {
         String password = (String) jsonData.get("password");
         String newPassword = (String) jsonData.get("newPassword");
         String email = (String) jsonData.get("email");
-        Boolean flag = userService.updatePwd(newPassword, id, password, email); // MD5Utils加密密码
+        String captcha = (String) jsonData.get("Captcha");  // 验证码
+        if (captcha == null || captcha.equals("")) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put(Consts.CODE, 400);
+            jsonObject.put(Consts.MSG, "验证码不能为空！");
+            return jsonObject;
+        }
+        Boolean flag = userService.updatePwd(newPassword, id, password, email, captcha); // MD5Utils加密密码
         JSONObject jsonObject = new JSONObject();
         if (flag) {
             jsonObject.put(Consts.CODE, 200);

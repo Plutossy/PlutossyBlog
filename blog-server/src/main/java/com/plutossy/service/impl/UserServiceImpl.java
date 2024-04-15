@@ -58,11 +58,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Boolean updatePwd(String newPassword, Long id,  String password, String email) {
+    public Boolean updateCaptcha(String captcha, Long id, String email) {
         User user = userMapper.selectUserById(id);
         if (user == null) {
             return false;
         }
-        return userMapper.updatePwd(MD5Utils.code(newPassword), id, MD5Utils.code(password), email) > 0;
+        return userMapper.updateCaptcha(captcha, id, email) > 0;
+    }
+
+    @Override
+    public Boolean updatePwd(String newPassword, Long id,  String password, String email, String captcha) {
+        User user = userMapper.selectUserById(id);
+        if (user == null) {
+            return false;
+        }
+        return userMapper.updatePwd(MD5Utils.code(newPassword), id, MD5Utils.code(password), email, captcha) > 0;
     }
 }
