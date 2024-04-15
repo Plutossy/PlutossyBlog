@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-08 19:48:58
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-15 18:29:54
+ * @LastEditTime: 2024-04-15 18:39:34
  * @FilePath: \blog-manage\src\components\MyHeader.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -355,7 +355,7 @@ const sendCaptcha = async () => {
         <el-form-item prop="newPassword1">
           <el-input v-model="setPwdform.newPassword1" type="password" placeholder="新密码" :prefix-icon="Unlock" clearable />
         </el-form-item>
-        <el-form-item prop="newPassword2">
+        <el-form-item prop="newPassword2" v-if="setPwdform.newPassword1" class="animate__animated animate__bounceIn">
           <el-input v-model="setPwdform.newPassword2" type="password" placeholder="请再次输入新密码" :prefix-icon="Lock" clearable />
         </el-form-item>
       </el-form>
@@ -448,6 +448,10 @@ const sendCaptcha = async () => {
     }
   }
 }
+
+:v-deep(.el-drawer) {
+  position: relative;
+}
 .demo-drawer__content {
   .email-item {
     display: flex;
@@ -461,8 +465,10 @@ const sendCaptcha = async () => {
     }
   }
   .demo-drawer__footer {
-    float: right;
-    margin-top: 32px;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    margin: 32px;
   }
 }
 </style>
