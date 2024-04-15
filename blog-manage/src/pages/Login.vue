@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-09 08:56:06
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-12 18:01:28
+ * @LastEditTime: 2024-04-15 14:39:13
  * @FilePath: \blog-manage\src\pages\Login.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -93,7 +93,7 @@ const rules = reactive<FormRules<RuleForm>>({
   ],
   password: [
     { required: true, message: '请输入密码', trigger: 'blur' },
-    { min: 6, max: 12, message: '长度在 6 到 12 个字符', trigger: 'blur' },
+    { min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' },
     { pattern: /^\S*$/, message: '密码不能包含空格', trigger: 'blur' },
   ],
   nickname: [
@@ -102,7 +102,7 @@ const rules = reactive<FormRules<RuleForm>>({
   ],
   confirmPwd: [
     { required: true, message: '请再次输入密码', trigger: 'blur' },
-    { min: 6, max: 12, message: '长度在 6 到 12 个字符', trigger: 'blur' },
+    { min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' },
     { pattern: /^\S*$/, message: '密码不能包含空格', trigger: 'blur' },
     {
       validator: (_rule, value, callback) => {
@@ -159,7 +159,7 @@ const toLogin = async () => {
       ElNotification({
         message: '登录成功！',
         type: 'success',
-        duration: 2000,
+        duration: 1500,
         showClose: true,
       });
       router.push('/index');
@@ -167,7 +167,7 @@ const toLogin = async () => {
       ElNotification({
         message: '登录失败，请重试！',
         type: 'warning',
-        duration: 2000,
+        duration: 1500,
         showClose: true,
       });
     }

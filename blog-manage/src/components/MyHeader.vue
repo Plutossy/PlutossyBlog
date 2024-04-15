@@ -2,27 +2,129 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-08 19:48:58
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-12 18:31:33
+ * @LastEditTime: 2024-04-15 17:38:08
  * @FilePath: \blog-manage\src\components\MyHeader.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <script setup lang="ts">
-import { logout, getUserInfo } from '@/api/modules/user';
+import { logout, getUserInfo, sendEmail, verifyPwd, updatePwd } from '@/api/modules/user';
 import eventBus from '@/assets/js/eventBus';
 import store from '@/store/store';
+import { FormInstance, FormRules } from 'element-plus';
+import { User, Message, Cellphone, Unlock, Lock } from '@element-plus/icons-vue';
+import { clearForm } from '@/mixins';
+import { keysOf } from 'element-plus/es/utils/objects.mjs';
 
 let collapse = ref(false); //不折叠
 const emitter = eventBus();
 let fullscreen = ref(false); //不全屏
 const router = useRouter();
 
-let userInfo = reactive({
-  username: 'PlutoSsy',
-});
+interface userType {
+  [key: string]: any;
+}
+let userInfo = reactive<userType>({});
 let drawer = ref(false);
+
+watch(drawer, val => {
+  if (!val) {
+    loading.value = false;
+    drawer.value = false;
+    clearForm(setPwdform);
+  }
+});
+
+interface RuleForm {
+  // nickname: string;
+  email: string;
+  captcha: string;
+  password: string;
+  newPassword1: string;
+  newPassword2: string;
+}
+const setPwdRef = ref<FormInstance>();
+let setPwdform = reactive<RuleForm>({
+  // nickname: '',
+  email: '',
+  captcha: '',
+  password: '',
+  newPassword1: '',
+  newPassword2: '',
+});
+let showCaptcha = ref(false); // 是否显示验证码
+let loadingCaptcha = ref(false); // 获取验证码按钮loading
+let loading = ref(false);
+
+const validateEmail = (_rule: any, value: string, callback: any) => {
+  if (value === userInfo.email) {
+    callback();
+  } else {
+    callback(new Error('邮箱错误'));
+  }
+};
+
+// 验证旧密码是否正确
+let pwdIsTrue = ref(false);
+const verifyPassword = async () => {
+  try {
+    const { code } = await verifyPwd({ nickname: userInfo.nickname, password: setPwdform.password });
+    if (code === 200) {
+      pwdIsTrue.value = true;
+      console.log('密码正确！');
+    } else {
+      pwdIsTrue.value = false;
+      console.log('密码错误！');
+    }
+  } catch (error) {
+    pwdIsTrue.value = false;
+    console.log(error);
+  }
+};
+const validatePassword = (_rule: any, _value: string, callback: any) => {
+  verifyPassword();
+  if (pwdIsTrue.value) {
+    callback();
+  } else {
+    callback(new Error('密码错误'));
+  }
+};
+const validatePwdAgain = (_rule: any, value: string, callback: any) => {
+  if (value === setPwdform.newPassword1) {
+    callback();
+  } else {
+    callback(new Error('两次输入密码不一致'));
+  }
+};
+const rules = reactive<FormRules<RuleForm>>({
+  // nickname: [
+  //   { required: true, message: '请输入用户昵称', trigger: 'blur' },
+  //   { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' },
+  // ],
+  email: [
+    { required: true, message: '请输入邮箱', trigger: 'blur' },
+    { type: 'email', message: '邮箱格式不正确', trigger: 'blur' },
+    { validator: validateEmail, trigger: 'blur' },
+  ],
+  captcha: [{ required: true, message: '请输入验证码', trigger: 'blur' }],
+  password: [
+    { required: true, message: '请输入旧密码', trigger: 'blur' },
+    { min: 6, max: 20, message: '密码长度在6-20个字符之间', trigger: 'blur' },
+    { validator: validatePassword, trigger: 'blur' },
+  ],
+  newPassword1: [
+    { required: true, message: '请输入新密码', trigger: 'blur' },
+    { min: 6, max: 20, message: '密码长度在6-20个字符之间', trigger: 'blur' },
+  ],
+  newPassword2: [
+    { required: true, message: '请再次输入新密码', trigger: 'blur' },
+    { min: 6, max: 20, message: '密码长度在6-20个字符之间', trigger: 'blur' },
+    { validator: validatePwdAgain, trigger: 'blur' },
+  ],
+});
 
 // 全屏后点击esc退出全屏，也能监听到
 onMounted(() => {
+  // 获取用户信息
   getCurUserInfo();
   window.addEventListener('resize', () => {
     // fullscreenElement属性是当前全屏的元素，如果当前没有元素全屏，返回null
@@ -52,7 +154,11 @@ const getCurUserInfo = async () => {
     const userId = store.getters['user/userInfo'].id;
     const { code, data } = await getUserInfo({ id: userId });
     if (code === 200) {
-      userInfo = data;
+      // 处理用户信息 响应式不生效问题
+      // userInfo = reactive(data);
+      keysOf(data).forEach(key => {
+        userInfo[key.toString()] = data[key];
+      });
     }
   } catch (error) {
     console.log(error);
@@ -101,7 +207,7 @@ const handleFullScreen = () => {
   }
 };
 
-// 退出登录
+// 退出登录--设置密码
 const hadleCommand = async (command: string) => {
   if (command === 'logout') {
     try {
@@ -118,6 +224,73 @@ const hadleCommand = async (command: string) => {
   } else if (command === 'setPassword') {
     // router.push('/setPassword');
     drawer.value = true;
+  }
+};
+
+// 取消修改密码
+const cancelForm = (formEl: FormInstance | undefined) => {
+  // 清除校验结果
+  if (formEl) {
+    formEl.clearValidate();
+    formEl.resetFields();
+    clearForm(setPwdform);
+  }
+  drawer.value = false;
+};
+
+// 发起修改密码请求
+const updatePassword = async () => {
+  try {
+    loading.value = true;
+    const { code } = await updatePwd({
+      id: userInfo.id,
+      password: setPwdform.password,
+      newPassword: setPwdform.newPassword2,
+      email: setPwdform.email,
+    });
+    if (code === 200) {
+      // 清空表单
+      clearForm(setPwdform);
+      loading.value = false;
+      drawer.value = false;
+    }
+  } catch (error) {
+    console.log(error);
+    console.log('修改密码失败！');
+  } finally {
+    loading.value = false;
+  }
+};
+
+// 提交修改密码
+const setPassword = async (formEl: FormInstance | undefined) => {
+  if (!formEl) return;
+  await formEl.validate((valid, fields) => {
+    if (valid) {
+      console.log('submit!!');
+      updatePassword();
+    } else {
+      console.log('error submit!!', fields);
+      return false;
+    }
+  });
+};
+
+// 发送验证码
+const sendCaptcha = async () => {
+  loadingCaptcha.value = true;
+  try {
+    const { code } = await sendEmail({ email: setPwdform.email });
+    if (code === 200) {
+      showCaptcha.value = true;
+      loadingCaptcha.value = false;
+    }
+  } catch (error) {
+    loadingCaptcha.value = false;
+    console.log(error);
+    console.log('获取验证码失败！');
+  } finally {
+    loadingCaptcha.value = false;
   }
 };
 </script>
@@ -146,7 +319,7 @@ const hadleCommand = async (command: string) => {
       </div>
       <el-dropdown class="user-name" trigger="click" @command="hadleCommand">
         <span class="el-dropdown-link">
-          {{ userInfo.username }}
+          {{ userInfo.nickname }}
           <el-icon class="el-icon--right">
             <CaretBottom />
           </el-icon>
@@ -160,8 +333,37 @@ const hadleCommand = async (command: string) => {
       </el-dropdown>
     </div>
   </div>
-  <el-drawer v-model="drawer" title="修改密码" direction="rtl">
-    <span>Hi, there!</span>
+  <el-drawer v-model="drawer" direction="rtl" :show-close="false" style="height: 75vh">
+    <template #header="{ titleId, titleClass }">
+      <h4 :id="titleId" :class="titleClass">修改密码</h4>
+    </template>
+    <div class="demo-drawer__content">
+      <el-form :model="setPwdform" ref="setPwdRef" :rules="rules">
+        <el-form-item>
+          <el-input v-model="userInfo.nickname" disabled placeholder="用户昵称" :prefix-icon="User" />
+        </el-form-item>
+        <el-form-item prop="email" class="email-item">
+          <el-input v-model="setPwdform.email" class="item-input" clearable placeholder="用户邮箱" :prefix-icon="Message" />
+          <el-button :loading="loadingCaptcha" type="primary" @click="sendCaptcha" class="item-btn">获取验证码</el-button>
+        </el-form-item>
+        <el-form-item v-if="setPwdform.email === userInfo.email && showCaptcha" prop="captcha" class="animate__animated animate__bounceIn">
+          <el-input v-model="setPwdform.captcha" clearable placeholder="验证码" :prefix-icon="Cellphone" />
+        </el-form-item>
+        <el-form-item prop="password">
+          <el-input v-model="setPwdform.password" type="password" placeholder="旧密码" :prefix-icon="Lock" clearable />
+        </el-form-item>
+        <el-form-item prop="newPassword1">
+          <el-input v-model="setPwdform.newPassword1" type="password" placeholder="新密码" :prefix-icon="Unlock" clearable />
+        </el-form-item>
+        <el-form-item prop="newPassword2">
+          <el-input v-model="setPwdform.newPassword2" type="password" placeholder="请再次输入新密码" :prefix-icon="Lock" clearable />
+        </el-form-item>
+      </el-form>
+      <div class="demo-drawer__footer">
+        <el-button @click="cancelForm(setPwdRef)">取消</el-button>
+        <el-button type="primary" :loading="loading" @click="setPassword(setPwdRef)">{{ loading ? '提交中 ...' : '提交' }}</el-button>
+      </div>
+    </div>
   </el-drawer>
 </template>
 
@@ -244,6 +446,23 @@ const hadleCommand = async (command: string) => {
       align-items: center;
       cursor: pointer;
     }
+  }
+}
+.demo-drawer__content {
+  .email-item {
+    display: flex;
+    .item-input {
+      flex: 3;
+    }
+    .item-btn {
+      flex: 1;
+      height: 32px;
+      margin-left: 8px;
+    }
+  }
+  .demo-drawer__footer {
+    float: right;
+    margin-top: 32px;
   }
 }
 </style>
