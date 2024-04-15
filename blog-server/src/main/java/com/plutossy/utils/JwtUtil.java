@@ -23,7 +23,7 @@ public class JwtUtil {
 
                 //payload----载荷
                 .claim("nickname", nickname)
-                .claim("password", password) // MD5加密后的密码
+                .claim("password", MD5Utils.code(password)) // MD5加密后的密码
 //                //主题
 //                .setSubject("weifeng-test")
                 //有效时间

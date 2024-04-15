@@ -58,6 +58,16 @@
         where id = #{id}
     </select>
 
+    <update id="updatePwd" parameterType="com.plutossy.domain.User">
+        update t_user
+        <set>
+            <if test="password != null">
+                password = #{newPassword},
+            </if>
+            update_time = now(),
+        </set>
+        where id = #{id} and password = #{password} and email = #{email}
+    </update>
     <!--    <insert id="insert" parameterType="com.example.psmusic.domain.Collect">-->
     <!--        insert into collect-->
     <!--        <trim prefix="(" suffix=")" suffixOverrides=",">-->

@@ -8,8 +8,14 @@ import com.plutossy.service.UserService;
 import com.plutossy.utils.Consts;
 import com.plutossy.utils.JwtUtil;
 import com.plutossy.utils.MD5Utils;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpSession;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -18,6 +24,9 @@ import java.util.Map;
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private JavaMailSender mailSender;
 
     /* 判断是否登陆成功 */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
@@ -34,7 +43,7 @@ public class UserController {
             jsonObject.put(Consts.MSG, "登陆成功！");
             jsonObject.put(Consts.DATA, data);
             // 生成一个有效期为24小时的token
-            String token = JwtUtil.generateToken(nickname, MD5Utils.code(password), (long) (60 * 60 * 24));
+            String token = JwtUtil.generateToken(nickname, password, (long) (60 * 60 * 24));
             jsonObject.put(Consts.TOKEN, token);
             session.setAttribute(Consts.NICKNAME, nickname);
             return jsonObject;
@@ -97,6 +106,66 @@ public class UserController {
         jsonObject.put(Consts.CODE, 200);
         jsonObject.put(Consts.MSG, "查询成功！");
         jsonObject.put(Consts.DATA, userInfo);
+        return jsonObject;
+    }
+
+    @RequestMapping(value = "/manage/send-email", method = RequestMethod.POST)
+    public ResponseEntity<?> sendEmail(@RequestBody Map<String, Object> jsonData) throws MessagingException {
+        String email = (String) jsonData.get("email");
+        // 生成随机验证码
+        String verificationCode = RandomStringUtils.randomNumeric(6);
+
+        MimeMessage mimeMessage = mailSender.createMimeMessage();
+        // 配置邮件
+        MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
+        message.setFrom(email);
+        message.setTo(email);
+        message.setSubject("Email Verification");
+        message.setText("Your PlutoBlog verification code is: " + verificationCode);
+
+        // 发送邮件
+        mailSender.send(message.getMimeMessage());
+
+        // 存储验证码到数据库（示例代码，实际实现根据需求）
+        // ...
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put(Consts.CODE, 200);
+        jsonObject.put(Consts.MSG, "发送成功！");
+        return ResponseEntity.ok(jsonObject);
+    }
+
+    @RequestMapping(value = "/manage/verify-pwd", method = RequestMethod.POST)
+    public Object verifyPwd(@RequestBody Map<String, Object> jsonData) {
+        String nickname = (String) jsonData.get("nickname");
+        String password = (String) jsonData.get("password");
+        Long id = userService.verifyPassword(nickname, password);
+        JSONObject jsonObject = new JSONObject();
+        if (id != null) {
+            jsonObject.put(Consts.CODE, 200);
+            jsonObject.put(Consts.MSG, "密码正确！");
+            return jsonObject;
+        }
+        jsonObject.put(Consts.CODE, 400);
+        jsonObject.put(Consts.MSG, "密码错误！");
+        return jsonObject;
+    }
+
+    @RequestMapping(value = "/manage/update-pwd", method = RequestMethod.POST)
+    public Object updatePwd(@RequestBody Map<String, Object> jsonData) throws Exception {
+        Long id = Long.valueOf((Integer) jsonData.get("id"));
+        String password = (String) jsonData.get("password");
+        String newPassword = (String) jsonData.get("newPassword");
+        String email = (String) jsonData.get("email");
+        Boolean flag = userService.updatePwd(newPassword, id, password, email); // MD5Utils加密密码
+        JSONObject jsonObject = new JSONObject();
+        if (flag) {
+            jsonObject.put(Consts.CODE, 200);
+            jsonObject.put(Consts.MSG, "修改成功！");
+            return jsonObject;
+        }
+        jsonObject.put(Consts.CODE, 400);
+        jsonObject.put(Consts.MSG, "修改失败！");
         return jsonObject;
     }
 }

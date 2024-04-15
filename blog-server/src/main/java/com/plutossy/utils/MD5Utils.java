@@ -41,6 +41,7 @@ public class MD5Utils {
 
 
     public static void main(String[] args) {
+        System.out.println("123456");
         System.out.println(code("123456"));
     }
 }
