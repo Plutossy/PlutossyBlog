@@ -33,8 +33,7 @@
     <select id="verifyPassword" resultType="java.lang.Long">
         select id
         from t_user
-        where nickname = #{nickname}
-          and password = #{password}
+        where nickname = #{nickname} and password = #{password}
     </select>
 
     <select id="selectAllUser" resultMap="BaseResultMap">
@@ -59,11 +58,17 @@
         where id = #{id}
     </select>
 
+    <select id="selectCaptcha" resultType="java.lang.String">
+        select captcha
+        from t_user
+        where id=#{id} and email = #{email}
+    </select>
+
     <update id="updateCaptcha" parameterType="com.plutossy.domain.User">
         update t_user
         <set>
             <if test="captcha != null">
-                password = #{captcha},
+                captcha = #{captcha},
             </if>
             update_time = now(),
         </set>

@@ -40,6 +40,9 @@ public interface UserMapper {
     // 根据用户id查询用户信息
     public User selectUserById(Long id);
 
+    // 查询验证码
+    public String selectCaptcha(Long id, String email);
+
     // 更新验证码
     public Integer updateCaptcha(String captcha, Long id, String email);
 

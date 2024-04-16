@@ -7,17 +7,16 @@ import com.plutossy.domain.User;
 import com.plutossy.service.UserService;
 import com.plutossy.utils.Consts;
 import com.plutossy.utils.JwtUtil;
-import com.plutossy.utils.MD5Utils;
+import com.plutossy.utils.VerCodeGenerateUtil;
 import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpSession;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.Map;
 
 @RestController
@@ -25,8 +24,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private JavaMailSender mailSender;
+    private Date sendTime;
 
     /* 判断是否登陆成功 */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
@@ -110,31 +108,23 @@ public class UserController {
     }
 
     @RequestMapping(value = "/manage/send-email", method = RequestMethod.POST)
+    @Async
     public ResponseEntity<?> sendEmail(@RequestBody Map<String, Object> jsonData) throws MessagingException {
         Long id = Long.valueOf((Integer) jsonData.get("id"));
         String email = (String) jsonData.get("email");
         // 生成随机验证码
         String verificationCode = RandomStringUtils.randomNumeric(6);
         // 保存到数据库
-        userService.updateCaptcha(verificationCode, id, email);
-
-        MimeMessage mimeMessage = mailSender.createMimeMessage();
-        // 配置邮件
-        MimeMessageHelper message = new MimeMessageHelper(mimeMessage);
-        message.setFrom(email);
-        message.setTo(email);
-        message.setSubject("Email Verification");
-        message.setText("Your PlutoBlog verification code is: " + verificationCode);
-
-        // 发送邮件
-        mailSender.send(message.getMimeMessage());
-
-        // 存储验证码到数据库（示例代码，实际实现根据需求）
-        // ...
-
+        Boolean flag = userService.updateCaptcha(verificationCode, id, email);
+        sendTime = new Date(); // 记录发送时间
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put(Consts.CODE, 200);
-        jsonObject.put(Consts.MSG, "发送成功！");
+        if (flag) {
+            jsonObject.put(Consts.CODE, 200);
+            jsonObject.put(Consts.MSG, "发送成功！");
+            return ResponseEntity.ok(jsonObject);
+        }
+        jsonObject.put(Consts.CODE, 400);
+        jsonObject.put(Consts.MSG, "发送失败！");
         return ResponseEntity.ok(jsonObject);
     }
 
@@ -160,14 +150,35 @@ public class UserController {
         String password = (String) jsonData.get("password");
         String newPassword = (String) jsonData.get("newPassword");
         String email = (String) jsonData.get("email");
-        String captcha = (String) jsonData.get("Captcha");  // 验证码
-        if (captcha == null || captcha.equals("")) {
+        String captcha = (String) jsonData.get("captcha");  // 验证码
+
+        // 判断验证码是否为空
+        if (captcha == null || captcha.isEmpty()) {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put(Consts.CODE, 400);
             jsonObject.put(Consts.MSG, "验证码不能为空！");
             return jsonObject;
         }
-        Boolean flag = userService.updatePwd(newPassword, id, password, email, captcha); // MD5Utils加密密码
+
+        // 判断验证码是否正确
+        String captchaCode = userService.selectCaptcha(id, email);
+        if (!captcha.equals(captchaCode)) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put(Consts.CODE, 400);
+            jsonObject.put(Consts.MSG, "验证码错误！");
+            return jsonObject;
+        }
+
+        // 判断验证码是否过期
+        Date date = new Date();
+        if (VerCodeGenerateUtil.getMinute(sendTime, date) > 5) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put(Consts.CODE, 400);
+            jsonObject.put(Consts.MSG, "验证码已过期！");
+            return jsonObject;
+        }
+
+        Boolean flag = userService.updatePwd(newPassword, id, password, email, captcha); // 更新密码
         JSONObject jsonObject = new JSONObject();
         if (flag) {
             jsonObject.put(Consts.CODE, 200);

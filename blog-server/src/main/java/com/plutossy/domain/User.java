@@ -28,6 +28,16 @@ public class User implements Serializable {
     private String address;
     private String introduction;
 
+    public String getCaptcha() {
+        return captcha;
+    }
+
+    public void setCaptcha(String captcha) {
+        this.captcha = captcha;
+    }
+
+    private String captcha;
+
     public Long getId() {
         return id;
     }
@@ -193,6 +203,7 @@ public class User implements Serializable {
                 ", birth=" + birth +
                 ", address='" + address + '\'' +
                 ", introduction='" + introduction + '\'' +
+                ", captcha='" + captcha + '\'' +
                 '}';
     }
 }
