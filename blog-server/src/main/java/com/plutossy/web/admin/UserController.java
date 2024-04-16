@@ -11,6 +11,7 @@ import com.plutossy.utils.VerCodeGenerateUtil;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
@@ -68,32 +69,30 @@ public class UserController {
         // 通过PageDefault为pageNum和pageSize设置默认值
         Integer pageNum = jsonData.get("pageNum") == null ? PageDefault.PAGE_NUM : (Integer) jsonData.get("pageNum");
         Integer pageSize = jsonData.get("pageSize") == null ? PageDefault.PAGE_SIZE : (Integer) jsonData.get("pageSize");
-        Boolean type = (Boolean) jsonData.get("type");
+        boolean type = jsonData.get("type") != null && (Boolean) jsonData.get("type");
         JSONObject jsonObject = new JSONObject();
         // 如果type为空或者为false，则只查询当前用户信息
+        PageInfo<User> pageData;
         if (!type) {
             // 查询当前用户信息
-            PageInfo<User> pageData = userService.selectUserByIdAndType(pageNum, pageSize, id, false);
-            jsonObject.put(Consts.CODE, 200);
-            jsonObject.put(Consts.MSG, "查询成功！");
-            jsonObject.put(Consts.TOTAL, pageData.getTotal());
-            jsonObject.put(Consts.PAGES, pageData.getPages());
-            jsonObject.put(Consts.PAGE_NUM, pageData.getPageNum());
-            jsonObject.put(Consts.PAGE_SIZE, pageData.getPageSize());
-            jsonObject.put(Consts.DATA, pageData.getList());
-            return jsonObject;
+            pageData = userService.selectUserByIdAndType(pageNum, pageSize, id, false);
         } else {
             // 查询所有用户信息
-            PageInfo<User> pageData = userService.selectAllUser(pageNum, pageSize);
-            jsonObject.put(Consts.CODE, 200);
-            jsonObject.put(Consts.MSG, "查询成功！");
-            jsonObject.put(Consts.TOTAL, pageData.getTotal());
-            jsonObject.put(Consts.PAGES, pageData.getPages());
-            jsonObject.put(Consts.PAGE_NUM, pageData.getPageNum());
-            jsonObject.put(Consts.PAGE_SIZE, pageData.getPageSize());
-            jsonObject.put(Consts.DATA, pageData.getList());
-            return jsonObject;
+            pageData = userService.selectAllUser(pageNum, pageSize);
         }
+        return getObject(jsonObject, pageData);
+    }
+
+    @NotNull
+    private Object getObject(JSONObject jsonObject, PageInfo<User> pageData) {
+        jsonObject.put(Consts.CODE, 200);
+        jsonObject.put(Consts.MSG, "查询成功！");
+        jsonObject.put(Consts.TOTAL, pageData.getTotal());
+        jsonObject.put(Consts.PAGES, pageData.getPages());
+        jsonObject.put(Consts.PAGE_NUM, pageData.getPageNum());
+        jsonObject.put(Consts.PAGE_SIZE, pageData.getPageSize());
+        jsonObject.put(Consts.DATA, pageData.getList());
+        return jsonObject;
     }
 
     /* 根据id查询用户信息 */
@@ -145,7 +144,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/manage/update-pwd", method = RequestMethod.POST)
-    public Object updatePwd(@RequestBody Map<String, Object> jsonData) throws Exception {
+    public Object updatePwd(@RequestBody Map<String, Object> jsonData) {
         Long id = Long.valueOf((Integer) jsonData.get("id"));
         String password = (String) jsonData.get("password");
         String newPassword = (String) jsonData.get("newPassword");

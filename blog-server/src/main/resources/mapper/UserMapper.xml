@@ -53,7 +53,8 @@
     </select>
 
     <select id="selectUserById" resultMap="BaseResultMap">
-        select *
+        select
+        <include refid="Base_Columns"/>
         from t_user
         where id = #{id}
     </select>
