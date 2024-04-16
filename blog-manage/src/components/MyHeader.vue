@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-08 19:48:58
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-16 11:27:50
+ * @LastEditTime: 2024-04-16 14:14:04
  * @FilePath: \blog-manage\src\components\MyHeader.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -153,6 +153,7 @@ const getCurUserInfo = async () => {
     const userId = store.getters['user/userInfo'].id;
     const { code, data } = await getUserInfo({ id: userId });
     if (code === 200) {
+      store.commit('user/setUserInfo', data);
       // 处理用户信息 响应式不生效问题
       // userInfo = reactive(data);
       keysOf(data).forEach(key => {
@@ -214,6 +215,7 @@ const hadleCommand = async (command: string) => {
       if (code === 200) {
         console.log('退出登录成功！');
         store.dispatch('user/removeToken');
+        store.dispatch('user/removeUserInfo');
         router.push('/login');
       }
     } catch (error) {

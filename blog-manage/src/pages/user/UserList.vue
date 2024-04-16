@@ -2,13 +2,13 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-04-12 08:55:00
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-12 17:14:39
+ * @LastEditTime: 2024-04-16 11:51:10
  * @FilePath: \blog-manage\src\pages\user\UserList.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
   <header>
-    <MySearch type="user" :multipleSelection="multipleSelection" @searchResult="searchResult" />
+    <MySearch type="user" :multipleSelection="multipleSelection" @searchResult="searchResult" :showAdd="queryParam.type" />
   </header>
   <main>
     <el-table :data="userData" max-height="568" @selection-change="handleSelectionChange">
@@ -90,12 +90,13 @@ import { getUserList } from '@/api/modules/user';
 import { dayjs, ElNotification, ElMessageBox } from 'element-plus';
 import { beforeImgUpload } from '@/mixins';
 import config from '@/config';
+import store from '@/store/store';
 
 let queryParam = reactive({
   pageNum: 1,
   pageSize: 10,
-  type: true,
-  id: '1',
+  type: false,
+  id: '',
 });
 
 let newTotal = ref(0); // 总数
@@ -114,6 +115,8 @@ onMounted(() => {
 });
 
 const getData = async () => {
+  queryParam.type = store.getters['user/userInfo'].type;
+  queryParam.id = store.getters['user/userInfo'].id + ''; // 转化为字符串
   try {
     const { data, code, total } = await getUserList(queryParam);
     if (code === 200) {

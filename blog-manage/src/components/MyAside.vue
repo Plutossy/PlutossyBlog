@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts" setup>
-import eventBus from '../assets/js/eventBus';
+import eventBus from '@/assets/js/eventBus';
 import { View } from '@element-plus/icons-vue';
 
 const emitter = eventBus();
@@ -68,7 +68,7 @@ const routeLinks = reactive([
 
 onMounted(() => {
   // 通过eventbus监听折叠事件
-  emitter.on('collapse', val => {
+  emitter.on('collapse', (val: boolean) => {
     collapse.value = val;
   });
   // 处理刷新页面后的路由栏背景目不对应的问题
@@ -83,7 +83,7 @@ onMounted(() => {
   if (window.history && window.history.pushState) {
     window.addEventListener('popstate', () => {
       const path = window.location.pathname;
-      console.log(`path--${path}`);
+      // console.log(`path--${path}`);
       if (path !== '/index') {
         // onRoutes.value = path
         routeActive.value = path;
@@ -93,7 +93,7 @@ onMounted(() => {
 });
 
 // 点击添加背景色
-const routeHandler = e => {
+const routeHandler = (e: { index: string }) => {
   routeActive.value = e.index;
 };
 
@@ -183,3 +183,4 @@ onUnmounted(() => {
   background: #ffffff;
 }
 </style>
+pushState()pushState()
