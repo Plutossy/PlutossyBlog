@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-08 19:48:58
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-16 17:58:29
+ * @LastEditTime: 2024-04-16 18:39:54
  * @FilePath: \blog-manage\src\components\MyHeader.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -126,6 +126,7 @@ onMounted(() => {
   getCurUserInfo();
   window.addEventListener('resize', () => {
     // fullscreenElement属性是当前全屏的元素，如果当前没有元素全屏，返回null
+    const document: any = window.document;
     let isFull =
       document.fullscreenElement ||
       document.fullScreen ||
@@ -174,6 +175,7 @@ const collapseChange = () => {
 // 全屏事件
 const handleFullScreen = () => {
   if (fullscreen.value) {
+    const document: any = window.document;
     // 取消全屏
     if (document.exitFullscreen) {
       document.exitFullscreen();
@@ -190,7 +192,7 @@ const handleFullScreen = () => {
     fullscreen.value = false;
   } else {
     // 全屏
-    let element = document.documentElement;
+    let element: any = document.documentElement;
     if (element.requestFullscreen) {
       element.requestFullscreen();
     } else if (element.mozRequestFullScreen) {
@@ -380,6 +382,7 @@ const sendCaptcha = async () => {
   /* 取消标签点击时的蓝色 */
   -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
   -webkit-user-select: none;
+  user-select: none;
   -moz-user-focus: none;
   -moz-user-select: none;
 }
