@@ -156,11 +156,11 @@ onUnmounted(() => {
   margin: 10px 0;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 
   > li {
     font-size: medium;
     border-radius: 8px;
+    margin-bottom: 10px;
 
     &:hover {
       background-color: #f2711c;
@@ -183,4 +183,3 @@ onUnmounted(() => {
   background: #ffffff;
 }
 </style>
-pushState()pushState()
