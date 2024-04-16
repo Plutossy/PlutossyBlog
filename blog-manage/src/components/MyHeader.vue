@@ -386,7 +386,7 @@ const sendCaptcha = async () => {
 
 .header-container {
   position: relative;
-  background-color: rgba($color: #000000, $alpha: 0.5);
+  background-color: #464646;
   box-sizing: border-box;
   width: 100%;
   height: 70px;

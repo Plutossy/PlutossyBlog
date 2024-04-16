@@ -126,7 +126,7 @@ onUnmounted(() => {
   left: 0;
   top: 70px;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: #464646;
   color: #fff;
   overflow: scroll;
 }
@@ -164,7 +164,7 @@ onUnmounted(() => {
 }
 
 :deep(.el-switch--large) .el-switch__core .el-switch__action {
-  background: #000000;
+  background: #464646;
 }
 
 :deep(.el-switch--large) .el-switch__core .el-switch__action__light {
