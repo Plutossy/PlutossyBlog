@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-08 19:48:58
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-15 18:39:34
+ * @LastEditTime: 2024-04-16 11:27:50
  * @FilePath: \blog-manage\src\components\MyHeader.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -70,23 +70,21 @@ const verifyPassword = async () => {
     const { code } = await verifyPwd({ nickname: userInfo.nickname, password: setPwdform.password });
     if (code === 200) {
       pwdIsTrue.value = true;
-      console.log('密码正确！');
     } else {
       pwdIsTrue.value = false;
-      console.log('密码错误！');
     }
   } catch (error) {
     pwdIsTrue.value = false;
     console.log(error);
   }
 };
+let timer: any; // 定时器
 const validatePassword = (_rule: any, _value: string, callback: any) => {
   verifyPassword();
-  if (pwdIsTrue.value) {
-    callback();
-  } else {
-    callback(new Error('密码错误'));
-  }
+  // 解决verifyPassword后执行的bug
+  timer = setTimeout(() => {
+    pwdIsTrue.value ? callback() : callback(new Error('密码错误'));
+  }, 100);
 };
 const validatePwdAgain = (_rule: any, value: string, callback: any) => {
   if (value === setPwdform.newPassword1) {
@@ -147,6 +145,7 @@ onMounted(() => {
 
 onUnmounted(() => {
   window.removeEventListener('resize', () => {});
+  clearTimeout(timer);
 });
 
 const getCurUserInfo = async () => {
@@ -247,12 +246,19 @@ const updatePassword = async () => {
       password: setPwdform.password,
       newPassword: setPwdform.newPassword2,
       email: setPwdform.email,
+      captcha: setPwdform.captcha,
     });
     if (code === 200) {
       // 清空表单
       clearForm(setPwdform);
       loading.value = false;
       drawer.value = false;
+      ElNotification({
+        message: '修改密码成功！',
+        type: 'success',
+        duration: 1000,
+        showClose: true,
+      });
     }
   } catch (error) {
     console.log(error);
