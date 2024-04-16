@@ -96,4 +96,9 @@ public class UserServiceImpl implements UserService {
         }
         return userMapper.updatePwd(MD5Utils.code(newPassword), id, MD5Utils.code(password), email, captcha) > 0;
     }
+
+    @Override
+    public Boolean updateUser(User user) {
+        return userMapper.updateUser(user) > 0;
+    }
 }

@@ -178,6 +178,17 @@ public class UserController {
         }
 
         Boolean flag = userService.updatePwd(newPassword, id, password, email, captcha); // 更新密码
+        return getObject1(flag);
+    }
+
+    @RequestMapping(value = "/manage/updateUser", method = RequestMethod.POST)
+    public Object updateUser(@RequestBody User user) {
+        Boolean flag = userService.updateUser(user);
+        return getObject1(flag);
+    }
+
+    @NotNull
+    private Object getObject1(Boolean flag) {
         JSONObject jsonObject = new JSONObject();
         if (flag) {
             jsonObject.put(Consts.CODE, 200);

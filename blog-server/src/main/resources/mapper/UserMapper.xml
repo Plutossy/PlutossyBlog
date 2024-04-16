@@ -87,6 +87,53 @@
         </set>
         where id = #{id} and password = #{password} and email = #{email} and captcha = #{captcha}
     </update>
+
+    <update id="updateUserById" parameterType="com.plutossy.domain.User">
+        update t_user
+        <set>
+            <if test="nickname != null">
+                nickname = #{nickname},
+            </if>
+            <if test="avatar != null">
+                avatar = #{avatar},
+            </if>
+            <if test="username != null">
+                username = #{username},
+            </if>
+            <if test="sex != null">
+                sex = #{sex},
+            </if>
+            <if test="phone != null">
+                phone = #{phone},
+            </if>
+            <if test="email != null">
+                email = #{email},
+            </if>
+            <if test="github != null">
+                github = #{github},
+            </if>
+            <if test="csdn != null">
+                csdn = #{csdn},
+            </if>
+            <if test="qq != null">
+                qq = #{qq},
+            </if>
+            <if test="wechat != null">
+                wechat = #{wechat},
+            </if>
+            <if test="birth != null">
+                birth = #{birth},
+            </if>
+            <if test="address != null">
+                address = #{address},
+            </if>
+            <if test="introduction != null">
+                introduction = #{introduction},
+            </if>
+            update_time = now(),
+        </set>
+        where id = #{id}
+    </update>
     <!--    <insert id="insert" parameterType="com.example.psmusic.domain.Collect">-->
     <!--        insert into collect-->
     <!--        <trim prefix="(" suffix=")" suffixOverrides=",">-->

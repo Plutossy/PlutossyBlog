@@ -48,4 +48,7 @@ public interface UserMapper {
 
     // 更新密码
     public Integer updatePwd(String newPassword, Long id, String password, String email, String captcha);
+
+    // 更新用户信息
+    public Integer updateUser(User user);
 }
