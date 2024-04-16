@@ -1,3 +1,4 @@
+@import url('@/assets/scss/switchPrimary.scss');
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -45,6 +46,14 @@ a:hover {
 }
 
 a {
+  /* 取消a标签在移动端点击时的蓝色 */
+  -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+  -webkit-user-select: none;
+  -moz-user-focus: none;
+  -moz-user-select: none;
+}
+
+.cancel-bgc {
   /* 取消a标签在移动端点击时的蓝色 */
   -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
   -webkit-user-select: none;

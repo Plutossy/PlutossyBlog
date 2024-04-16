@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-08 19:48:58
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-16 14:14:04
+ * @LastEditTime: 2024-04-16 17:58:29
  * @FilePath: \blog-manage\src\components\MyHeader.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -304,13 +304,13 @@ const sendCaptcha = async () => {
 </script>
 
 <template>
-  <div class="header-container">
+  <div class="header-container switch-item">
     <!-- 折叠图片 -->
     <div class="collapse-btn" @click="collapseChange">
-      <el-icon v-if="!collapse">
+      <el-icon v-if="!collapse" class="switch-item">
         <Fold />
       </el-icon>
-      <el-icon v-else>
+      <el-icon v-else class="switch-item">
         <Expand />
       </el-icon>
     </div>
@@ -318,15 +318,15 @@ const sendCaptcha = async () => {
     <div class="header-right">
       <div class="btn-fullscreen" @click="handleFullScreen">
         <el-tooltip :content="fullscreen ? '取消全屏' : '全屏'" placement="bottom">
-          <img v-if="!fullscreen" src="@/assets/img/svg/screen.svg" />
-          <img v-else src="@/assets/img/svg/exitscreen.svg" />
+          <svg-icon v-if="!fullscreen" icon-class="screen" size="30px" class="switch-item-color" />
+          <svg-icon v-else icon-class="exitscreen" size="30px" class="switch-item-color" />
         </el-tooltip>
       </div>
       <div class="user-avator">
         <img src="@/assets/img/head.jpg" alt="管理员头像" />
       </div>
       <el-dropdown class="user-name" trigger="click" @command="hadleCommand">
-        <span class="el-dropdown-link">
+        <span class="el-dropdown-link switch-item">
           {{ userInfo.nickname }}
           <el-icon class="el-icon--right">
             <CaretBottom />
@@ -425,9 +425,11 @@ const sendCaptcha = async () => {
       display: flex;
       align-items: center;
 
-      img {
-        width: 30px;
-        height: 30px;
+      :deep(.el-only-child__content) {
+        display: flex;
+        align-items: center;
+      }
+      .svg-icon {
         cursor: pointer;
       }
     }

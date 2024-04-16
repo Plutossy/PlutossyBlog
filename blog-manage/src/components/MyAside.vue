@@ -1,14 +1,16 @@
 <template>
-  <div class="sidebar">
+  <div class="sidebar switch-item">
     <el-menu class="sider-menu" :collapse="collapse" background-color="rgba(0, 0, 0, 0)" text-color="rgba(255, 255, 255, 0.9)" active-text-color="#ffffff" router>
       <el-menu-item v-for="item in routeLinks" :key="item.index" :index="item.path" @click="routeHandler" :style="{ 'background-color': routeActive.includes(item.path) ? '#f2711c' : '' }">
-        <el-icon size="larger">
+        <el-icon size="larger" class="switch-item-color-borderColor">
           <component :is="item.icon"></component>
         </el-icon>
-        <template #title>{{ item.title }}</template>
+        <template #title>
+          <span class="switch-item-color-borderColor">{{ item.title }}</span>
+        </template>
       </el-menu-item>
     </el-menu>
-    <el-switch v-model="switchLight" size="large" class="switch-light" style="--el-switch-on-color: #000000; --el-switch-off-color: #ffffff" :active-action-icon="View" :inactive-action-icon="View" @click="switchHandler" />
+    <el-switch v-model="switchLight" size="large" class="switch-light cancel-bgc" style="--el-switch-on-color: #000000; --el-switch-off-color: #ffffff" :active-action-icon="View" :inactive-action-icon="View" @click="switchHandler" />
   </div>
 </template>
 
@@ -100,26 +102,12 @@ const routeHandler = (e: { index: string }) => {
 // 点击切换主题
 const switchHandler = () => {
   const switchIcon: any = document.querySelector('.el-switch__action');
-
-  // const headerElement: any = document.querySelector('.header-container')
-  const sidebarElement: any = document.querySelector('.sidebar');
-  const sidebarLis: any = document.querySelectorAll('.sidebar li');
-
+  const html: any = document.documentElement;
+  html.dataset.theme = switchLight.value ? 'light' : 'dark';
   if (switchLight.value) {
     switchIcon.classList.add('el-switch__action__light');
-
-    // headerElement.classList.add('light')
-    sidebarElement.classList.add('light');
-    sidebarLis.forEach((item: any) => {
-      item.style.color = '#000000';
-    });
   } else {
     switchIcon.classList.remove('el-switch__action__light');
-
-    sidebarElement.classList.remove('light');
-    sidebarLis.forEach((item: any) => {
-      item.style.color = '#ffffff';
-    });
   }
 };
 
@@ -131,7 +119,7 @@ onUnmounted(() => {
 });
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .sidebar {
   display: block;
   position: absolute;
