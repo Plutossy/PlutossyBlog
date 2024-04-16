@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-03-04 10:53:37
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-10 18:33:24
+ * @LastEditTime: 2024-04-16 16:56:55
  * @FilePath: \blog-manage\src\main.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -33,6 +33,9 @@ import hljs from 'highlight.js';
 
 // codemirror 编辑器的相关资源
 import Codemirror from 'codemirror';
+
+// svg图标
+import 'virtual:svg-icons-register';
 
 VMdEditor.Codemirror = Codemirror;
 VMdEditor.use(vuepressTheme, {

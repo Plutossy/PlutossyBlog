@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-03-04 10:53:37
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-12 10:10:15
+ * @LastEditTime: 2024-04-16 16:54:52
  * @FilePath: \blog-manage\vite.config.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -18,6 +18,9 @@ import commonjs from '@rollup/plugin-commonjs';
 import AutoImport from 'unplugin-auto-import/vite';
 import Components from 'unplugin-vue-components/vite';
 import { ElementPlusResolver } from 'unplugin-vue-components/resolvers';
+
+// 导入svg插件
+import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
 
 // import { pxToViewport } from 'postcss-px-to-viewport';
 
@@ -50,8 +53,14 @@ export default defineConfig(({ mode }) => {
         dirs: ['src/components'], // 组件存放的文件夹，默认为 src/components
         resolvers: [ElementPlusResolver()],
       }),
+      // 代码高亮
       prismjs({
         languages: 'all',
+      }),
+      // svg图标
+      createSvgIconsPlugin({
+        iconDirs: [resolve(process.cwd(), 'src/assets/icons')],
+        symbolId: 'icon-[dir]-[name]',
       }),
       ViteRestart({
         restart: ['vite.config.ts'],
