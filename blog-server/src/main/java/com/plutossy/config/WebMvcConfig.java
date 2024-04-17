@@ -19,7 +19,8 @@ public class WebMvcConfig extends WebMvcConfigurationSupport {
         registry.addInterceptor(jwtIntercepter)
                 .addPathPatterns("/manage/**")
                 .addPathPatterns("/logout")
-                .excludePathPatterns("/login");
+                .excludePathPatterns("/login")
+                .excludePathPatterns("/register");
     }
 
     @Override

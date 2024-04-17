@@ -11,6 +11,12 @@ public interface UserService {
     //    验证用户密码是否正确
     public Long verifyPassword(String nickname, String password);
 
+    //    注册
+    public Boolean register(User user);
+
+    //    查询所有用户nickname
+    public List<String> selectAllNickname();
+
     //    查询所有用户信息
     public PageInfo<User> selectAllUser(Integer pageNum, Integer pageSize);
 

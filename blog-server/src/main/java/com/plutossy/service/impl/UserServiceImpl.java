@@ -1,6 +1,5 @@
 package com.plutossy.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.plutossy.dao.UserMapper;
 import com.plutossy.domain.User;
@@ -12,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 // 用户service实现类
 @Service
@@ -32,6 +33,30 @@ public class UserServiceImpl implements UserService {
     @Override
     public Long verifyPassword(String nickname, String password) {
         return userMapper.verifyPassword(nickname, MD5Utils.code(password));
+    }
+
+    /**
+     * 注册
+     *
+     * @param user
+     * @return
+     */
+    @Override
+    public Boolean register(User user) {
+        // 加密密码
+        user.setAvatar("https://plutossy.oss-cn-beijing.aliyuncs.com/avatar/default.jpg");
+        user.setPassword(MD5Utils.code(user.getPassword()));
+        return userMapper.register(user) > 0;
+    }
+
+    /**
+     * 查询所有用户nickname
+     *
+     * @return
+     */
+    @Override
+    public List<String> selectAllNickname() {
+        return userMapper.selectAllNickname();
     }
 
     /**

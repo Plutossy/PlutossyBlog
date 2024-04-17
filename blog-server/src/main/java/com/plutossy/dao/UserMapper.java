@@ -19,6 +19,12 @@ public interface UserMapper {
     // 验证用户密码是否正确
     public Long verifyPassword(String nickname, String password);
 
+    // 注册
+    public Integer register(User user);
+
+    // 查询所有用户nickname
+    public List<String> selectAllNickname();
+
     // 查询所有用户信息
     @Select("select " + Base_Columns + " from t_user order by create_time")
     public List<User> selectAllUserByCondition();

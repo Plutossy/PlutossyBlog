@@ -27,6 +27,32 @@ public class UserController {
 
     private Date sendTime;
 
+
+    @NotNull
+    private Object getObject(JSONObject jsonObject, PageInfo<User> pageData) {
+        jsonObject.put(Consts.CODE, 200);
+        jsonObject.put(Consts.MSG, "查询成功！");
+        jsonObject.put(Consts.TOTAL, pageData.getTotal());
+        jsonObject.put(Consts.PAGES, pageData.getPages());
+        jsonObject.put(Consts.PAGE_NUM, pageData.getPageNum());
+        jsonObject.put(Consts.PAGE_SIZE, pageData.getPageSize());
+        jsonObject.put(Consts.DATA, pageData.getList());
+        return jsonObject;
+    }
+
+    @NotNull
+    private Object getObject1(Boolean flag) {
+        JSONObject jsonObject = new JSONObject();
+        if (flag) {
+            jsonObject.put(Consts.CODE, 200);
+            jsonObject.put(Consts.MSG, "成功！");
+            return jsonObject;
+        }
+        jsonObject.put(Consts.CODE, 400);
+        jsonObject.put(Consts.MSG, "失败！");
+        return jsonObject;
+    }
+
     /* 判断是否登陆成功 */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public Object login(@RequestBody Map<String, Object> jsonData, HttpSession session) {
@@ -49,6 +75,24 @@ public class UserController {
         }
         jsonObject.put(Consts.CODE, 400);
         jsonObject.put(Consts.MSG, "用户名或密码错误！");
+        return jsonObject;
+    }
+
+    /* 注册 */
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
+    public Object register(@RequestBody User user) {
+        String nickname = user.getNickname();
+        JSONObject jsonObject = new JSONObject();
+        userService.selectAllNickname().forEach(name -> {
+            if (name.equals(nickname)) {
+                jsonObject.put(Consts.CODE, 400);
+                jsonObject.put(Consts.MSG, "用户昵称已存在！");
+            }
+        });
+        if (jsonObject.isEmpty()) {
+            Boolean flag = userService.register(user);
+            return getObject1(flag);
+        }
         return jsonObject;
     }
 
@@ -81,18 +125,6 @@ public class UserController {
             pageData = userService.selectAllUser(pageNum, pageSize);
         }
         return getObject(jsonObject, pageData);
-    }
-
-    @NotNull
-    private Object getObject(JSONObject jsonObject, PageInfo<User> pageData) {
-        jsonObject.put(Consts.CODE, 200);
-        jsonObject.put(Consts.MSG, "查询成功！");
-        jsonObject.put(Consts.TOTAL, pageData.getTotal());
-        jsonObject.put(Consts.PAGES, pageData.getPages());
-        jsonObject.put(Consts.PAGE_NUM, pageData.getPageNum());
-        jsonObject.put(Consts.PAGE_SIZE, pageData.getPageSize());
-        jsonObject.put(Consts.DATA, pageData.getList());
-        return jsonObject;
     }
 
     /* 根据id查询用户信息 */
@@ -187,16 +219,4 @@ public class UserController {
         return getObject1(flag);
     }
 
-    @NotNull
-    private Object getObject1(Boolean flag) {
-        JSONObject jsonObject = new JSONObject();
-        if (flag) {
-            jsonObject.put(Consts.CODE, 200);
-            jsonObject.put(Consts.MSG, "修改成功！");
-            return jsonObject;
-        }
-        jsonObject.put(Consts.CODE, 400);
-        jsonObject.put(Consts.MSG, "修改失败！");
-        return jsonObject;
-    }
 }

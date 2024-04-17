@@ -30,10 +30,54 @@
         id, nickname, avatar, username, type, create_time, update_time, sex, phone, email, github, csdn, qq, wechat, birth, address, introduction
     </sql>
 
-    <select id="verifyPassword" resultType="java.lang.Long">
+    <select id="verifyPassword" resultType="java.lang.Long" parameterType="java.util.HashMap">
         select id
         from t_user
         where nickname = #{nickname} and password = #{password}
+    </select>
+
+    <insert id="register" parameterType="java.util.HashMap">
+        insert into t_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="nickname != null">
+                nickname,
+            </if>
+            <if test="avatar != null">
+                avatar,
+            </if>
+            <if test="username != null">
+                username,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            type,create_time,
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="nickname != null">
+                #{nickname},
+            </if>
+            <if test="avatar != null">
+                #{avatar},
+            </if>
+            <if test="username != null">
+                #{username},
+            </if>
+            <if test="password != null">
+                #{password},
+            </if>
+            <if test="email != null">
+                #{email},
+            </if>
+            false,now(),
+        </trim>
+    </insert>
+
+    <select id="selectAllNickname">
+        select nickname from t_user
     </select>
 
     <select id="selectAllUser" resultMap="BaseResultMap">
@@ -43,7 +87,7 @@
         order by create_time
     </select>
 
-    <select id="selectUserByIdAndType" resultMap="BaseResultMap">
+    <select id="selectUserByIdAndType" resultMap="BaseResultMap" parameterType="java.util.HashMap">
         select
         <include refid="Base_Columns"/>
         from t_user
@@ -52,20 +96,20 @@
         order by create_time
     </select>
 
-    <select id="selectUserById" resultMap="BaseResultMap">
+    <select id="selectUserById" resultMap="BaseResultMap" parameterType="java.lang.Long">
         select
         <include refid="Base_Columns"/>
         from t_user
         where id = #{id}
     </select>
 
-    <select id="selectCaptcha" resultType="java.lang.String">
+    <select id="selectCaptcha" resultType="java.lang.String" parameterType="java.util.HashMap">
         select captcha
         from t_user
         where id=#{id} and email = #{email}
     </select>
 
-    <update id="updateCaptcha" parameterType="com.plutossy.domain.User">
+    <update id="updateCaptcha" parameterType="java.util.HashMap">
         update t_user
         <set>
             <if test="captcha != null">
@@ -76,7 +120,7 @@
         where id = #{id} and email = #{email}
     </update>
 
-    <update id="updatePwd" parameterType="com.plutossy.domain.User">
+    <update id="updatePwd" parameterType="java.util.HashMap">
         update t_user
         <set>
             <if test="password != null">
@@ -134,43 +178,4 @@
         </set>
         where id = #{id}
     </update>
-    <!--    <insert id="insert" parameterType="com.example.psmusic.domain.Collect">-->
-    <!--        insert into collect-->
-    <!--        <trim prefix="(" suffix=")" suffixOverrides=",">-->
-    <!--            <if test="id != null">-->
-    <!--                id,-->
-    <!--            </if>-->
-    <!--            <if test="userId != null">-->
-    <!--                user_id,-->
-    <!--            </if>-->
-    <!--            <if test="type != null">-->
-    <!--                type,-->
-    <!--            </if>-->
-    <!--            <if test="songId != null">-->
-    <!--                song_id,-->
-    <!--            </if>-->
-    <!--            <if test="songListId != null">-->
-    <!--                song_list_id,-->
-    <!--            </if>-->
-    <!--            create_time,-->
-    <!--        </trim>-->
-    <!--        <trim prefix=" values (" suffix=")" suffixOverrides=",">-->
-    <!--            <if test="id != null">-->
-    <!--                #{id},-->
-    <!--            </if>-->
-    <!--            <if test="userId != null">-->
-    <!--                #{userId},-->
-    <!--            </if>-->
-    <!--            <if test="type != null">-->
-    <!--                #{type},-->
-    <!--            </if>-->
-    <!--            <if test="songId != null">-->
-    <!--                #{songId},-->
-    <!--            </if>-->
-    <!--            <if test="songListId != null">-->
-    <!--                #{songListId},-->
-    <!--            </if>-->
-    <!--            now(),-->
-    <!--        </trim>-->
-    <!--    </insert>-->
 </mapper>
