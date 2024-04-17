@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-09 08:56:06
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-16 14:07:55
+ * @LastEditTime: 2024-04-17 11:45:44
  * @FilePath: \blog-manage\src\pages\Login.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -18,7 +18,7 @@
       </div>
       <div class="toLogin">
         <p>已有账号？</p>
-        <el-button @click="loginToogle">去登录</el-button>
+        <el-button @click="loginToggle">去登录</el-button>
       </div>
     </div>
     <div class="tips">
@@ -31,23 +31,26 @@
       </div>
       <div class="toRegister">
         <p>没有账号？</p>
-        <el-button @click="loginToogle">去注册</el-button>
+        <el-button @click="loginToggle">去注册</el-button>
       </div>
     </div>
 
     <div class="login-register-wrap" :style="{ transform: tologin ? 'translate(-55.88%, -50%)' : 'translate(55.88%, -50%)' }">
       <div class="main">
-        <div v-if="tologin" class="title">LOGIN</div>
-        <div v-else class="title">REGISTER</div>
+        <div v-if="tologin" class="title login">LOGIN</div>
+        <div v-else class="title register">REGISTER</div>
         <div class="content">
           <el-form ref="ruleFormRef" :model="ruleForm" :rules="rules" label-width="100px" size="large">
-            <el-form-item v-if="!tologin" label="用户名：" prop="username" size="large">
+            <el-form-item v-if="!tologin" label="用户名：" prop="username" size="large" class="animate__animated animate__bounceIn">
               <el-input v-model="ruleForm.username" placeholder="请输入用户名" clearable></el-input>
             </el-form-item>
-            <el-form-item label="昵&nbsp;&nbsp;&nbsp;&nbsp;称：" prop="nickname" size="large" class="animate__animated animate__bounceIn">
+            <el-form-item label="昵称：" prop="nickname" size="large">
               <el-input v-model="ruleForm.nickname" placeholder="请输入昵称" clearable></el-input>
             </el-form-item>
-            <el-form-item label="密&nbsp;&nbsp;&nbsp;&nbsp;码：" prop="password" size="large">
+            <el-form-item v-if="!tologin" label="邮箱：" prop="email" size="large" class="animate__animated animate__bounceIn">
+              <el-input v-model="ruleForm.email" clearable placeholder="请输入邮箱" />
+            </el-form-item>
+            <el-form-item label="密码：" prop="password" size="large">
               <el-input type="password" v-model="ruleForm.password" placeholder="请输入密码" show-password></el-input>
             </el-form-item>
             <el-form-item v-if="!tologin" label="确认密码：" prop="confirmPwd" size="large" class="animate__animated animate__bounceIn">
@@ -65,13 +68,16 @@
 </template>
 
 <script setup lang="ts">
-import { login } from '@/api/modules/user';
+import { login, register } from '@/api/modules/user';
 import store from '@/store/store';
 import { FormInstance, FormRules } from 'element-plus';
+import { clearForm } from '@/mixins';
+
 interface RuleForm {
   // 表单数据类型
   username: string;
   nickname: string;
+  email: string;
   password: string;
   confirmPwd: string;
 }
@@ -80,10 +86,11 @@ const ruleFormRef: any = ref<FormInstance>(); // 表单实例
 let tologin = ref(true);
 let ruleForm = reactive<RuleForm>({
   // 表单数据
-  nickname: 'admin',
-  username: 'PlutoSSY',
-  password: '123456',
-  confirmPwd: '123456',
+  nickname: '',
+  username: '',
+  email: '',
+  password: '',
+  confirmPwd: '',
 });
 const rules = reactive<FormRules<RuleForm>>({
   // 表单验证规则
@@ -99,6 +106,10 @@ const rules = reactive<FormRules<RuleForm>>({
   nickname: [
     { required: true, message: '请输入昵称', trigger: 'blur' },
     { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' },
+  ],
+  email: [
+    { required: true, message: '请输入邮箱', trigger: 'blur' },
+    { type: 'email', message: '请输入正确的邮箱地址', trigger: ['blur', 'change'] },
   ],
   confirmPwd: [
     { required: true, message: '请再次输入密码', trigger: 'blur' },
@@ -122,8 +133,12 @@ const appContext = instance?.appContext;
 const apis = appContext?.config.globalProperties.$apis;
  */
 // 切换登录注册
-const loginToogle = () => {
+const loginToggle = () => {
   tologin.value = !tologin.value;
+  if (tologin.value) {
+    ruleFormRef.value.resetFields();
+    clearForm(ruleForm);
+  }
 };
 
 // 提交表单
@@ -175,32 +190,31 @@ const toLogin = async () => {
   }
 };
 const toRegister = async () => {
-  // register() // 注册
-  if (ruleForm.username === 'admin') {
+  const { code, msg } = await register(ruleForm); // 注册
+  if (code === 200) {
     ElNotification({
-      message: '用户名重复，请尝试修改用户名！',
-      type: 'info',
+      message: '注册成功，请登录吧！',
+      type: 'success',
+      duration: 1000,
+      showClose: true,
     });
-    // 聚焦到用户名输入框
-    ruleFormRef.value.validateField('username');
-  } else if (ruleForm.nickname === 'PlutoSSY') {
+    tologin.value = true;
+  } else if (code === 400 && msg === '用户昵称已存在！') {
     ElNotification({
-      message: '昵称重复，请尝试修改昵称！',
-      type: 'info',
+      message: msg,
+      type: 'warning',
+      duration: 1000,
+      showClose: true,
     });
     // 聚焦到昵称输入框
     ruleFormRef.value.validateField('nickname');
   } else {
-    // 清空表单数据
-    // ruleForm.username = '' // 用户名不清空
-    ruleForm.nickname = '';
-    ruleForm.password = '';
-    ruleForm.confirmPwd = '';
     ElNotification({
-      message: '注册成功，请登录吧！',
-      type: 'success',
+      message: '注册失败，请重试！',
+      type: 'error',
+      duration: 1000,
+      showClose: true,
     });
-    tologin.value = true;
   }
 };
 </script>
@@ -336,18 +350,25 @@ const toRegister = async () => {
       //   // background-position: center;
       //   filter: blur(10px);
       // }
+      display: flex;
+      flex-direction: column;
       .title {
         width: 100%;
         font-size: 30px;
         font-weight: 600;
         color: #fff;
         text-align: center;
-        margin: 50px auto;
+      }
+      .login {
+        margin: 100px auto;
+      }
+      .register {
+        margin: 56px auto 48px;
       }
 
       .content {
         // width: 100%;
-        height: 250px;
+        // height: 250px;
         display: flex;
         align-items: center;
         border-radius: 5px;
@@ -356,7 +377,11 @@ const toRegister = async () => {
         .el-form {
           width: 100%;
           margin: 0 10px;
-
+          .captcha-btn {
+            .el-button {
+              width: 100%;
+            }
+          }
           .btn button {
             width: 100%;
             height: 36px;
