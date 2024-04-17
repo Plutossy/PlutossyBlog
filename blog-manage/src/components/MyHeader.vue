@@ -100,7 +100,7 @@ const rules = reactive<FormRules<RuleForm>>({
   // ],
   email: [
     { required: true, message: '请输入邮箱', trigger: 'blur' },
-    { type: 'email', message: '邮箱格式不正确', trigger: 'blur' },
+    { pattern: /^([a-zA-Z0-9]+[-_\.]?)+@[a-zA-Z0-9]+\.[a-z]+$/, message: '邮箱格式不正确', trigger: 'blur' },
     { validator: validateEmail, trigger: 'blur' },
   ],
   captcha: [{ required: true, message: '请输入验证码', trigger: 'blur' }],

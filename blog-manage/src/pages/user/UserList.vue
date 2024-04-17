@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-04-12 08:55:00
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-16 11:51:10
+ * @LastEditTime: 2024-04-17 15:18:38
  * @FilePath: \blog-manage\src\pages\user\UserList.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -71,8 +71,8 @@
           <el-button type="primary" link @click="getCollect(scope.row.id)">收藏</el-button>
           <div class="el-divider el-divider--vertical" direction="vertical" />
           <el-button type="primary" link @click="handleEdit(scope.row)">编辑</el-button>
-          <div class="el-divider el-divider--vertical" direction="vertical" />
-          <el-button type="primary" link @click="handleDelete(scope.row.id)">删除</el-button>
+          <div v-if="!scope.row.type" class="el-divider el-divider--vertical" direction="vertical" />
+          <el-button v-if="!scope.row.type" type="primary" link @click="handleDelete(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -134,16 +134,16 @@ const getTempParams = () => {
 };
 
 // 把已经选择的项赋值给multipleSelection
-const handleSelectionChange = val => {
+const handleSelectionChange = (val: any) => {
   multipleSelection.value = val;
 };
 
 // 更新图片
-const uploadUrl = id => {
+const uploadUrl = (id: any) => {
   return `${config.HOST}/user/updateUserPic?id=${id}`;
 };
 // 上传图片之后要做的事情
-const handleImgSuccess = (res, file) => {
+const handleImgSuccess = (res: { code: number }, _file: any) => {
   if (res.code === 1) {
     ElNotification({
       message: '头像上传成功',
@@ -159,12 +159,12 @@ const handleImgSuccess = (res, file) => {
 };
 
 // 格式化时间
-const formatterDate = (row, column, cellValue) => {
+const formatterDate = (_row: any, _column: any, cellValue: string | number | Date | dayjs.Dayjs | null | undefined) => {
   return dayjs(cellValue).format('YYYY-MM-DD');
 };
 
 // 收藏
-const getCollect = id => {
+const getCollect = (id: any) => {
   console.log('getCollect--', id);
   router.push({
     path: '/user/collect',
@@ -175,12 +175,13 @@ const getCollect = id => {
 };
 
 // 编辑
-const handleEdit = row => {
+const handleEdit = (row: any) => {
   dialogVisible.value = true;
   dialogTitle.value = '编辑';
   dialogData.value = row;
+  console.log('handleEdit--', row);
 };
-const handleDelete = id => {
+const handleDelete = (id: any) => {
   console.log(id);
   ElMessageBox.confirm('此操作将永久删除该文件, 是否继续?', '提示', {
     confirmButtonText: '确定',
@@ -203,7 +204,7 @@ const handleDelete = id => {
   getData();
 };
 
-const searchResult = data => {
+const searchResult = (data: any) => {
   console.log('searchResult--', data);
   // 因为 reactive 不能直接赋值，所以用 splice
   userData.splice(0, userData.length, data);
@@ -254,3 +255,4 @@ main {
   max-width: 50vw;
 }
 </style>
+_file_row_column_$event_$event_$event

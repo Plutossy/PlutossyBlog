@@ -132,7 +132,7 @@
         where id = #{id} and password = #{password} and email = #{email} and captcha = #{captcha}
     </update>
 
-    <update id="updateUserById" parameterType="com.plutossy.domain.User">
+    <update id="updateUser" parameterType="com.plutossy.domain.User">
         update t_user
         <set>
             <if test="nickname != null">
