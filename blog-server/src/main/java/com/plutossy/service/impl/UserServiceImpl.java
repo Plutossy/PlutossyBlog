@@ -1,5 +1,6 @@
 package com.plutossy.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageInfo;
 import com.plutossy.dao.UserMapper;
 import com.plutossy.domain.User;
@@ -124,6 +125,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Boolean updateUser(User user) {
+//        // 格式化address字段为String字符串
+//        user.setAddress(JSONObject.parseObject(user.getAddress()).toJSONString());
         return userMapper.updateUser(user) > 0;
     }
 }

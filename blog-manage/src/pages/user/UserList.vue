@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-04-12 08:55:00
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-17 15:18:38
+ * @LastEditTime: 2024-04-17 18:34:59
  * @FilePath: \blog-manage\src\pages\user\UserList.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -87,7 +87,7 @@
 
 <script setup lang="ts">
 import { getUserList } from '@/api/modules/user';
-import { dayjs, ElNotification, ElMessageBox } from 'element-plus';
+import { dayjs } from 'element-plus';
 import { beforeImgUpload } from '@/mixins';
 import config from '@/config';
 import store from '@/store/store';
@@ -179,7 +179,6 @@ const handleEdit = (row: any) => {
   dialogVisible.value = true;
   dialogTitle.value = '编辑';
   dialogData.value = row;
-  console.log('handleEdit--', row);
 };
 const handleDelete = (id: any) => {
   console.log(id);
@@ -255,4 +254,3 @@ main {
   max-width: 50vw;
 }
 </style>
-_file_row_column_$event_$event_$event

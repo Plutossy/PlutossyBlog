@@ -35,8 +35,8 @@
       <el-form-item label="生日" prop="birth">
         <el-date-picker v-model="detailData.birth" type="date" placeholder="请选择日期" format="YYYY-MM-DD" style="width: 100%" :disabled-date="disabledDate" />
       </el-form-item>
-      <el-form-item label="所在地" prop="address">
-        <el-input v-model="detailData.address" autocomplete="off" />
+      <el-form-item label="所在地" prop="address" class="address">
+        <el-cascader v-model="detailData.address" :options="addressOptions" :props="addressProps" @change="addressChange" placeholder="请选择所在地" clearable show-all-levels />
       </el-form-item>
       <el-form-item label="个人简介" prop="introduction">
         <el-input type="textarea" :rows="3" v-model="detailData.introduction" autocomplete="off" />
@@ -52,9 +52,10 @@
 </template>
 
 <script setup lang="ts">
-import { ElMessageBox, ElNotification } from 'element-plus';
 import type { FormInstance, FormRules } from 'element-plus';
 import { editUser } from '@/api/modules/user';
+// 导入地区数据
+import { addressToTree } from '@/assets/ts/address';
 
 const props = defineProps({
   dialogVisible: {
@@ -73,6 +74,14 @@ const props = defineProps({
 let emit = defineEmits(); // 如果用的setup函数则是用 cotext.emit 去使用
 let detailVisible = ref(false);
 
+const addressProps = {
+  value: 'label',
+  label: 'label',
+  children: 'children',
+  expandTrigger: 'hover' as const,
+};
+const addressOptions = addressToTree(); // 地区数据
+
 // 表单数据类型
 interface RuleForm {
   id: string | number;
@@ -86,7 +95,7 @@ interface RuleForm {
   qq: string;
   wechat: string;
   birth: string;
-  address: string;
+  address: string[];
   introduction: string;
 }
 const ruleFormRef: any = ref<FormInstance>(); // 表单实例
@@ -103,7 +112,7 @@ let detailData = reactive<RuleForm>({
   qq: '',
   wechat: '',
   birth: '',
-  address: '',
+  address: [],
   introduction: '',
 });
 const rules = reactive<FormRules<RuleForm>>({
@@ -125,15 +134,10 @@ const rules = reactive<FormRules<RuleForm>>({
     { required: true, message: '请输入邮箱', trigger: 'blur' },
     { pattern: /^([a-zA-Z0-9]+[-_\.]?)+@[a-zA-Z0-9]+\.[a-z]+$/, message: '邮箱格式不正确', trigger: 'blur' },
   ],
-  github: [{ required: true, message: '请输入github地址', trigger: 'blur' }],
-  csdn: [{ required: true, message: '请输入csdn地址', trigger: 'blur' }],
-  qq: [{ required: true, message: '请输入qq号', trigger: 'blur' }],
-  wechat: [{ required: true, message: '请输入微信号', trigger: 'blur' }],
   birth: [{ required: true, message: '请选择生日', trigger: 'change' }],
-  address: [{ required: true, message: '请输入所在地', trigger: 'blur' }],
   introduction: [
     { required: true, message: '请输入个人简介', trigger: 'blur' },
-    { min: 2, max: 100, message: '长度在 2 到 100 个字符', trigger: 'blur' },
+    { min: 2, max: 200, message: '长度在 2 到 200 个字符', trigger: 'blur' },
   ],
 });
 
@@ -148,8 +152,11 @@ watch(
   val => {
     // detailData.value = val
     detailData = val as RuleForm;
-    if (!detailData.sex) {
+    if (!val.sex) {
       detailData.sex = '';
+    }
+    if (val.address) {
+      detailData.address = val.address.split('-').map((item: string) => item.trim());
     }
   }
 );
@@ -160,6 +167,12 @@ watch(detailVisible, val => {
 // 禁用未来的时间
 const disabledDate = (time: Date) => {
   return time.getTime() > Date.now();
+};
+
+// 地区选择
+let addressStr = ref('');
+const addressChange = (val: any) => {
+  addressStr.value = val.join('-');
 };
 
 const cancel = () => {
@@ -192,7 +205,12 @@ const confirm = async (formEl: FormInstance | undefined) => {
         .then(async () => {
           detailVisible.value = false;
           if (props.dialogTitle === '编辑') {
-            const { code } = await editUser(detailData);
+            interface paramsType {
+              [key: string]: string | number | string[] | undefined;
+            }
+            let params: paramsType = detailData;
+            params.address = addressStr.value;
+            const { code } = await editUser(params);
             if (code === 200) {
               ElNotification({
                 type: 'success',
@@ -240,4 +258,10 @@ const confirm = async (formEl: FormInstance | undefined) => {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.address {
+  :deep(.el-cascader) {
+    width: 100%;
+  }
+}
+</style>
