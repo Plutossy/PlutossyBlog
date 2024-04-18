@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-04-12 08:55:00
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-18 17:13:18
+ * @LastEditTime: 2024-04-18 17:34:47
  * @FilePath: \blog-manage\src\pages\user\UserList.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -91,6 +91,8 @@ import { dayjs } from 'element-plus';
 import { beforeImgUpload } from '@/mixins';
 import config from '@/config';
 import store from '@/store/store';
+import eventBus from '@/assets/js/eventBus';
+const emitter = eventBus();
 
 let queryParam = reactive({
   pageNum: 1,
@@ -111,6 +113,9 @@ const router = useRouter();
 onMounted(() => {
   nextTick(() => {
     getData();
+  });
+  emitter.on('addSuccess', (val: boolean) => {
+    val && getData();
   });
 });
 

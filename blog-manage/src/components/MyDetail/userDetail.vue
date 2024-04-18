@@ -58,6 +58,9 @@
 </template>
 
 <script setup lang="ts">
+import eventBus from '@/assets/js/eventBus';
+const emitter = eventBus();
+
 import type { FormInstance, FormRules } from 'element-plus';
 import { editUser, addUser } from '@/api/modules/user';
 // 导入地区数据
@@ -182,9 +185,7 @@ watch(
   }
 );
 watch(detailVisible, val => {
-  console.log(val, 'val1111111111-----');
   emit('update:dialogVisible', val);
-  console.log(props.dialogVisible, 'val2222222222222-----');
   if (val) {
     if (detailData.address) {
       if (typeof detailData.address === 'string') {
@@ -287,6 +288,7 @@ const confirm = async (formEl: FormInstance | undefined) => {
                 showClose: true,
               });
               detailVisible.value = false;
+              emitter.emit('addSuccess', true);
             } else if (code === 400 && msg === '用户昵称已存在！') {
               ElNotification({
                 message: msg,
