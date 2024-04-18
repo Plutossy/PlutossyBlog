@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-22 11:33:53
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-18 16:41:00
+ * @LastEditTime: 2024-04-18 18:51:45
  * @FilePath: \blog-manage\src\components\MySearch\MySearch.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -30,6 +30,7 @@
 
 <script setup lang="ts">
 import { deleteUsers } from '@/api/modules/user';
+import store from '@/store/store';
 
 const props = defineProps({
   type: {
@@ -67,6 +68,19 @@ const keyWord = ref('');
 let dialogVisible: VisibleType = reactive({}); // 详情弹窗是否显示
 let dialogTitle = ref('详情'); // 详情弹窗标题
 let backHistory = ref(props.back); // 返回路由
+
+nextTick(() => {
+  const searchElement: HTMLElement | null = document.querySelector('.header-search');
+  store.commit('table/setSearchHeight', searchElement?.clientHeight);
+
+  window.addEventListener('resize', () => {
+    store.commit('table/setSearchHeight', searchElement?.clientHeight);
+  });
+});
+
+onUnmounted(() => {
+  window.removeEventListener('resize', () => {});
+});
 
 const delAll = () => {
   if (props.multipleSelection.length === 0)

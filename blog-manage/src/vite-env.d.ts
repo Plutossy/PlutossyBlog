@@ -9,3 +9,4 @@ declare module '@/store/*';
 declare module '@/api/*';
 declare module '@/utils/*';
 declare module '@/*';
+declare module 'vuex';

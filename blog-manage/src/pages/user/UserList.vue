@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-04-12 08:55:00
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-18 17:34:47
+ * @LastEditTime: 2024-04-18 18:54:31
  * @FilePath: \blog-manage\src\pages\user\UserList.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -11,7 +11,7 @@
     <MySearch type="user" :multipleSelection="multipleSelection" @delAllSuccess="delAllSuccess" @searchResult="searchResult" :showAdd="queryParam.type" />
   </header>
   <main>
-    <el-table :data="userData" max-height="568" @selection-change="handleSelectionChange">
+    <el-table :data="userData" :max-height="tableHeight" @selection-change="handleSelectionChange">
       <el-table-column fixed type="selection" width="40" align="center" :selectable="selectable" />
       <el-table-column prop="avatar" label="用户头像" width="100" align="center">
         <template #default="scope">
@@ -110,6 +110,8 @@ let dialogTitle = ref('详情'); // 详情弹窗标题
 let dialogData = ref({}); // 详情弹窗数据
 const router = useRouter();
 
+let tableHeight = ref(568); // 表格高度
+
 onMounted(() => {
   nextTick(() => {
     getData();
@@ -117,6 +119,21 @@ onMounted(() => {
   emitter.on('addSuccess', (val: boolean) => {
     val && getData();
   });
+});
+
+nextTick(() => {
+  store.commit('table/setTableHeight');
+  tableHeight.value = store.getters['table/tableHeight'];
+
+  window.addEventListener('resize', () => {
+    store.commit('table/setTableHeight');
+    tableHeight.value = store.getters['table/tableHeight'];
+  });
+});
+
+onUnmounted(() => {
+  emitter.off('addSuccess');
+  window.removeEventListener('resize', () => {});
 });
 
 const selectable = (row: any) => {
