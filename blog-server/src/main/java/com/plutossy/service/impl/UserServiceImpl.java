@@ -129,4 +129,17 @@ public class UserServiceImpl implements UserService {
 //        user.setAddress(JSONObject.parseObject(user.getAddress()).toJSONString());
         return userMapper.updateUser(user) > 0;
     }
+
+    @Override
+    public Boolean insertUser(User user) {
+        // 加密密码
+        user.setAvatar("https://plutossy.oss-cn-beijing.aliyuncs.com/avatar/default.jpg");
+        user.setPassword(MD5Utils.code(user.getPassword()));
+        return userMapper.insertUser(user) > 0;
+    }
+
+    @Override
+    public Boolean deleteUserById(Long id) {
+        return userMapper.deleteUserById(id) > 0;
+    }
 }

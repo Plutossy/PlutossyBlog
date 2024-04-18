@@ -2,17 +2,17 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-04-12 08:55:00
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-17 18:34:59
+ * @LastEditTime: 2024-04-18 17:13:18
  * @FilePath: \blog-manage\src\pages\user\UserList.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
   <header>
-    <MySearch type="user" :multipleSelection="multipleSelection" @searchResult="searchResult" :showAdd="queryParam.type" />
+    <MySearch type="user" :multipleSelection="multipleSelection" @delAllSuccess="delAllSuccess" @searchResult="searchResult" :showAdd="queryParam.type" />
   </header>
   <main>
     <el-table :data="userData" max-height="568" @selection-change="handleSelectionChange">
-      <el-table-column fixed type="selection" width="40" align="center"></el-table-column>
+      <el-table-column fixed type="selection" width="40" align="center" :selectable="selectable" />
       <el-table-column prop="avatar" label="用户头像" width="100" align="center">
         <template #default="scope">
           <div class="consumer-img">
@@ -86,7 +86,7 @@
 </template>
 
 <script setup lang="ts">
-import { getUserList } from '@/api/modules/user';
+import { getUserList, deleteUser } from '@/api/modules/user';
 import { dayjs } from 'element-plus';
 import { beforeImgUpload } from '@/mixins';
 import config from '@/config';
@@ -114,6 +114,10 @@ onMounted(() => {
   });
 });
 
+const selectable = (row: any) => {
+  return !row.type;
+};
+
 const getData = async () => {
   queryParam.type = store.getters['user/userInfo'].type;
   queryParam.id = store.getters['user/userInfo'].id + ''; // 转化为字符串
@@ -136,6 +140,10 @@ const getTempParams = () => {
 // 把已经选择的项赋值给multipleSelection
 const handleSelectionChange = (val: any) => {
   multipleSelection.value = val;
+};
+
+const delAllSuccess = (val: boolean) => {
+  val && getData();
 };
 
 // 更新图片
@@ -181,23 +189,36 @@ const handleEdit = (row: any) => {
   dialogData.value = row;
 };
 const handleDelete = (id: any) => {
-  console.log(id);
-  ElMessageBox.confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+  ElMessageBox.confirm('此操作将永久删除该用户, 是否继续?', '提示', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
     type: 'warning',
   })
-    .then(() => {
-      // delUser(id)
-      ElNotification({
-        type: 'success',
-        message: '删除成功!',
-      });
+    .then(async () => {
+      const { code } = await deleteUser(id);
+      if (code === 200) {
+        ElNotification({
+          type: 'success',
+          message: '删除成功!',
+          showClose: true,
+          duration: 1000,
+        });
+        getData();
+      } else {
+        ElNotification({
+          type: 'error',
+          message: '删除失败!',
+          duration: 1000,
+          showClose: true,
+        });
+      }
     })
     .catch(() => {
       ElNotification({
         type: 'info',
         message: '已取消删除',
+        showClose: true,
+        duration: 1000,
       });
     });
   getData();

@@ -37,4 +37,10 @@ public interface UserService {
 
     //    更新用户信息
     public Boolean updateUser(User user);
+
+    //    新增用户信息
+    public Boolean insertUser(User user);
+
+    //    根据id删除用户信息
+    public Boolean deleteUserById(Long id);
 }

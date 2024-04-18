@@ -57,4 +57,10 @@ public interface UserMapper {
 
     // 更新用户信息
     public Integer updateUser(User user);
+
+    // 新增用户
+    public Integer insertUser(User user);
+
+    // 删除用户
+    public Integer deleteUserById(Long id);
 }

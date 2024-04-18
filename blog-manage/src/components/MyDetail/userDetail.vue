@@ -7,6 +7,12 @@
       <el-form-item label="用户名" prop="username">
         <el-input v-model="detailData.username" autocomplete="off" />
       </el-form-item>
+      <el-form-item label="密码" prop="password" v-if="props.dialogTitle === '新增'" class="animate__animated animate__bounceIn">
+        <el-input v-model="detailData.password" autocomplete="off" type="password" />
+      </el-form-item>
+      <el-form-item label="确认密码" prop="confirmPwd" v-if="props.dialogTitle === '新增' && detailData.password" class="animate__animated animate__bounceIn">
+        <el-input v-model="detailData.confirmPwd" autocomplete="off" type="password" />
+      </el-form-item>
       <el-form-item label="性别" prop="sex">
         <el-radio-group v-model="detailData.sex">
           <el-radio value="男">男</el-radio>
@@ -53,9 +59,10 @@
 
 <script setup lang="ts">
 import type { FormInstance, FormRules } from 'element-plus';
-import { editUser } from '@/api/modules/user';
+import { editUser, addUser } from '@/api/modules/user';
 // 导入地区数据
 import { addressToTree } from '@/assets/ts/address';
+import { clearForm, clearEmptyProperty } from '@/mixins';
 
 const props = defineProps({
   dialogVisible: {
@@ -71,14 +78,13 @@ const props = defineProps({
     default: () => ({}),
   },
 });
-let emit = defineEmits(); // 如果用的setup函数则是用 cotext.emit 去使用
+let emit = defineEmits(['update:dialogVisible']); // 如果用的setup函数则是用 cotext.emit 去使用
 let detailVisible = ref(false);
 
 const addressProps = {
   value: 'label',
   label: 'label',
   children: 'children',
-  expandTrigger: 'hover' as const,
 };
 const addressOptions = addressToTree(); // 地区数据
 
@@ -87,6 +93,8 @@ interface RuleForm {
   id: string | number;
   nickname: string;
   username: string;
+  password: string;
+  confirmPwd: string;
   sex: string;
   phone: string;
   email: string;
@@ -95,7 +103,7 @@ interface RuleForm {
   qq: string;
   wechat: string;
   birth: string;
-  address: string[];
+  address: string[] | string;
   introduction: string;
 }
 const ruleFormRef: any = ref<FormInstance>(); // 表单实例
@@ -104,6 +112,8 @@ let detailData = reactive<RuleForm>({
   id: '',
   nickname: '',
   username: '',
+  password: '',
+  confirmPwd: '',
   sex: '',
   phone: '',
   email: '',
@@ -125,11 +135,28 @@ const rules = reactive<FormRules<RuleForm>>({
     { required: true, message: '请输入用户名', trigger: 'blur' },
     { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' },
   ],
-  sex: [{ required: true, message: '请选择性别', trigger: 'change' }],
-  phone: [
-    { required: true, message: '请输入手机号', trigger: 'blur' },
-    { pattern: /^1[3456789]\d{9}$/, message: '手机号格式不正确', trigger: 'blur' },
+  password: [
+    { required: true, message: '请输入密码', trigger: 'blur' },
+    { min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' },
+    { pattern: /^\S*$/, message: '密码不能包含空格', trigger: 'blur' },
   ],
+  confirmPwd: [
+    { required: true, message: '请再次输入密码', trigger: 'blur' },
+    { min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' },
+    { pattern: /^\S*$/, message: '密码不能包含空格', trigger: 'blur' },
+    {
+      validator: (_rule, value, callback) => {
+        if (value === detailData.password) {
+          callback();
+        } else {
+          callback(new Error('两次输入密码不一致'));
+        }
+      },
+      trigger: 'blur',
+    },
+  ],
+  sex: [{ required: true, message: '请选择性别', trigger: 'blur' }],
+  phone: [{ pattern: /^1[3456789]\d{9}$/, message: '手机号格式不正确', trigger: 'blur' }],
   email: [
     { required: true, message: '请输入邮箱', trigger: 'blur' },
     { pattern: /^([a-zA-Z0-9]+[-_\.]?)+@[a-zA-Z0-9]+\.[a-z]+$/, message: '邮箱格式不正确', trigger: 'blur' },
@@ -152,16 +179,27 @@ watch(
   val => {
     // detailData.value = val
     detailData = val as RuleForm;
-    if (!val.sex) {
-      detailData.sex = '';
-    }
-    if (val.address) {
-      detailData.address = val.address.split('-').map((item: string) => item.trim());
-    }
   }
 );
 watch(detailVisible, val => {
+  console.log(val, 'val1111111111-----');
   emit('update:dialogVisible', val);
+  console.log(props.dialogVisible, 'val2222222222222-----');
+  if (val) {
+    if (detailData.address) {
+      if (typeof detailData.address === 'string') {
+        detailData.address = detailData.address.split('-').map((item: string) => item.trim());
+      }
+    }
+    if (!detailData.sex) {
+      detailData.sex = '';
+    }
+  }
+  if (props.dialogTitle === '新增' && !val) {
+    // 清空表单数据以及验证
+    ruleFormRef.value.clearValidate();
+    clearForm(detailData);
+  }
 });
 
 // 禁用未来的时间
@@ -203,13 +241,13 @@ const confirm = async (formEl: FormInstance | undefined) => {
         },
       })
         .then(async () => {
-          detailVisible.value = false;
           if (props.dialogTitle === '编辑') {
             interface paramsType {
               [key: string]: string | number | string[] | undefined;
             }
             let params: paramsType = detailData;
             params.address = addressStr.value;
+            params = clearEmptyProperty(params);
             const { code } = await editUser(params);
             if (code === 200) {
               ElNotification({
@@ -218,6 +256,7 @@ const confirm = async (formEl: FormInstance | undefined) => {
                 duration: 1000,
                 showClose: true,
               });
+              detailVisible.value = false;
             } else {
               ElNotification({
                 type: 'error',
@@ -227,13 +266,44 @@ const confirm = async (formEl: FormInstance | undefined) => {
               });
             }
           } else if (props.dialogTitle === '新增') {
-            // addUser(detailData)
-            ElNotification({
-              type: 'success',
-              message: '新增成功!',
-              duration: 1000,
-              showClose: true,
+            interface paramsType {
+              [key: string]: string | number | string[] | undefined;
+            }
+            let params: paramsType = detailData;
+            params.address = addressStr.value;
+            params.password = detailData.confirmPwd;
+            Object.keys(params).forEach(key => {
+              if (key === 'confirmPwd') {
+                delete params[key];
+              }
             });
+            params = clearEmptyProperty(params);
+            const { code, msg } = await addUser(params);
+            if (code === 200) {
+              ElNotification({
+                type: 'success',
+                message: '新增成功!',
+                duration: 1000,
+                showClose: true,
+              });
+              detailVisible.value = false;
+            } else if (code === 400 && msg === '用户昵称已存在！') {
+              ElNotification({
+                message: msg,
+                type: 'warning',
+                duration: 1000,
+                showClose: true,
+              });
+              // 聚焦到昵称输入框
+              ruleFormRef.value.validateField('nickname');
+            } else {
+              ElNotification({
+                type: 'error',
+                message: '新增失败!',
+                duration: 1000,
+                showClose: true,
+              });
+            }
           }
         })
         .catch(() => {

@@ -219,4 +219,44 @@ public class UserController {
         return getObject1(flag);
     }
 
+    @RequestMapping(value = "/manage/insertUser", method = RequestMethod.POST)
+    public Object insertUser(@RequestBody User user) {
+        String nickname = user.getNickname();
+        JSONObject jsonObject = new JSONObject();
+        userService.selectAllNickname().forEach(name -> {
+            if (name.equals(nickname)) {
+                jsonObject.put(Consts.CODE, 400);
+                jsonObject.put(Consts.MSG, "用户昵称已存在！");
+            }
+        });
+        if (jsonObject.isEmpty()) {
+            Boolean flag = userService.insertUser(user);
+            return getObject1(flag);
+        }
+        return jsonObject;
+    }
+
+    @RequestMapping(value = "/manage/deleteUser", method = RequestMethod.POST)
+    public Object deleteUser(@RequestBody Map<String, Object> jsonData) {
+        Long id = Long.valueOf((Integer) jsonData.get("id"));
+        Boolean flag = userService.deleteUserById(id);
+        return getObject1(flag);
+    }
+
+    // 批量删除用户 参数为用户id数组
+    @RequestMapping(value = "/manage/deleteUsers", method = RequestMethod.POST)
+    public Object deleteUsers(@RequestBody String[] ids) {
+        JSONObject jsonObject = new JSONObject();
+        for (String id : ids) {
+            Boolean flag = userService.deleteUserById(Long.valueOf(id));
+            if (!flag) {
+                jsonObject.put(Consts.CODE, 400);
+                jsonObject.put(Consts.MSG, "删除失败！");
+                return jsonObject;
+            }
+        }
+        jsonObject.put(Consts.CODE, 200);
+        jsonObject.put(Consts.MSG, "删除成功！");
+        return jsonObject;
+    }
 }

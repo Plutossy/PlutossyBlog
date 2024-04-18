@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-22 11:33:53
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-18 09:31:40
+ * @LastEditTime: 2024-04-18 16:41:00
  * @FilePath: \blog-manage\src\components\MySearch\MySearch.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { ElMessage, ElMessageBox, ElNotification } from 'element-plus';
+import { deleteUsers } from '@/api/modules/user';
 
 const props = defineProps({
   type: {
@@ -57,7 +57,7 @@ const props = defineProps({
   },
 });
 
-let emit = defineEmits(['searchResult']); // 如果用的setup函数则是用 cotext.emit 去使用
+let emit = defineEmits(['searchResult', 'delAllSuccess']); // 如果用的setup函数则是用 cotext.emit 去使用
 const router = useRouter();
 
 type VisibleType = {
@@ -69,32 +69,45 @@ let dialogTitle = ref('详情'); // 详情弹窗标题
 let backHistory = ref(props.back); // 返回路由
 
 const delAll = () => {
-  console.log('delAll--', props.multipleSelection);
   if (props.multipleSelection.length === 0)
     return ElMessage({
       showClose: true,
       message: '请至少选择一项！',
       type: 'warning',
     });
-  ElMessageBox.confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+  ElMessageBox.confirm('此操作将永久删除该信息, 是否继续?', '提示', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
     type: 'warning',
   })
-    .then(() => {
-      props.multipleSelection.forEach((item: any) => {
-        console.log('item--', item);
-        // delUser(item.id)
+    .then(async () => {
+      const ids: string[] = props.multipleSelection.map((item: any) => {
+        return item.id + '';
       });
-      ElNotification({
-        type: 'success',
-        message: '删除成功!',
-      });
+      const { code } = props.type === 'user' && (await deleteUsers(ids));
+      if (code === 200) {
+        ElNotification({
+          type: 'success',
+          message: '删除成功!',
+          duration: 1000,
+          showClose: true,
+        });
+        emit('delAllSuccess', true);
+      } else {
+        ElNotification({
+          type: 'error',
+          message: '删除失败!',
+          duration: 1000,
+          showClose: true,
+        });
+      }
     })
     .catch(() => {
       ElNotification({
         type: 'info',
         message: '已取消删除',
+        duration: 1000,
+        showClose: true,
       });
     });
 };

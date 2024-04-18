@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-04-10 11:16:32
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-17 15:03:31
+ * @LastEditTime: 2024-04-18 16:12:13
  * @FilePath: \blog-manage\src\api\modules\user.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -74,6 +74,30 @@ export function updatePwd(data) {
 export function editUser(data) {
   return request({
     url: '/manage/updateUser',
+    method: 'post',
+    data,
+  });
+}
+
+export function addUser(data) {
+  return request({
+    url: '/manage/insertUser',
+    method: 'post',
+    data,
+  });
+}
+
+export function deleteUser(data) {
+  return request({
+    url: '/manage/deleteUser',
+    method: 'post',
+    data,
+  });
+}
+
+export function deleteUsers(data) {
+  return request({
+    url: '/manage/deleteUsers',
     method: 'post',
     data,
   });

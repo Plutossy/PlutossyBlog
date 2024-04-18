@@ -5,7 +5,7 @@ import type { UploadProps } from 'element-plus';
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-22 14:59:59
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-15 10:35:29
+ * @LastEditTime: 2024-04-18 10:22:37
  * @FilePath: \blog-manage\src\mixins\index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -44,4 +44,31 @@ export const clearForm = (form: FormType) => {
   for (const key in form) {
     form[key] = '';
   }
+};
+
+// 清空属性值为空的属性
+export const clearEmptyProperty = (obj: FormType) => {
+  const params = JSON.parse(JSON.stringify(obj));
+
+  for (const key in params) {
+    if (Object.hasOwnProperty.call(params, key)) {
+      const element = params[key];
+      const eleType = typeof element;
+      let isDel = false;
+
+      if (eleType === 'string') {
+        element === '' && (isDel = true);
+      } else if (eleType === 'object') {
+        if (element === null) {
+          isDel = true;
+        } else if (Array.isArray(element)) {
+          element.length === 0 && (isDel = true);
+        }
+      }
+
+      isDel && delete params[key];
+    }
+  }
+
+  return params;
 };

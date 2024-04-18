@@ -178,4 +178,102 @@
         </set>
         where id = #{id}
     </update>
+
+    <insert id="insertUser" parameterType="com.plutossy.domain.User">
+        insert into t_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="nickname != null">
+                nickname,
+            </if>
+            <if test="avatar != null">
+                avatar,
+            </if>
+            <if test="username != null">
+                username,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="sex != null">
+                sex,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="email != null">
+                email,
+            </if>
+            <if test="github != null">
+                github,
+            </if>
+            <if test="csdn != null">
+                csdn,
+            </if>
+            <if test="qq != null">
+                qq,
+            </if>
+            <if test="wechat != null">
+                wechat,
+            </if>
+            <if test="birth != null">
+                birth,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+            <if test="introduction != null">
+                introduction,
+            </if>
+            type,create_time,
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="nickname != null">
+                #{nickname},
+            </if>
+            <if test="avatar != null">
+                #{avatar},
+            </if>
+            <if test="username != null">
+                #{username},
+            </if>
+            <if test="password != null">
+                #{password},
+            </if>
+            <if test="sex != null">
+                #{sex},
+            </if>
+            <if test="phone != null">
+                #{phone},
+            </if>
+            <if test="email != null">
+                #{email},
+            </if>
+            <if test="github != null">
+                #{github},
+            </if>
+            <if test="csdn != null">
+                #{csdn},
+            </if>
+            <if test="qq != null">
+                #{qq},
+            </if>
+            <if test="wechat != null">
+                #{wechat},
+            </if>
+            <if test="birth != null">
+                #{birth},
+            </if>
+            <if test="address != null">
+                #{address},
+            </if>
+            <if test="introduction != null">
+                #{introduction},
+            </if>
+            false,now(),
+        </trim>
+    </insert>
+    <delete id="deleteUserById" parameterType="java.lang.Long">
+        delete from t_user
+        where id = #{id} and type = false
+    </delete>
 </mapper>
