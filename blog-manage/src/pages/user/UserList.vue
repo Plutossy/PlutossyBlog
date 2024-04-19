@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-04-12 08:55:00
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-18 18:54:31
+ * @LastEditTime: 2024-04-19 09:14:54
  * @FilePath: \blog-manage\src\pages\user\UserList.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -121,19 +121,23 @@ onMounted(() => {
   });
 });
 
+let timer: any = null;
 nextTick(() => {
   store.commit('table/setTableHeight');
   tableHeight.value = store.getters['table/tableHeight'];
 
   window.addEventListener('resize', () => {
-    store.commit('table/setTableHeight');
-    tableHeight.value = store.getters['table/tableHeight'];
+    timer = setTimeout(() => {
+      store.commit('table/setTableHeight');
+      tableHeight.value = store.getters['table/tableHeight'];
+    }, 80);
   });
 });
 
 onUnmounted(() => {
   emitter.off('addSuccess');
   window.removeEventListener('resize', () => {});
+  clearTimeout(timer);
 });
 
 const selectable = (row: any) => {

@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-08 19:17:07
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-18 19:00:10
+ * @LastEditTime: 2024-04-19 09:08:47
  * @FilePath: \blog-manage\src\pages\Index.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -23,6 +23,8 @@ import store from '@/store/store';
 let collapse = ref(false);
 const emitter = eventBus();
 
+let timer: any = null;
+
 onMounted(() => {
   emitter.on('collapse', (val: boolean) => {
     collapse.value = val;
@@ -40,12 +42,15 @@ nextTick(() => {
   window.addEventListener('resize', () => {
     store.commit('table/setContentHeight', contentElement?.clientHeight);
     store.commit('table/setTableHeaderHeight', '120');
-    store.commit('table/setTableHeight');
+    timer = setTimeout(() => {
+      store.commit('table/setTableHeight');
+    }, 50);
   });
 });
 onUnmounted(() => {
   emitter.off('collapse');
   window.removeEventListener('resize', () => {});
+  clearTimeout(timer);
 });
 </script>
 

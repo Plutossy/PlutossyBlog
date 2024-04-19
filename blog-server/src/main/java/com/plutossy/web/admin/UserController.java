@@ -237,9 +237,9 @@ public class UserController {
     }
 
     @RequestMapping(value = "/manage/deleteUser", method = RequestMethod.POST)
-    public Object deleteUser(@RequestBody Map<String, Object> jsonData) {
-        Long id = Long.valueOf((Integer) jsonData.get("id"));
-        Boolean flag = userService.deleteUserById(id);
+    public Object deleteUser(@RequestBody String id) {
+        Long delId = Long.valueOf(id);
+        Boolean flag = userService.deleteUserById(delId);
         return getObject1(flag);
     }
 
