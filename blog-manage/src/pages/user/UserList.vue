@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-04-12 08:55:00
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-22 16:18:23
+ * @LastEditTime: 2024-04-22 18:19:06
  * @FilePath: \blog-manage\src\pages\user\UserList.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -276,6 +276,8 @@ const searchResult = async (param: string) => {
 };
 
 const reset = () => {
+  queryParam.pageNum = 1;
+  queryParam.pageSize = 10;
   getData();
 };
 </script>
