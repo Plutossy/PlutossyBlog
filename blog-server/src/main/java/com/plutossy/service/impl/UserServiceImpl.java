@@ -142,4 +142,9 @@ public class UserServiceImpl implements UserService {
     public Boolean deleteUserById(Long id) {
         return userMapper.deleteUserById(id) > 0;
     }
+
+    @Override
+    public PageInfo<User> selectUserByName(Integer pageNum, Integer pageSize, String queryParam, Boolean type) {
+        return userMapper.selectUserByName(pageNum, pageSize, queryParam, type);
+    }
 }

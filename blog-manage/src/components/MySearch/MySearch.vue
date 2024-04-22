@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-22 11:33:53
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-18 18:51:45
+ * @LastEditTime: 2024-04-22 15:56:24
  * @FilePath: \blog-manage\src\components\MySearch\MySearch.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -58,7 +58,7 @@ const props = defineProps({
   },
 });
 
-let emit = defineEmits(['searchResult', 'delAllSuccess']); // 如果用的setup函数则是用 cotext.emit 去使用
+let emit = defineEmits(['searchResult', 'delAllSuccess', 'reset']); // 如果用的setup函数则是用 cotext.emit 去使用
 const router = useRouter();
 
 type VisibleType = {
@@ -134,28 +134,13 @@ const goSearch = () => {
       message: '搜索内容不能为空！',
       type: 'warning',
     });
-  // searchUser(keyWord.value)
-  emit('searchResult', {
-    id: 1,
-    username: '张三',
-    sex: '男',
-    phoneNum: '12345678901',
-    email: '12345678901@qq.com',
-    birth: '1999-01-01',
-    introduction: '我是张三',
-    location: '北京',
-    userId: 1,
-    picId: 1,
-    picUrl: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-    picTitle: '图片标题',
-    author: '张三',
-    description: '这是一张图片',
-  });
+  emit('searchResult', keyWord.value);
 };
 
 const reset = () => {
   keyWord.value = '';
   // getData()
+  emit('reset');
 };
 
 const add = () => {

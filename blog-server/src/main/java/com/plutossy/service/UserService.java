@@ -43,4 +43,7 @@ public interface UserService {
 
     //    根据id删除用户信息
     public Boolean deleteUserById(Long id);
+
+    //    模糊查询
+    public PageInfo<User> selectUserByName(Integer pageNum, Integer pageSize, String queryParam, Boolean type);
 }

@@ -63,4 +63,13 @@ public interface UserMapper {
 
     // 删除用户
     public Integer deleteUserById(Long id);
+
+    // 根据用户昵称和用户名模糊查询用户信息
+    @Select("select " + Base_Columns + " from t_user where type = #{type} and nickname like CONCAT('%', #{queryParam}, '%') or username like CONCAT('%', #{queryParam}, '%') order by create_time")
+    public List<User> selectUserByNameByCondition(String queryParam, Boolean type);
+    default PageInfo<User> selectUserByName(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize, @Param("queryParam") String queryParam, @Param("type") Boolean type) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<User> users = selectUserByNameByCondition(queryParam, type);
+        return new PageInfo<>(users);
+    }
 }

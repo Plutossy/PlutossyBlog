@@ -109,6 +109,13 @@
         where id=#{id} and email = #{email}
     </select>
 
+    <select id="selectUserByName" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Columns"/>
+        from t_user
+        where type = #{type} and nickname like CONCAT('%', #{queryParam}, '%') or username like CONCAT('%', #{queryParam}, '%') order by create_time
+    </select>
+
     <update id="updateCaptcha" parameterType="java.util.HashMap">
         update t_user
         <set>

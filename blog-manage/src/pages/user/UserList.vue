@@ -2,13 +2,13 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-04-12 08:55:00
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-19 09:14:54
+ * @LastEditTime: 2024-04-22 16:15:45
  * @FilePath: \blog-manage\src\pages\user\UserList.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
   <header>
-    <MySearch type="user" :multipleSelection="multipleSelection" @delAllSuccess="delAllSuccess" @searchResult="searchResult" :showAdd="queryParam.type" />
+    <MySearch type="user" :multipleSelection="multipleSelection" @delAllSuccess="delAllSuccess" @searchResult="searchResult" @reset="reset" :showAdd="queryParam.type" />
   </header>
   <main>
     <el-table :data="userData" :max-height="tableHeight" @selection-change="handleSelectionChange">
@@ -86,7 +86,7 @@
 </template>
 
 <script setup lang="ts">
-import { getUserList, deleteUser } from '@/api/modules/user';
+import { getUserList, deleteUser, selectUserByName } from '@/api/modules/user';
 import { dayjs } from 'element-plus';
 import { beforeImgUpload } from '@/mixins';
 import config from '@/config';
@@ -250,10 +250,29 @@ const handleDelete = (id: any) => {
   getData();
 };
 
-const searchResult = (data: any) => {
-  console.log('searchResult--', data);
-  // 因为 reactive 不能直接赋值，所以用 splice
-  userData.splice(0, userData.length, data);
+const searchResult = async (param: string) => {
+  const query = {
+    pageNum: queryParam.pageNum,
+    pageSize: queryParam.pageSize,
+    type: queryParam.type,
+    queryParam: param,
+  };
+  const { data, code } = await selectUserByName(query);
+  if (code === 200) {
+    // 因为 reactive 不能直接赋值，所以用 splice
+    userData.splice(0, userData.length, ...data);
+  } else {
+    ElNotification({
+      type: 'error',
+      message: '搜索失败!',
+      duration: 1000,
+      showClose: true,
+    });
+  }
+};
+
+const reset = () => {
+  getData();
 };
 </script>
 

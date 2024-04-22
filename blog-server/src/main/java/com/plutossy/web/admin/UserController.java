@@ -259,4 +259,16 @@ public class UserController {
         jsonObject.put(Consts.MSG, "删除成功！");
         return jsonObject;
     }
+
+    // 模糊查询
+    @RequestMapping(value = "/manage/selectUserByName", method = RequestMethod.POST)
+    public Object selectUserByName(@RequestBody Map<String, Object> jsonData) {
+        String queryParam = (String) jsonData.get("queryParam");
+        Boolean type = jsonData.get("type") != null && (Boolean) jsonData.get("type");
+        Integer pageNum = jsonData.get("pageNum") == null ? PageDefault.PAGE_NUM : (Integer) jsonData.get("pageNum");
+        Integer pageSize = jsonData.get("pageSize") == null ? PageDefault.PAGE_SIZE : (Integer) jsonData.get("pageSize");
+        JSONObject jsonObject = new JSONObject();
+        PageInfo<User> pageData = userService.selectUserByName(pageNum, pageSize, queryParam, type);
+        return getObject(jsonObject, pageData);
+    }
 }

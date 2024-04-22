@@ -102,3 +102,11 @@ export function deleteUsers(data) {
     data,
   });
 }
+
+export function selectUserByName(data) {
+  return request({
+    url: '/manage/selectUserByName',
+    method: 'post',
+    data,
+  });
+}
