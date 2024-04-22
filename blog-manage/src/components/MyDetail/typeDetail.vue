@@ -15,7 +15,6 @@
 </template>
 
 <script setup lang="ts">
-import { ElMessageBox, ElNotification } from 'element-plus';
 import type { FormInstance, FormRules } from 'element-plus';
 
 const props = defineProps({

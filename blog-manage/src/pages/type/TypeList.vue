@@ -2,13 +2,13 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-08 19:17:21
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-03-01 09:47:23
+ * @LastEditTime: 2024-04-22 18:23:15
  * @FilePath: \PlutossyBlog\blog-manage\src\pages\Blog.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
   <header>
-    <MySearch type="type" :multipleSelection="multipleSelection" @searchResult="searchResult" />
+    <MySearch type="type" :multipleSelection="multipleSelection" @searchResult="searchResult" @reset="reset" />
   </header>
   <main>
     <el-table :data="typeData" max-height="568" @selection-change="handleSelectionChange">
@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { ElNotification, ElMessageBox } from 'element-plus';
+import { selectTypeList, selectTypeByName } from '@/api/modules/type';
 
 let typeData: any = reactive([]); // 用户数据
 let multipleSelection = ref([]); // 用于存放多选框选中的数据
@@ -37,6 +37,11 @@ let multipleSelection = ref([]); // 用于存放多选框选中的数据
 let dialogVisible = ref(false); // 详情弹窗是否显示
 let dialogTitle = ref('详情'); // 详情弹窗标题
 let dialogData = ref({}); // 详情弹窗数据
+
+let queryParam = reactive({
+  pageNum: 1,
+  pageSize: 10,
+});
 
 const router = useRouter();
 
@@ -47,96 +52,19 @@ onMounted(() => {
   });
 });
 
-const getData = () => {
-  console.log('getData');
-  // getUserCollect(id)
-  let data1 = [
-    {
-      id: 1,
-      name: '分类1',
-    },
-    {
-      id: 2,
-      name: '分类2',
-    },
-    {
-      id: 3,
-      name: '分类3',
-    },
-    {
-      id: 4,
-      name: '分类4',
-    },
-    {
-      id: 5,
-      name: '分类5',
-    },
-    {
-      id: 6,
-      name: '分类6',
-    },
-    {
-      id: 7,
-      name: '分类7',
-    },
-    {
-      id: 8,
-      name: '分类8',
-    },
-    {
-      id: 9,
-      name: '分类9',
-    },
-    {
-      id: 10,
-      name: '分类10',
-    },
-    {
-      id: 11,
-      name: '分类11',
-    },
-    {
-      id: 12,
-      name: '分类12',
-    },
-    {
-      id: 13,
-      name: '分类13',
-    },
-    {
-      id: 14,
-      name: '分类14',
-    },
-    {
-      id: 15,
-      name: '分类15',
-    },
-    {
-      id: 16,
-      name: '分类16',
-    },
-    {
-      id: 17,
-      name: '分类17',
-    },
-    {
-      id: 18,
-      name: '分类18',
-    },
-    {
-      id: 19,
-      name: '分类19',
-    },
-    {
-      id: 20,
-      name: '分类20',
-    },
-  ];
-  typeData.splice(0, typeData.length, ...data1);
+const getData = async () => {
+  try {
+    const { data, code } = await selectTypeList(queryParam);
+    if (code === 200) {
+      typeData.splice(0, typeData.length, ...data);
+    }
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 // 把已经选择的项赋值给multipleSelection
-const handleSelectionChange = (val: any[]) => {
+const handleSelectionChange = (val: never[]) => {
   multipleSelection.value = val;
 };
 
@@ -181,10 +109,34 @@ const handleDelete = (id: any) => {
   getData();
 };
 
-const searchResult = (data: any) => {
-  console.log('searchResult--', data);
-  // 因为 reactive 不能直接赋值，所以用 splice
-  typeData.splice(0, typeData.length, data);
+const searchResult = async (param: string) => {
+  try {
+    const query = {
+      pageNum: queryParam.pageNum,
+      pageSize: queryParam.pageSize,
+      name: param,
+    };
+    const { data, code } = await selectTypeByName(query);
+    if (code === 200) {
+      // 因为 reactive 不能直接赋值，所以用 splice
+      typeData.splice(0, typeData.length, data);
+    } else {
+      ElNotification({
+        type: 'error',
+        message: '查询失败!',
+        showClose: true,
+        duration: 1000,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const reset = () => {
+  queryParam.pageNum = 1;
+  queryParam.pageSize = 10;
+  getData();
 };
 </script>
 
