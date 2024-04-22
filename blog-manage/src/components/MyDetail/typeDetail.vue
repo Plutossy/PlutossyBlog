@@ -18,6 +18,9 @@
 import { addType, updateType } from '@/api/modules/type';
 import type { FormInstance, FormRules } from 'element-plus';
 
+import eventBus from '@/assets/js/eventBus';
+const emitter = eventBus();
+
 const props = defineProps({
   dialogVisible: {
     type: Boolean,
@@ -121,6 +124,7 @@ const confirm = async (formEl: FormInstance | undefined) => {
                   showClose: true,
                   duration: 1000,
                 });
+                emitter.emit('addSuccess', true);
               } else {
                 ElNotification({
                   type: 'error',

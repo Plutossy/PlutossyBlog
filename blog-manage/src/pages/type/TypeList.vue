@@ -30,6 +30,8 @@
 
 <script setup lang="ts">
 import { selectTypeList, selectTypeByName } from '@/api/modules/type';
+import eventBus from '@/assets/js/eventBus';
+const emitter = eventBus();
 
 let typeData: any = reactive([]); // 用户数据
 let multipleSelection = ref([]); // 用于存放多选框选中的数据
@@ -50,6 +52,13 @@ onMounted(() => {
     // getData(userId);
     getData();
   });
+  emitter.on('addSuccess', (val: boolean) => {
+    val && getData();
+  });
+});
+
+onUnmounted(() => {
+  emitter.off('addSuccess');
 });
 
 const getData = async () => {
