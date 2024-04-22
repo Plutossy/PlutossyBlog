@@ -15,6 +15,7 @@
 </template>
 
 <script setup lang="ts">
+import { addType, updateType } from '@/api/modules/type';
 import type { FormInstance, FormRules } from 'element-plus';
 
 const props = defineProps({
@@ -91,20 +92,46 @@ const confirm = async (formEl: FormInstance | undefined) => {
           }
         },
       })
-        .then(() => {
+        .then(async () => {
           detailVisible.value = false;
-          if (props.dialogTitle === '编辑') {
-            // updateUser(detailData)
-            ElNotification({
-              type: 'success',
-              message: '修改成功!',
-            });
-          } else if (props.dialogTitle === '新增') {
-            // addUser(detailData)
-            ElNotification({
-              type: 'success',
-              message: '新增成功!',
-            });
+          try {
+            if (props.dialogTitle === '编辑') {
+              const { code } = await updateType(detailData);
+              if (code === 200) {
+                ElNotification({
+                  type: 'success',
+                  message: '修改成功!',
+                  showClose: true,
+                  duration: 1000,
+                });
+              } else {
+                ElNotification({
+                  type: 'error',
+                  message: '修改失败!',
+                  showClose: true,
+                  duration: 1000,
+                });
+              }
+            } else if (props.dialogTitle === '新增') {
+              const { code } = await addType(detailData);
+              if (code === 200) {
+                ElNotification({
+                  type: 'success',
+                  message: '新增成功!',
+                  showClose: true,
+                  duration: 1000,
+                });
+              } else {
+                ElNotification({
+                  type: 'error',
+                  message: '新增失败!',
+                  showClose: true,
+                  duration: 1000,
+                });
+              }
+            }
+          } catch (error) {
+            console.log(error);
           }
         })
         .catch(() => {
