@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-22 11:33:53
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-22 15:56:24
+ * @LastEditTime: 2024-04-23 09:43:59
  * @FilePath: \blog-manage\src\components\MySearch\MySearch.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -10,7 +10,7 @@
   <div class="header-search">
     <el-button type="danger" @click="delAll">批量删除</el-button>
     <el-input v-model.trim="keyWord" placeholder="请输入搜索内容..." class="search-input" clearable @keyup.enter.native="goSearch" @input.lazy="goSearch" />
-    <el-button type="primary" @click="goSearch">搜索</el-button>
+    <el-button type="primary" @click="goSearch(true)">搜索</el-button>
     <el-button type="info" plain @click="reset">重置</el-button>
     <div class="header-right">
       <el-button v-if="props.showAdd" type="primary" @click="add">新增</el-button>
@@ -126,9 +126,10 @@ const delAll = () => {
     });
 };
 
-const goSearch = () => {
+const goSearch = (flag?: boolean) => {
   console.log('goSearch--', keyWord.value);
-  if (!keyWord.value)
+  flag &&
+    !keyWord.value &&
     ElMessage({
       showClose: true,
       message: '搜索内容不能为空！',

@@ -55,10 +55,10 @@ public interface TypeMapper {
      * @return
      */
     @Select("select * from t_type where name like CONCAT('%', #{name}, '%')")
-    public List<Type> selectTypeByNameByCondition();
+    public List<Type> selectTypeByNameByCondition(String name);
     default PageInfo<Type> selectTypeByName(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize, String name) {
         PageHelper.startPage(pageNum, pageSize);
-        List<Type> types = selectTypeByNameByCondition();
+        List<Type> types = selectTypeByNameByCondition(name);
         return new PageInfo<>(types);
     };
 }

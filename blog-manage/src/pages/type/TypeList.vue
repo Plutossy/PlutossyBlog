@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-08 19:17:21
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-23 09:16:31
+ * @LastEditTime: 2024-04-23 09:41:19
  * @FilePath: \PlutossyBlog\blog-manage\src\pages\Blog.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -32,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import { selectTypeList, selectTypeByName } from '@/api/modules/type';
+import { selectTypeList, selectTypeByName, deleteType } from '@/api/modules/type';
 import eventBus from '@/assets/js/eventBus';
 const emitter = eventBus();
 
@@ -106,27 +106,38 @@ const handleEdit = (row: {}) => {
 };
 
 const handleDelete = (id: any) => {
-  console.log(id);
   ElMessageBox.confirm('此操作将永久删除该文件, 是否继续?', '提示', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
     type: 'warning',
   })
-    .then(() => {
-      // delUser(id)
-      ElNotification({
-        type: 'success',
-        message: '删除成功!',
-      });
+    .then(async () => {
+      const { code } = await deleteType(id);
+      if (code === 200) {
+        ElNotification({
+          type: 'success',
+          message: '删除成功!',
+          showClose: true,
+          duration: 1000,
+        });
+        getData();
+      } else {
+        ElNotification({
+          type: 'error',
+          message: '删除失败!',
+          duration: 1000,
+          showClose: true,
+        });
+      }
     })
     .catch(() => {
       ElNotification({
         type: 'info',
         message: '已取消删除',
+        duration: 1000,
+        showClose: true,
       });
     });
-  // getData(userId);
-  getData();
 };
 
 const searchResult = async (param: string) => {
@@ -139,7 +150,7 @@ const searchResult = async (param: string) => {
     const { data, code } = await selectTypeByName(query);
     if (code === 200) {
       // 因为 reactive 不能直接赋值，所以用 splice
-      typeData.splice(0, typeData.length, data);
+      typeData.splice(0, typeData.length, ...data);
     } else {
       ElNotification({
         type: 'error',
