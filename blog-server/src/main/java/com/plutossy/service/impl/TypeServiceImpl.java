@@ -72,4 +72,13 @@ public class TypeServiceImpl implements TypeService {
     public PageInfo<Type> selectTypeByName(Integer pageNum, Integer pageSize, String name) {
         return typeMapper.selectTypeByName(pageNum, pageSize, name);
     }
+
+    /**
+     * @param name
+     * @return
+     */
+    @Override
+    public Boolean selectNameCount(String name) {
+        return typeMapper.selectNameCount(name) > 0;
+    }
 }

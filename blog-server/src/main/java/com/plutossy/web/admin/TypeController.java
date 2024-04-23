@@ -66,6 +66,13 @@ public class TypeController {
     @RequestMapping(value = "/manage/addType", method = RequestMethod.POST)
     public Object insertType(@RequestBody Map<String, Object> jsonData) {
         String name = jsonData.get("name") == null ? "" : (String) jsonData.get("name");
+        // 分类名称不能重复
+        if (typeService.selectNameCount(name)) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put(Consts.CODE, 500);
+            jsonObject.put(Consts.MSG, "分类名称已存在！");
+            return jsonObject;
+        }
         Boolean flag = typeService.insertType(name);
         JSONObject jsonObject = new JSONObject();
         if (flag) {

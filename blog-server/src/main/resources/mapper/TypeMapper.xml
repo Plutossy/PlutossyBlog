@@ -53,4 +53,9 @@
         where name like CONCAT('%', #{name}, '%')
     </select>
 
+
+    <select id="selectNameCount" resultType="java.lang.Integer" parameterType="java.lang.String">
+        select count(*) from t_type where name = #{name}
+    </select>
+
 </mapper>

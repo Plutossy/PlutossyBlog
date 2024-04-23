@@ -61,4 +61,6 @@ public interface TypeMapper {
         List<Type> types = selectTypeByNameByCondition(name);
         return new PageInfo<>(types);
     };
+
+    public Integer selectNameCount(String name);
 }

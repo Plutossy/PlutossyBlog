@@ -8,7 +8,7 @@
 -->
 <template>
   <header>
-    <MySearch type="type" :multipleSelection="multipleSelection" @searchResult="searchResult" @reset="reset" />
+    <MySearch type="type" :multipleSelection="multipleSelection" @searchResult="searchResult" @reset="reset" @delAllSuccess="delAllSuccess" />
   </header>
   <main>
     <el-table :data="typeData" max-height="568" @selection-change="handleSelectionChange">
@@ -106,7 +106,7 @@ const handleEdit = (row: {}) => {
 };
 
 const handleDelete = (id: any) => {
-  ElMessageBox.confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+  ElMessageBox.confirm('此操作将永久删除该分类, 是否继续?', '提示', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
     type: 'warning',
@@ -168,6 +168,10 @@ const reset = () => {
   queryParam.pageNum = 1;
   queryParam.pageSize = 10;
   getData();
+};
+
+const delAllSuccess = (val: boolean) => {
+  val && getData();
 };
 </script>
 

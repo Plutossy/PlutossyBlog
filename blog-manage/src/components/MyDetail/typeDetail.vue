@@ -125,6 +125,13 @@ const confirm = async (formEl: FormInstance | undefined) => {
                   duration: 1000,
                 });
                 emitter.emit('addSuccess', true);
+              } else if (code === 500) {
+                ElNotification({
+                  type: 'warning',
+                  message: '分类名称不能重复!',
+                  showClose: true,
+                  duration: 1000,
+                });
               } else {
                 ElNotification({
                   type: 'error',

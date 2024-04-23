@@ -44,4 +44,10 @@ public interface TypeService {
      * @return
      */
     public PageInfo<Type> selectTypeByName(Integer pageNum, Integer pageSize, String name);
+
+    /**
+     * @param name
+     * @return
+     */
+    public Boolean selectNameCount(String name);
 }
