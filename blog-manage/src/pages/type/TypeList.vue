@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-08 19:17:21
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-23 09:41:19
+ * @LastEditTime: 2024-04-23 10:29:00
  * @FilePath: \PlutossyBlog\blog-manage\src\pages\Blog.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -54,7 +54,6 @@ const router = useRouter();
 
 onMounted(() => {
   nextTick(() => {
-    // getData(userId);
     getData();
   });
   emitter.on('addSuccess', (val: boolean) => {
@@ -89,7 +88,6 @@ const handleSelectionChange = (val: never[]) => {
 };
 
 const goDetail = (id: number | string) => {
-  console.log('goDetail--', id);
   router.push({
     path: '/type/typeBlog',
     query: {
@@ -99,13 +97,12 @@ const goDetail = (id: number | string) => {
 };
 
 const handleEdit = (row: {}) => {
-  console.log('handleEdit--', row);
   dialogVisible.value = true;
   dialogTitle.value = '编辑';
   dialogData.value = row;
 };
 
-const handleDelete = (id: any) => {
+const handleDelete = (id: string | number) => {
   ElMessageBox.confirm('此操作将永久删除该分类, 是否继续?', '提示', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',

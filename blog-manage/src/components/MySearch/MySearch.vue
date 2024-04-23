@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-22 11:33:53
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-23 09:48:57
+ * @LastEditTime: 2024-04-23 10:22:06
  * @FilePath: \blog-manage\src\components\MySearch\MySearch.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -31,6 +31,7 @@
 <script setup lang="ts">
 import { deleteUsers } from '@/api/modules/user';
 import { deleteTypes } from '@/api/modules/type';
+import { deleteTags } from '@/api/modules/tag';
 import store from '@/store/store';
 
 const props = defineProps({
@@ -107,6 +108,9 @@ const delAll = () => {
           break;
         case 'type':
           var { code } = await deleteTypes(ids);
+          break;
+        case 'tag':
+          var { code } = await deleteTags(ids);
           break;
         default:
           break;

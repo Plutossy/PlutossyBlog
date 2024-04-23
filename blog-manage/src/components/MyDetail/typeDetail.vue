@@ -17,6 +17,7 @@
 <script setup lang="ts">
 import { addType, updateType } from '@/api/modules/type';
 import type { FormInstance, FormRules } from 'element-plus';
+import { clearForm } from '@/mixins';
 
 import eventBus from '@/assets/js/eventBus';
 const emitter = eventBus();
@@ -67,6 +68,11 @@ watch(
 );
 watch(detailVisible, val => {
   emit('update:dialogVisible', val);
+  if (props.dialogTitle === '新增' && !val) {
+    // 清空表单数据以及验证
+    ruleFormRef.value.clearValidate();
+    clearForm(detailData);
+  }
 });
 
 const cancel = () => {
@@ -107,6 +113,7 @@ const confirm = async (formEl: FormInstance | undefined) => {
                   showClose: true,
                   duration: 1000,
                 });
+                detailVisible.value = false;
               } else {
                 ElNotification({
                   type: 'error',
@@ -124,6 +131,7 @@ const confirm = async (formEl: FormInstance | undefined) => {
                   showClose: true,
                   duration: 1000,
                 });
+                detailVisible.value = false;
                 emitter.emit('addSuccess', true);
               } else if (code === 500) {
                 ElNotification({

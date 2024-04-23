@@ -42,24 +42,24 @@ public interface TagMapper {
     /**
      * @return
      */
-    @Select("select * from t_type")
+    @Select("select * from t_tag")
     public List<Tag> selectAllTagByCondition();
     default PageInfo<Tag> selectAllTag(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
-        List<Tag> types = selectAllTagByCondition();
-        return new PageInfo<>(types);
+        List<Tag> tags = selectAllTagByCondition();
+        return new PageInfo<>(tags);
     }
     // 根据标签名称模糊查询标签
     /**
      * @param name
      * @return
      */
-    @Select("select * from t_type where name like CONCAT('%', #{name}, '%')")
+    @Select("select * from t_tag where name like CONCAT('%', #{name}, '%')")
     public List<Tag> selectTagByNameByCondition(String name);
     default PageInfo<Tag> selectTagByName(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize, String name) {
         PageHelper.startPage(pageNum, pageSize);
-        List<Tag> types = selectTagByNameByCondition(name);
-        return new PageInfo<>(types);
+        List<Tag> tags = selectTagByNameByCondition(name);
+        return new PageInfo<>(tags);
     };
 
     public Integer selectNameCount(String name);

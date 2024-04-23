@@ -2,13 +2,13 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-08 19:17:21
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-03-01 09:23:15
+ * @LastEditTime: 2024-04-23 10:30:11
  * @FilePath: \PlutossyBlog\blog-manage\src\pages\Blog.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
   <header>
-    <MySearch type="tag" :multipleSelection="multipleSelection" @searchResult="searchResult" />
+    <MySearch type="tag" :multipleSelection="multipleSelection" @searchResult="searchResult" @reset="reset" @delAllSuccess="delAllSuccess" />
   </header>
   <main>
     <el-table :data="tagData" max-height="568" @selection-change="handleSelectionChange">
@@ -25,11 +25,16 @@
       </el-table-column>
     </el-table>
   </main>
+  <footer>
+    <my-page v-model:queryParam="queryParam" :total="newTotal" @tempParams="getTempParams" />
+  </footer>
   <tag-detail v-model:dialogVisible="dialogVisible" :dialogTitle="dialogTitle" :dialogData="dialogData" />
 </template>
 
 <script setup lang="ts">
-import { ElNotification, ElMessageBox } from 'element-plus';
+import { selectTagList, selectTagByName, deleteTag } from '@/api/modules/tag';
+import eventBus from '@/assets/js/eventBus';
+const emitter = eventBus();
 
 let tagData: any = reactive([]); // 用户数据
 let multipleSelection = ref([]); // 用于存放多选框选中的数据
@@ -38,50 +43,46 @@ let dialogVisible = ref(false); // 详情弹窗是否显示
 let dialogTitle = ref('详情'); // 详情弹窗标题
 let dialogData = ref({}); // 详情弹窗数据
 
+let queryParam = reactive({
+  pageNum: 1,
+  pageSize: 10,
+});
+let newTotal = ref(0); // 总数
+
 const router = useRouter();
 
 onMounted(() => {
   nextTick(() => {
-    // getData(userId);
     getData();
+  });
+  emitter.on('addSuccess', (val: boolean) => {
+    val && getData();
   });
 });
 
-const getData = () => {
-  console.log('getData');
-  // getUserCollect(id)
-  let data1 = [
-    {
-      id: 1,
-      name: '标签1',
-    },
-    {
-      id: 2,
-      name: '标签2',
-    },
-    {
-      id: 3,
-      name: '标签3',
-    },
-    {
-      id: 4,
-      name: '标签4',
-    },
-    {
-      id: 5,
-      name: '标签5',
-    },
-  ];
-  tagData.splice(0, tagData.length, ...data1);
+const getData = async () => {
+  try {
+    const { data, code, total } = await selectTagList(queryParam);
+    if (code === 200) {
+      tagData.splice(0, tagData.length, ...data);
+      newTotal.value = total;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// 页面变换页发起请求
+const getTempParams = () => {
+  getData();
 };
 
 // 把已经选择的项赋值给multipleSelection
-const handleSelectionChange = val => {
+const handleSelectionChange = (val: never[]) => {
   multipleSelection.value = val;
 };
 
 const goDetail = (id: string | number) => {
-  console.log('goDetail--', id);
   router.push({
     path: '/tag/tagBlog',
     query: {
@@ -90,26 +91,36 @@ const goDetail = (id: string | number) => {
   });
 };
 
-const handleEdit = row => {
-  console.log('handleEdit--', row);
+const handleEdit = (row: {}) => {
   dialogVisible.value = true;
   dialogTitle.value = '编辑';
   dialogData.value = row;
 };
 
-const handleDelete = id => {
-  console.log(id);
+const handleDelete = (id: string | number) => {
   ElMessageBox.confirm('此操作将永久删除该文件, 是否继续?', '提示', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
     type: 'warning',
   })
-    .then(() => {
-      // delUser(id)
-      ElNotification({
-        type: 'success',
-        message: '删除成功!',
-      });
+    .then(async () => {
+      const { code } = await deleteTag(id);
+      if (code === 200) {
+        ElNotification({
+          type: 'success',
+          message: '删除成功!',
+          showClose: true,
+          duration: 1000,
+        });
+        getData();
+      } else {
+        ElNotification({
+          type: 'error',
+          message: '删除失败!',
+          duration: 1000,
+          showClose: true,
+        });
+      }
     })
     .catch(() => {
       ElNotification({
@@ -117,14 +128,40 @@ const handleDelete = id => {
         message: '已取消删除',
       });
     });
-  // getData(userId);
+};
+
+const searchResult = async (param: string) => {
+  try {
+    const query = {
+      pageNum: queryParam.pageNum,
+      pageSize: queryParam.pageSize,
+      name: param,
+    };
+    const { data, code } = await selectTagByName(query);
+    if (code === 200) {
+      // 因为 reactive 不能直接赋值，所以用 splice
+      tagData.splice(0, tagData.length, ...data);
+    } else {
+      ElNotification({
+        type: 'error',
+        message: '查询失败!',
+        showClose: true,
+        duration: 1000,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const reset = () => {
+  queryParam.pageNum = 1;
+  queryParam.pageSize = 10;
   getData();
 };
 
-const searchResult = data => {
-  console.log('searchResult--', data);
-  // 因为 reactive 不能直接赋值，所以用 splice
-  tagData.splice(0, tagData.length, data);
+const delAllSuccess = (val: boolean) => {
+  val && getData();
 };
 </script>
 

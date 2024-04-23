@@ -66,11 +66,11 @@ public class TagController {
     @RequestMapping(value = "/manage/addTag", method = RequestMethod.POST)
     public Object insertTag(@RequestBody Map<String, Object> jsonData) {
         String name = jsonData.get("name") == null ? "" : (String) jsonData.get("name");
-        // 分类名称不能重复
+        // 标签名称不能重复
         if (tagService.selectNameCount(name)) {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put(Consts.CODE, 500);
-            jsonObject.put(Consts.MSG, "分类名称已存在！");
+            jsonObject.put(Consts.MSG, "标签名称已存在！");
             return jsonObject;
         }
         Boolean flag = tagService.insertTag(name);

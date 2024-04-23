@@ -15,8 +15,12 @@
 </template>
 
 <script setup lang="ts">
-import { ElMessageBox, ElNotification } from 'element-plus';
+import { addTag, updateTag } from '@/api/modules/tag';
 import type { FormInstance, FormRules } from 'element-plus';
+import { clearForm } from '@/mixins';
+
+import eventBus from '@/assets/js/eventBus';
+const emitter = eventBus();
 
 const props = defineProps({
   dialogVisible: {
@@ -64,6 +68,11 @@ watch(
 );
 watch(detailVisible, val => {
   emit('update:dialogVisible', val);
+  if (props.dialogTitle === '新增' && !val) {
+    // 清空表单数据以及验证
+    ruleFormRef.value.clearValidate();
+    clearForm(detailData);
+  }
 });
 
 const cancel = () => {
@@ -92,32 +101,54 @@ const confirm = async (formEl: FormInstance | undefined) => {
           }
         },
       })
-        .then(() => {
+        .then(async () => {
           detailVisible.value = false;
           if (props.dialogTitle === '编辑') {
-            // updateUser(detailData)
-            ElNotification({
-              type: 'success',
-              message: '修改成功!',
-            });
+            const { code } = await updateTag(detailData);
+            if (code === 200) {
+              ElNotification({
+                type: 'success',
+                message: '修改成功!',
+                showClose: true,
+                duration: 1000,
+              });
+              detailVisible.value = false;
+            } else {
+              ElNotification({
+                type: 'error',
+                message: '修改失败!',
+                showClose: true,
+                duration: 1000,
+              });
+            }
           } else if (props.dialogTitle === '新增') {
-            // addUser(detailData)
-            ElNotification({
-              type: 'success',
-              message: '新增成功!',
-            });
+            const { code } = await addTag(detailData);
+            if (code === 200) {
+              ElNotification({
+                type: 'success',
+                message: '新增成功!',
+                showClose: true,
+                duration: 1000,
+              });
+              detailVisible.value = false;
+              emitter.emit('addSuccess', true);
+            } else if (code === 500) {
+              ElNotification({
+                type: 'warning',
+                message: '标签名称不能重复!',
+                showClose: true,
+                duration: 1000,
+              });
+            }
           }
         })
         .catch(() => {
-          props.dialogTitle === '编辑'
-            ? ElNotification({
-                type: 'info',
-                message: '已取消修改',
-              })
-            : ElNotification({
-                type: 'info',
-                message: '已取消新增',
-              });
+          ElNotification({
+            type: 'info',
+            message: props.dialogTitle === '编辑' ? '已取消修改' : '已取消新增',
+            showClose: true,
+            duration: 1000,
+          });
         });
     } else {
       console.log('验证失败!', fields);
