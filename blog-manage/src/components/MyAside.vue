@@ -1,7 +1,7 @@
 <template>
   <div class="sidebar switch-item">
     <el-menu class="sider-menu" :collapse="collapse" background-color="rgba(0, 0, 0, 0)" text-color="rgba(255, 255, 255, 0.9)" active-text-color="#ffffff" router>
-      <el-menu-item v-for="item in routeLinks" :key="item.index" :index="item.path" @click="routeHandler" :style="{ 'background-color': routeActive.includes(item.path) ? '#f2711c' : '' }">
+      <el-menu-item v-for="item in routeLinks" :key="item.index" :index="item.path" @click="routeHandler" :style="{ 'background-color': routeActive.includes(item.path) ? '#f2711c' : '' }" @mouseenter="setTipBgc">
         <el-icon size="larger" class="switch-item-color-borderColor">
           <component :is="item.icon"></component>
         </el-icon>
@@ -108,6 +108,15 @@ const switchHandler = () => {
     switchIcon.classList.add('el-switch__action__light');
   } else {
     switchIcon.classList.remove('el-switch__action__light');
+  }
+};
+
+const setTipBgc = () => {
+  if (collapse.value && switchLight.value) {
+    const popperLightAll: any = document.querySelectorAll('.el-popper.is-dark');
+    popperLightAll.forEach((item: any) => {
+      item.style.backgroundColor = '#ffffff';
+    });
   }
 };
 
