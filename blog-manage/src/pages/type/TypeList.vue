@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-08 19:17:21
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-22 18:23:15
+ * @LastEditTime: 2024-04-23 09:16:31
  * @FilePath: \PlutossyBlog\blog-manage\src\pages\Blog.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -25,6 +25,9 @@
       </el-table-column>
     </el-table>
   </main>
+  <footer>
+    <my-page v-model:queryParam="queryParam" :total="newTotal" @tempParams="getTempParams" />
+  </footer>
   <type-detail v-model:dialogVisible="dialogVisible" :dialogTitle="dialogTitle" :dialogData="dialogData" />
 </template>
 
@@ -45,6 +48,8 @@ let queryParam = reactive({
   pageSize: 10,
 });
 
+let newTotal = ref(0); // 总数
+
 const router = useRouter();
 
 onMounted(() => {
@@ -63,13 +68,19 @@ onUnmounted(() => {
 
 const getData = async () => {
   try {
-    const { data, code } = await selectTypeList(queryParam);
+    const { data, code, total } = await selectTypeList(queryParam);
     if (code === 200) {
       typeData.splice(0, typeData.length, ...data);
+      newTotal.value = total;
     }
   } catch (error) {
     console.log(error);
   }
+};
+
+// 页面变换页发起请求
+const getTempParams = () => {
+  getData();
 };
 
 // 把已经选择的项赋值给multipleSelection
