@@ -38,7 +38,7 @@ public class MusicController {
         return getObject(jsonObject, pageData);
     }
 
-    @RequestMapping(value = "/manage/selectMusicByName", method = RequestMethod.POST)
+    @RequestMapping(value = "/manage/selectMusicByQuery", method = RequestMethod.POST)
     public Object selectMusicByQuery(@RequestBody Map<String, Object> jsonData) {
         Integer pageNum = jsonData.get("pageNum") == null ? PageDefault.PAGE_NUM : (Integer) jsonData.get("pageNum");
         Integer pageSize = jsonData.get("pageSize") == null ? PageDefault.PAGE_SIZE : (Integer) jsonData.get("pageSize");

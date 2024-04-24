@@ -9,7 +9,7 @@
         <result column="url" jdbcType="VARCHAR" property="url"/>
         <result column="singer" jdbcType="VARCHAR" property="singer"/>
         <result column="img" jdbcType="VARCHAR" property="img"/>
-        <result column="lyric" jdbcType="LONG VARCHAR" property="lyric"/>
+        <result column="lyric" jdbcType="LONGVARCHAR" property="lyric"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
