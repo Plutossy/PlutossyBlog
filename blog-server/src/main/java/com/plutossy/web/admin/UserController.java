@@ -56,26 +56,33 @@ public class UserController {
     /* 判断是否登陆成功 */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public Object login(@RequestBody Map<String, Object> jsonData, HttpSession session) {
-        String nickname = (String) jsonData.get("nickname");
-        String password = (String) jsonData.get("password");
-        Long id = userService.verifyPassword(nickname, password);
-        JSONObject jsonObject = new JSONObject();
-        if (id != null) {
-            // 封装返回数据 id，封装到data中
-            JSONObject data = new JSONObject();
-            data.put(Consts.ID, id);
-            jsonObject.put(Consts.CODE, 200);
-            jsonObject.put(Consts.MSG, "登陆成功！");
-            jsonObject.put(Consts.DATA, data);
-            // 生成一个有效期为24小时的token
-            String token = JwtUtil.generateToken(nickname, password, (long) (60 * 60 * 24));
-            jsonObject.put(Consts.TOKEN, token);
-            session.setAttribute(Consts.NICKNAME, nickname);
+        try {
+            String nickname = (String) jsonData.get("nickname");
+            String password = (String) jsonData.get("password");
+            Long id = userService.verifyPassword(nickname, password);
+            JSONObject jsonObject = new JSONObject();
+            if (id != null) {
+                // 封装返回数据 id，封装到data中
+                JSONObject data = new JSONObject();
+                data.put(Consts.ID, id);
+                jsonObject.put(Consts.CODE, 200);
+                jsonObject.put(Consts.MSG, "登陆成功！");
+                jsonObject.put(Consts.DATA, data);
+                // 生成一个有效期为24小时的token
+                String token = JwtUtil.generateToken(nickname, password, (long) (60 * 60 * 24));
+                jsonObject.put(Consts.TOKEN, token);
+                session.setAttribute(Consts.NICKNAME, nickname);
+                return jsonObject;
+            }
+            jsonObject.put(Consts.CODE, 400);
+            jsonObject.put(Consts.MSG, "用户名或密码错误！");
+            return jsonObject;
+        } catch (Exception e) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put(Consts.CODE, 500);
+            jsonObject.put(Consts.MSG, "服务器加载中，请稍后！");
             return jsonObject;
         }
-        jsonObject.put(Consts.CODE, 400);
-        jsonObject.put(Consts.MSG, "用户名或密码错误！");
-        return jsonObject;
     }
 
     /* 注册 */

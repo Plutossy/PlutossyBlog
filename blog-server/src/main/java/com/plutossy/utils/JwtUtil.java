@@ -1,6 +1,5 @@
 package com.plutossy.utils;
 
-import com.plutossy.domain.User;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.Claims;
@@ -12,6 +11,13 @@ import java.util.UUID;
 public class JwtUtil {
     private static final String SECRET = "pluto_blog_ssy_token";
 
+    /**
+     * 生成token
+     * @param nickname
+     * @param password
+     * @param expiration
+     * @return
+     */
     public static String generateToken(String nickname, String password, Long expiration) {
         Date now = new Date();
         Date expireTime = new Date(now.getTime() + expiration * 1000); // System.currentTimeMillis() + expiration * 1000
@@ -36,6 +42,11 @@ public class JwtUtil {
         return builder.compact();
     }
 
+    /**
+     * 解析token
+     * @param token
+     * @return
+     */
     public static Claims parseToken(String token) {
         return Jwts.parser()
                 .setSigningKey(SECRET)
