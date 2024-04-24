@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-08 19:17:21
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-24 18:47:25
+ * @LastEditTime: 2024-04-24 18:58:30
  * @FilePath: \PlutossyBlog\blog-manage\src\pages\Blog.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -31,7 +31,7 @@
       <el-table-column prop="singer" label="歌手 / 组合" width="160" show-overflow-tooltip />
       <el-table-column prop="url" label="歌曲链接" min-width="240" show-overflow-tooltip>
         <template #default="scope">
-          <el-link type="primary" :underline="false" :href="scope.row.songUrl" target="_blank">{{ scope.row.songUrl }}</el-link>
+          <el-link type="primary" :underline="false" :href="scope.row.url" target="_blank">{{ scope.row.url }}</el-link>
         </template>
       </el-table-column>
       <el-table-column prop="lyric" label="歌词" min-width="360">
@@ -56,6 +56,7 @@
   </footer>
 
   <music-detail v-model:dialogVisible="dialogVisible" :dialogTitle="dialogTitle" :dialogData="dialogData" />
+
   <el-drawer v-model="drawer" :show-close="false" direction="btt" size="90%">
     <iframe src="http://myfreemp3.sharerj.com/" frameborder="0"></iframe>
     <template #header="{ close }">
@@ -142,16 +143,16 @@ const getData = async () => {
 };
 
 // 把已经选择的项赋值给multipleSelection
-const handleSelectionChange = val => {
+const handleSelectionChange = (val: any) => {
   multipleSelection.value = val;
 };
 
 // 更新图片
-const uploadUrl = id => {
+const uploadUrl = (id: string | number) => {
   return `${config.HOST}/user/updateUserPic?id=${id}`;
 };
 // 上传图片之后要做的事情
-const handleImgSuccess = (res: { code: number }, file: any) => {
+const handleImgSuccess = (res: { code: number }, _file: any) => {
   if (res.code === 1) {
     ElNotification({
       message: '头像上传成功',
@@ -167,44 +168,78 @@ const handleImgSuccess = (res: { code: number }, file: any) => {
   }
 };
 
-const handleEdit = row => {
-  console.log('handleEdit--', row);
+const handleEdit = (row: {}) => {
   dialogVisible.value = true;
   dialogTitle.value = '编辑';
   dialogData.value = row;
 };
 
-const handleDelete = id => {
+const handleDelete = (id: string | number) => {
   console.log(id);
   ElMessageBox.confirm('此操作将永久删除该文件, 是否继续?', '提示', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
     type: 'warning',
   })
-    .then(() => {
-      // delUser(id)
-      ElNotification({
-        type: 'success',
-        message: '删除成功!',
-      });
+    .then(async () => {
+      try {
+        const { code } = await proxy.$apis.music.deleteMusic(id);
+        if (code === 200) {
+          ElNotification({
+            type: 'success',
+            message: '删除成功!',
+            showClose: true,
+            duration: 1000,
+          });
+          getData();
+        } else {
+          ElNotification({
+            type: 'error',
+            message: '删除失败!',
+            duration: 1000,
+            showClose: true,
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      }
     })
     .catch(() => {
       ElNotification({
         type: 'info',
         message: '已取消删除',
+        showClose: true,
+        duration: 1000,
       });
     });
-  // getData(userId);
-  getData();
 };
 
-const searchResult = data => {
-  console.log('searchResult--', data);
-  // 因为 reactive 不能直接赋值，所以用 splice
-  musicData.splice(0, musicData.length, data);
+const searchResult = async (param: string) => {
+  try {
+    const query = {
+      pageNum: queryParam.pageNum,
+      pageSize: queryParam.pageSize,
+      queryParam: param,
+    };
+    const { data, code } = await proxy.$apis.music.selectMusicByQuery(query);
+    if (code === 200) {
+      // 因为 reactive 不能直接赋值，所以用 splice
+      musicData.splice(0, musicData.length, ...data);
+    } else {
+      ElNotification({
+        type: 'error',
+        message: '查询失败!',
+        showClose: true,
+        duration: 1000,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
 };
 
-const getTempParams = data => {
+// 页面变换页发起请求
+const getTempParams = () => {
   getData();
 };
 </script>

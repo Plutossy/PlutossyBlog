@@ -1,14 +1,14 @@
 <template>
   <el-dialog v-model="detailVisible" :title="props.dialogTitle">
     <el-form ref="ruleFormRef" :rules="rules" :model="detailData" label-width="120px">
-      <el-form-item label="歌曲名：" prop="songName">
-        <el-input v-model="detailData.songName" />
+      <el-form-item label="歌曲名：" prop="name">
+        <el-input v-model="detailData.name" />
       </el-form-item>
       <el-form-item label="歌手 / 组合：" prop="singer">
         <el-input v-model="detailData.singer" />
       </el-form-item>
-      <el-form-item label="歌曲链接：" prop="songUrl">
-        <el-input v-model="detailData.songUrl" />
+      <el-form-item label="歌曲链接：" prop="url">
+        <el-input v-model="detailData.url" />
       </el-form-item>
       <el-form-item label="歌词：" prop="lyric">
         <el-input type="textarea" :rows="3" v-model="detailData.lyric" autocomplete="off" />
@@ -24,8 +24,12 @@
 </template>
 
 <script setup lang="ts">
-import { ElMessageBox, ElNotification } from 'element-plus';
 import type { FormInstance, FormRules } from 'element-plus';
+import { ComponentInternalInstance } from 'vue';
+import eventBus from '@/assets/js/eventBus';
+
+const emitter = eventBus();
+const { proxy } = getCurrentInstance() as ComponentInternalInstance | any;
 
 const props = defineProps({
   dialogVisible: {
@@ -46,24 +50,24 @@ let detailVisible = ref(false);
 
 interface RuleForm {
   // 表单数据类型
-  songName: string;
+  name: string;
   singer: string;
-  songUrl: string;
+  url: string;
   lyric: string;
 }
 const ruleFormRef: any = ref<FormInstance>(); // 表单实例
 let detailData = reactive<RuleForm>({
   // 表单数据
-  songName: '',
+  name: '',
   singer: '',
-  songUrl: '',
+  url: '',
   lyric: '',
 });
 const rules = reactive<FormRules<RuleForm>>({
   // 表单验证规则
-  songName: [{ required: true, message: '请输入歌曲名', trigger: 'blur' }],
+  name: [{ required: true, message: '请输入歌曲名', trigger: 'blur' }],
   singer: [{ required: true, message: '请输入歌手或组合', trigger: 'blur' }],
-  songUrl: [{ required: true, message: '请输入歌曲链接', trigger: 'blur' }],
+  url: [{ required: true, message: '请输入歌曲链接', trigger: 'blur' }],
   lyric: [{ message: '请输入歌词', trigger: 'blur' }],
 });
 
@@ -110,20 +114,60 @@ const confirm = async (formEl: FormInstance | undefined) => {
           }
         },
       })
-        .then(() => {
+        .then(async () => {
           detailVisible.value = false;
           if (props.dialogTitle === '编辑') {
-            // updateUser(detailData)
-            ElNotification({
-              type: 'success',
-              message: '修改成功!',
-            });
+            try {
+              const { code } = await proxy.$apis.music.updateMusic(detailData);
+              if (code === 200) {
+                ElNotification({
+                  type: 'success',
+                  message: '修改成功!',
+                  showClose: true,
+                  duration: 1000,
+                });
+                detailVisible.value = false;
+              } else {
+                ElNotification({
+                  type: 'error',
+                  message: '修改失败!',
+                  showClose: true,
+                  duration: 1000,
+                });
+              }
+            } catch (error) {
+              console.log(error);
+            }
           } else if (props.dialogTitle === '新增') {
-            // addUser(detailData)
-            ElNotification({
-              type: 'success',
-              message: '新增成功!',
-            });
+            try {
+              const { code } = await proxy.$apis.music.addMusic(detailData);
+              if (code === 200) {
+                ElNotification({
+                  type: 'success',
+                  message: '新增成功!',
+                  showClose: true,
+                  duration: 1000,
+                });
+                detailVisible.value = false;
+                emitter.emit('addSuccess', true);
+              } else if (code === 500) {
+                ElNotification({
+                  type: 'warning',
+                  message: '分类名称不能重复!',
+                  showClose: true,
+                  duration: 1000,
+                });
+              } else {
+                ElNotification({
+                  type: 'error',
+                  message: '新增失败!',
+                  showClose: true,
+                  duration: 1000,
+                });
+              }
+            } catch (error) {
+              console.log(error);
+            }
           }
         })
         .catch(() => {

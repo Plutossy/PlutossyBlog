@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-22 11:33:53
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-23 10:22:06
+ * @LastEditTime: 2024-04-24 19:07:27
  * @FilePath: \blog-manage\src\components\MySearch\MySearch.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -29,10 +29,10 @@
 </template>
 
 <script setup lang="ts">
-import { deleteUsers } from '@/api/modules/user';
-import { deleteTypes } from '@/api/modules/type';
-import { deleteTags } from '@/api/modules/tag';
+import { ComponentInternalInstance } from 'vue';
 import store from '@/store/store';
+
+const { proxy } = getCurrentInstance() as ComponentInternalInstance | any;
 
 const props = defineProps({
   type: {
@@ -104,13 +104,16 @@ const delAll = () => {
       // const { code } = props.type === 'type' && (await deleteTypes(ids));
       switch (props.type) {
         case 'user':
-          var { code } = await deleteUsers(ids);
+          var { code } = await proxy.$apis.user.deleteUsers(ids);
           break;
         case 'type':
-          var { code } = await deleteTypes(ids);
+          var { code } = await proxy.$apis.type.deleteTypes(ids);
           break;
         case 'tag':
-          var { code } = await deleteTags(ids);
+          var { code } = await proxy.$apis.tag.deleteTags(ids);
+          break;
+        case 'music':
+          var { code } = await proxy.$apis.music.deleteTags(ids);
           break;
         default:
           break;
