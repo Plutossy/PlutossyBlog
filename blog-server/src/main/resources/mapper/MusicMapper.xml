@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.plutossy.dao.MusicMapper">
+    <resultMap id="BaseResultMap" type="com.plutossy.domain.Music">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="url" jdbcType="VARCHAR" property="url"/>
+        <result column="singer" jdbcType="VARCHAR" property="singer"/>
+        <result column="img" jdbcType="VARCHAR" property="img"/>
+        <result column="lyric" jdbcType="LONG VARCHAR" property="lyric"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Columns">
+        id, name, url, singer, img, lyric, create_time, update_time
+    </sql>
+
+    <insert id="insertMusic" parameterType="com.plutossy.domain.Music">
+        insert into t_music
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                name,
+            </if>
+            <if test="url != null">
+                url,
+            </if>
+            <if test="singer != null">
+                singer,
+            </if>
+            <if test="img != null">
+                img,
+            </if>
+            <if test="lyric != null">
+                lyric,
+            </if>
+            create_time,
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="name != null">
+                #{name},
+            </if>
+            <if test="url != null">
+                #{url},
+            </if>
+            <if test="singer != null">
+                #{singer},
+            </if>
+            <if test="img != null">
+                #{img},
+            </if>
+            <if test="lyric != null">
+                #{lyric},
+            </if>
+            now(),
+        </trim>
+    </insert>
+
+    <delete id="deleteMusicById" parameterType="java.lang.Long">
+        delete from t_music
+        where id = #{id}
+    </delete>
+
+    <update id="updateMusic" parameterType="com.plutossy.domain.Music">
+        update t_music
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="url != null">
+                url = #{url},
+            </if>
+            <if test="singer != null">
+                singer = #{singer},
+            </if>
+            <if test="img != null">
+                img = #{img},
+            </if>
+            <if test="lyric != null">
+                lyric = #{lyric},
+            </if>
+            update_time = now(),
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="selectMusicById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Columns"/>
+        from t_music
+        where id = #{id}
+    </select>
+
+    <select id="selectAllMusic" resultMap="BaseResultMap">
+        select *
+        from t_music
+    </select>
+
+    <select id="selectMusicByQuery" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select *
+        from t_music
+        where (name like CONCAT('%', #{queryParam}, '%')) or (singer like CONCAT('%', #{queryParam}, '%'))
+    </select>
+
+    <!--<select id="selectNameCount" resultType="java.lang.Integer" parameterType="java.lang.String">
+        select count(*) from t_music where name = #{name}
+    </select>-->
+</mapper>
