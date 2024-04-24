@@ -11,7 +11,7 @@
     <MySearch type="type" :multipleSelection="multipleSelection" @searchResult="searchResult" @reset="reset" @delAllSuccess="delAllSuccess" />
   </header>
   <main>
-    <el-table :data="typeData" max-height="568" @selection-change="handleSelectionChange">
+    <el-table :data="typeData" :max-height="tableHeight" @selection-change="handleSelectionChange">
       <el-table-column fixed type="selection" width="60" align="center"></el-table-column>
       <el-table-column prop="name" label="分类名称" min-width="500" show-overflow-tooltip />
       <el-table-column fixed="right" label="操作" min-width="500" align="center">
@@ -33,6 +33,7 @@
 
 <script setup lang="ts">
 import { selectTypeList, selectTypeByName, deleteType } from '@/api/modules/type';
+import store from '@/store/store';
 import eventBus from '@/assets/js/eventBus';
 const emitter = eventBus();
 
@@ -50,6 +51,8 @@ let queryParam = reactive({
 
 let newTotal = ref(0); // 总数
 
+let tableHeight = ref(568); // 表格高度
+
 const router = useRouter();
 
 onMounted(() => {
@@ -61,8 +64,23 @@ onMounted(() => {
   });
 });
 
+let timer: any = null;
+nextTick(() => {
+  store.commit('table/setTableHeight');
+  tableHeight.value = store.getters['table/tableHeight'];
+
+  window.addEventListener('resize', () => {
+    timer = setTimeout(() => {
+      store.commit('table/setTableHeight');
+      tableHeight.value = store.getters['table/tableHeight'];
+    }, 80);
+  });
+});
+
 onUnmounted(() => {
   emitter.off('addSuccess');
+  window.removeEventListener('resize', () => {});
+  clearTimeout(timer);
 });
 
 const getData = async () => {

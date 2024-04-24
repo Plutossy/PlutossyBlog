@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-08 19:17:21
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-23 10:30:11
+ * @LastEditTime: 2024-04-24 13:56:50
  * @FilePath: \PlutossyBlog\blog-manage\src\pages\Blog.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -11,7 +11,7 @@
     <MySearch type="tag" :multipleSelection="multipleSelection" @searchResult="searchResult" @reset="reset" @delAllSuccess="delAllSuccess" />
   </header>
   <main>
-    <el-table :data="tagData" max-height="568" @selection-change="handleSelectionChange">
+    <el-table :data="tagData" :max-height="tableHeight" @selection-change="handleSelectionChange">
       <el-table-column fixed type="selection" width="60" align="center"></el-table-column>
       <el-table-column prop="name" label="标签名称" min-width="500" show-overflow-tooltip />
       <el-table-column fixed="right" label="操作" min-width="500" align="center">
@@ -33,6 +33,7 @@
 
 <script setup lang="ts">
 import { selectTagList, selectTagByName, deleteTag } from '@/api/modules/tag';
+import store from '@/store/store';
 import eventBus from '@/assets/js/eventBus';
 const emitter = eventBus();
 
@@ -49,6 +50,8 @@ let queryParam = reactive({
 });
 let newTotal = ref(0); // 总数
 
+let tableHeight = ref(568); // 表格高度
+
 const router = useRouter();
 
 onMounted(() => {
@@ -58,6 +61,25 @@ onMounted(() => {
   emitter.on('addSuccess', (val: boolean) => {
     val && getData();
   });
+});
+
+let timer: any = null;
+nextTick(() => {
+  store.commit('table/setTableHeight');
+  tableHeight.value = store.getters['table/tableHeight'];
+
+  window.addEventListener('resize', () => {
+    timer = setTimeout(() => {
+      store.commit('table/setTableHeight');
+      tableHeight.value = store.getters['table/tableHeight'];
+    }, 80);
+  });
+});
+
+onUnmounted(() => {
+  emitter.off('addSuccess');
+  window.removeEventListener('resize', () => {});
+  clearTimeout(timer);
 });
 
 const getData = async () => {
