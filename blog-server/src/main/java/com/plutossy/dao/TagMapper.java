@@ -44,7 +44,7 @@ public interface TagMapper {
     /**
      * @return
      */
-    @Select("select * from t_tag order by create_time desc")
+    @Select("select * from t_tag")
     public List<Tag> selectAllTagByCondition();
     default PageInfo<Tag> selectAllTag(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
@@ -56,7 +56,7 @@ public interface TagMapper {
      * @param name
      * @return
      */
-    @Select("select * from t_tag where name like CONCAT('%', #{name}, '%') order by create_time desc")
+    @Select("select * from t_tag where name like CONCAT('%', #{name}, '%')")
     public List<Tag> selectTagByNameByCondition(String name);
     default PageInfo<Tag> selectTagByName(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize, String name) {
         PageHelper.startPage(pageNum, pageSize);
