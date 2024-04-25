@@ -82,7 +82,7 @@ onMounted(() => {
   }
 
   // 处理replace返回后路由栏背景目不对应的问题
-  if (window.history && window.history.pushState) {
+  if (window.history) {
     window.addEventListener('popstate', () => {
       const path = window.location.pathname;
       // console.log(`path--${path}`);
@@ -128,7 +128,7 @@ const setTipBgc = () => {
 
 onUnmounted(() => {
   emitter.off('collapse');
-  if (window.history && window.history.pushState) {
+  if (window.history) {
     window.removeEventListener('popstate', () => {});
   }
 });
@@ -143,7 +143,7 @@ onUnmounted(() => {
   bottom: 0;
   background-color: #464646;
   color: #fff;
-  overflow: scroll;
+  overflow: auto !important;
 }
 
 .sidebar::-webkit-scrollbar {
@@ -166,7 +166,7 @@ onUnmounted(() => {
     margin-bottom: 10px;
 
     &:hover {
-      background-color: #f2711c;
+      background-color: #f7873c;
     }
   }
 }
