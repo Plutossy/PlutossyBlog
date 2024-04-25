@@ -19,10 +19,10 @@ public class Blog implements Serializable {
     private String description;
     private String picture;
     private String flag;
-    private boolean recommend;
-    private boolean published;
-    private boolean commentabled;
-    private boolean shared;
+    private Boolean recommend;
+    private Boolean published;
+    private Boolean commentabled;
+    private Boolean shared;
     private Integer views;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;

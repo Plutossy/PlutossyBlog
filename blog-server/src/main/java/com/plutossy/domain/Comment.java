@@ -16,7 +16,7 @@ public class Comment implements Serializable {
     /*主键*/
     private Long id;
     /*评论类型*/
-    private boolean type;
+    private Boolean type;
     /*评论内容*/
     private String content;
     /*创建时间*/
