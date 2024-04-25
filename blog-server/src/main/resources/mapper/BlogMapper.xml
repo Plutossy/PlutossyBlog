@@ -9,7 +9,7 @@
         <result column="content" jdbcType="LONGVARCHAR" property="content"/>
         <result column="description" jdbcType="VARCHAR" property="description"/>
         <result column="picture" jdbcType="VARCHAR" property="picture"/>
-        <result column="flag" jdbcType="VARCHAR" property="flag"/>
+        <result column="flag" jdbcType="INTEGER" property="flag"/>
         <result column="recommend" jdbcType="BIT" property="recommend"/>
         <result column="published" jdbcType="INTEGER" property="published"/>
         <result column="commentabled" jdbcType="BIT" property="commentabled"/>

@@ -24,6 +24,13 @@
         </template>
       </el-table-column>
       <el-table-column prop="author" label="作者" width="150" align="center" />
+      <el-table-column prop="flag" label="博客类型" width="150" align="center">
+        <template #default="{ row }">
+          <div v-if="row.flag === 0" class="publish-item no-status">原创</div>
+          <div v-if="row.flag === 1" class="publish-item is-status">转载</div>
+          <div v-if="row.flag === 2" class="publish-item set-status">翻译</div>
+        </template>
+      </el-table-column>
       <el-table-column prop="recommend" label="是否推荐" width="100" align="center">
         <template #default="{ row }">
           <el-tooltip :content="row.recommend ? '是' : '否'" placement="top">
@@ -140,10 +147,10 @@ const getData = () => {
   let data1 = [
     {
       id: 1,
-      firstImg: 'https://img-blog.csdnimg.cn/20210125173259900.png',
+      picture: 'https://img-blog.csdnimg.cn/20210125173259900.png',
       title: '博客1博客1博客1博客1博客1博客1博客1',
-      blogUrl: 'https://blog.csdn.net/qq_41893274/article/details/113000000',
       author: '作者1',
+      flag: 0,
       recommend: true,
       published: 0,
       commentabled: true,
@@ -154,11 +161,24 @@ const getData = () => {
     {
       id: 2,
       firstImg: 'https://img-blog.csdnimg.cn/20210125173259900.png',
-      blogUrl: 'https://blog.csdn.net/qq_41893274/article/details/113000000',
       title: '博客2',
       author: '作者2',
+      flag: 1,
       recommend: true,
       published: 1,
+      commentabled: true,
+      shared: true,
+      views: 100,
+      description: '博客简介',
+    },
+    {
+      id: 3,
+      firstImg: 'https://img-blog.csdnimg.cn/20210125173259900.png',
+      title: '博客3',
+      author: '作者3',
+      flag: 2,
+      recommend: true,
+      published: 2,
       commentabled: true,
       shared: true,
       views: 200,

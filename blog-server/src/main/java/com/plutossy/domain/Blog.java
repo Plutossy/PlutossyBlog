@@ -18,7 +18,7 @@ public class Blog implements Serializable {
     private String content;
     private String description;
     private String picture;
-    private String flag;
+    private Integer flag;
     private Boolean recommend;
     private Integer published; // 0 未发布 1 发布 2 草稿
     private Boolean commentabled;
