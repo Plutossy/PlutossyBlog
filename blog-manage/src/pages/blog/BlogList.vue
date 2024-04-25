@@ -24,10 +24,10 @@
         </template>
       </el-table-column>
       <el-table-column prop="author" label="作者" width="150" align="center" />
-      <el-table-column prop="recommend" label="是否推荐" width="120" align="center">
+      <el-table-column prop="recommend" label="是否推荐" width="100" align="center">
         <template #default="{ row }">
           <el-tooltip :content="row.recommend ? '是' : '否'" placement="top">
-            <el-switch v-model="row.recommend" style="--el-switch-on-color: #13ce66" inline-prompt :active-icon="Check" :inactive-icon="Close" />
+            <el-switch v-model="row.recommend" inline-prompt :active-icon="Check" :inactive-icon="Close" />
           </el-tooltip>
         </template>
       </el-table-column>
@@ -38,21 +38,21 @@
           <div v-if="row.published === 2" class="publish-item set-status">草稿</div>
         </template>
       </el-table-column>
-      <el-table-column prop="commentabled" label="是否可评论" width="120" align="center">
+      <el-table-column prop="commentabled" label="是否可评论" width="100" align="center">
         <template #default="{ row }">
           <el-tooltip :content="row.commentabled ? '是' : '否'" placement="top">
-            <el-switch v-model="row.commentabled" style="--el-switch-on-color: #13ce66" inline-prompt :active-icon="Check" :inactive-icon="Close" />
+            <el-switch v-model="row.commentabled" inline-prompt :active-icon="Check" :inactive-icon="Close" />
           </el-tooltip>
         </template>
       </el-table-column>
-      <el-table-column prop="shared" label="是否可分享" width="120" align="center">
+      <el-table-column prop="shared" label="是否可分享" width="100" align="center">
         <template #default="{ row }">
           <el-tooltip :content="row.shared ? '是' : '否'" placement="top">
-            <el-switch v-model="row.shared" style="--el-switch-on-color: #13ce66" inline-prompt :active-icon="Check" :inactive-icon="Close" />
+            <el-switch v-model="row.shared" inline-prompt :active-icon="Check" :inactive-icon="Close" />
           </el-tooltip>
         </template>
       </el-table-column>
-      <el-table-column prop="views" label="查看数量" width="120" align="center" />
+      <el-table-column prop="views" label="查看数量" width="100" align="center" />
       <el-table-column prop="description" label="简介" min-width="400" align="center">
         <template #default="scope">
           <!--  :teleported="false" -->
@@ -148,6 +148,7 @@ const getData = () => {
       published: 0,
       commentabled: true,
       shared: true,
+      views: 100,
       description: '博介博客简介博客简介博客简介博客简博客简介博客简介',
     },
     {
@@ -160,6 +161,7 @@ const getData = () => {
       published: 1,
       commentabled: true,
       shared: true,
+      views: 200,
       description: '博客简介',
     },
   ];
