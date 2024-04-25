@@ -19,12 +19,12 @@ public class MusicServiceImpl implements MusicService {
      * @param name
      * @param url
      * @param singer
-     * @param img
      * @param lyric
      * @return
      */
     @Override
-    public Boolean insertMusic(String name, String url, String singer, String img, String lyric) {
+    public Boolean insertMusic(String name, String url, String singer, String lyric) {
+        String img = "http://localhost:8080/img/music.jpg";
         return musicMapper.insertMusic(name, url, singer, img, lyric) > 0;
     }
 
@@ -42,13 +42,12 @@ public class MusicServiceImpl implements MusicService {
      * @param name
      * @param url
      * @param singer
-     * @param img
      * @param lyric
      * @return
      */
     @Override
-    public Boolean updateMusic(Long id, String name, String url, String singer, String img, String lyric) {
-        return musicMapper.updateMusic(id, name, url, singer, img, lyric) > 0;
+    public Boolean updateMusic(Long id, String name, String url, String singer, String lyric) {
+        return musicMapper.updateMusic(id, name, url, singer, lyric) > 0;
     }
 
     /**

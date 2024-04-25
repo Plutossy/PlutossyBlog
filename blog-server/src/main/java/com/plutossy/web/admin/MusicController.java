@@ -68,9 +68,8 @@ public class MusicController {
         String name = jsonData.get("name") == null ? "" : (String) jsonData.get("name");
         String url = jsonData.get("url") == null ? "" : (String) jsonData.get("url");
         String singer = jsonData.get("singer") == null ? "" : (String) jsonData.get("singer");
-        String img = jsonData.get("img") == null ? "" : (String) jsonData.get("img");
         String lyric = jsonData.get("lyric") == null ? "" : (String) jsonData.get("lyric");
-        Boolean flag = musicService.insertMusic(name, url, singer, img, lyric);
+        Boolean flag = musicService.insertMusic(name, url, singer, lyric);
         JSONObject jsonObject = new JSONObject();
         if (flag) {
             jsonObject.put(Consts.CODE, 200);
@@ -121,9 +120,8 @@ public class MusicController {
         String name = jsonData.get("name").toString();
         String url = jsonData.get("url").toString();
         String singer = jsonData.get("singer").toString();
-        String img = jsonData.get("img").toString();
-        String lyric = jsonData.get("lyric").toString();
-        Boolean flag = musicService.updateMusic(id, name, url, singer, img, lyric);
+        String lyric = jsonData.get("lyric")== null ? "[暂无歌词]" : (String) jsonData.get("lyric").toString();
+        Boolean flag = musicService.updateMusic(id, name, url, singer, lyric);
         JSONObject jsonObject = new JSONObject();
         if (flag) {
             jsonObject.put(Consts.CODE, 200);

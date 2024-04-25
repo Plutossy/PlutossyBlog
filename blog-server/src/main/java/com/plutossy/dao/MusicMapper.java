@@ -35,11 +35,10 @@ public interface MusicMapper {
      * @param name
      * @param url
      * @param singer
-     * @param img
      * @param lyric
      * @return
      */
-    public int updateMusic(Long id, String name, String url, String singer, String img, String lyric);
+    public int updateMusic(Long id, String name, String url, String singer, String lyric);
 
     // 根据主键id查询歌曲
     /**

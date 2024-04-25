@@ -9,11 +9,10 @@ public interface MusicService {
      * @param name
      * @param url
      * @param singer
-     * @param img
      * @param lyric
      * @return
      */
-    public Boolean insertMusic(String name, String url, String singer, String img, String lyric);
+    public Boolean insertMusic(String name, String url, String singer, String lyric);
 
     /**
      * @param id
@@ -26,11 +25,10 @@ public interface MusicService {
      * @param name
      * @param url
      * @param singer
-     * @param img
      * @param lyric
      * @return
      */
-    public Boolean updateMusic(Long id, String name, String url, String singer, String img, String lyric);
+    public Boolean updateMusic(Long id, String name, String url, String singer, String lyric);
 
     /**
      * @param id
