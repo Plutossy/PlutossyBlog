@@ -4,9 +4,11 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.io.Serializable;
+
 @Setter
 @Getter
-public class Picture {
+public class Picture implements Serializable {
     private Long id;
     private String url;
     private String name;

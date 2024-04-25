@@ -1,90 +1,44 @@
 package com.plutossy.domain;
 
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 评论
  */
+@Setter
+@Getter
 public class Comment implements Serializable {
     /*主键*/
-    private Integer id;
-    /*用户id*/
-    private Integer userId;
-    /*评论类型（0 歌曲， 1 歌单）*/
-    private Byte type;
-    /*歌曲id*/
-    private Integer songId;
-    /*歌单id*/
-    private Integer songListId;
+    private Long id;
+    /*评论类型*/
+    private boolean type;
     /*评论内容*/
     private String content;
-    /*评论时间*/
+    /*创建时间*/
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
-    /*评论点赞数*/
-    private Integer up;
+    /*评论id*/
+    private Long parentCommentId;
+    /*用户id*/
+    private Long userId;
+    /*博客id*/
+    private Long blogId;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    public Byte getType() {
-        return type;
-    }
-
-    public void setType(Byte type) {
-        this.type = type;
-    }
-
-    public Integer getSongId() {
-        return songId;
-    }
-
-    public void setSongId(Integer songId) {
-        this.songId = songId;
-    }
-
-    public Integer getSongListId() {
-        return songListId;
-    }
-
-    public void setSongListId(Integer songListId) {
-        this.songListId = songListId;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Integer getUp() {
-        return up;
-    }
-
-    public void setUp(Integer up) {
-        this.up = up;
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "id=" + id +
+                ", type=" + type +
+                ", content='" + content + '\'' +
+                ", createTime=" + createTime +
+                ", parentCommentId=" + parentCommentId +
+                ", userId=" + userId +
+                ", blogId=" + blogId +
+                '}';
     }
 }

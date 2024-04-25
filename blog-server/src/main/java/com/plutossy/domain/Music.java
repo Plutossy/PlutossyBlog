@@ -4,11 +4,12 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Setter
 @Getter
-public class Music {
+public class Music implements Serializable {
     private Long id;
     private String name;
     private String url;
