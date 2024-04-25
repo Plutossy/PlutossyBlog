@@ -51,7 +51,7 @@ public interface MusicMapper {
     /**
      * @return
      */
-    @Select("select * from t_music")
+    @Select("select * from t_music order by create_time desc")
     public List<Music> selectAllMusicByCondition();
     default PageInfo<Music> selectAllMusic(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
@@ -64,7 +64,7 @@ public interface MusicMapper {
      * @param queryParam
      * @return
      */
-    @Select("select * from t_music where (name like CONCAT('%', #{queryParam}, '%')) or (singer like CONCAT('%', #{queryParam}, '%'))")
+    @Select("select * from t_music where (name like CONCAT('%', #{queryParam}, '%')) or (singer like CONCAT('%', #{queryParam}, '%')) order by create_time desc")
     public List<Music> selectMusicByQueryByCondition(String queryParam);
     default PageInfo<Music> selectMusicByQuery(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize, String queryParam) {
         PageHelper.startPage(pageNum, pageSize);

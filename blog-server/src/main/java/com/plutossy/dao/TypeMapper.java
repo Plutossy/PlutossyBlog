@@ -44,7 +44,7 @@ public interface TypeMapper {
     /**
      * @return
      */
-    @Select("select * from t_type")
+    @Select("select * from t_type order by create_time desc")
     public List<Type> selectAllTypeByCondition();
     default PageInfo<Type> selectAllType(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize) {
         PageHelper.startPage(pageNum, pageSize);
@@ -56,7 +56,7 @@ public interface TypeMapper {
      * @param name
      * @return
      */
-    @Select("select * from t_type where name like CONCAT('%', #{name}, '%')")
+    @Select("select * from t_type where name like CONCAT('%', #{name}, '%') order by create_time desc")
     public List<Type> selectTypeByNameByCondition(String name);
     default PageInfo<Type> selectTypeByName(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize, String name) {
         PageHelper.startPage(pageNum, pageSize);

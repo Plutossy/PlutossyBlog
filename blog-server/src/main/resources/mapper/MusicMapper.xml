@@ -92,13 +92,13 @@
 
     <select id="selectAllMusic" resultMap="BaseResultMap">
         select *
-        from t_music
+        from t_music order by create_time desc
     </select>
 
     <select id="selectMusicByQuery" resultMap="BaseResultMap" parameterType="java.lang.String">
         select *
         from t_music
-        where (name like CONCAT('%', #{queryParam}, '%')) or (singer like CONCAT('%', #{queryParam}, '%'))
+        where (name like CONCAT('%', #{queryParam}, '%')) or (singer like CONCAT('%', #{queryParam}, '%')) order by create_time desc
     </select>
 
     <!--<select id="selectNameCount" resultType="java.lang.Integer" parameterType="java.lang.String">
