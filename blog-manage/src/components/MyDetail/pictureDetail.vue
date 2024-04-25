@@ -1,11 +1,11 @@
 <template>
   <el-dialog v-model="detailVisible" :title="props.dialogTitle">
-    <el-form ref="ruleFormRef" :rules="rules" :model="detailData" label-width="80px">
+    <el-form ref="ruleFormRef" :rules="rules" :model="detailData" label-width="100px" label-suffix="：">
       <el-form-item label="照片地址" prop="url">
         <div class="item-picUrl">
           <el-image :src="detailData.url" fit="contain" />
           <el-upload :action="uploadUrl(detailData.url)" :before-upload="beforeImgUpload" :on-success="handleImgSuccess">
-            <el-button type="primary" link>更新图片</el-button>
+            <el-button type="primary" :icon="Upload">上传照片</el-button>
           </el-upload>
         </div>
       </el-form-item>
@@ -27,6 +27,7 @@
 
 <script setup lang="ts">
 import { beforeImgUpload } from '@/mixins';
+import { Upload } from '@element-plus/icons-vue';
 import type { FormInstance, FormRules } from 'element-plus';
 import config from '@/config';
 import { ComponentInternalInstance } from 'vue';
@@ -207,6 +208,10 @@ const confirm = async (formEl: FormInstance | undefined) => {
 </script>
 
 <style lang="scss" scoped>
+.el-form-item {
+  display: flex;
+  align-items: center;
+}
 .item-picUrl {
   display: flex;
   align-items: center;

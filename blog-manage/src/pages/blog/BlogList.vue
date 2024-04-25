@@ -11,6 +11,9 @@
             <!-- <img :src="scope.row.firstImg" alt="博客首图" /> -->
             <img :src="scope.row.picture" alt="博客首图" />
           </div>
+          <el-upload :action="uploadUrl(scope.row.picId)" :before-upload="beforeImgUpload" :on-success="handleImgSuccess">
+            <el-button size="small">更新图片</el-button>
+          </el-upload>
         </template>
       </el-table-column>
       <el-table-column prop="title" label="标题" min-width="200">
@@ -32,10 +35,6 @@
       <el-table-column fixed="right" label="操作" width="200" align="center">
         <template #default="scope">
           <div class="operate">
-            <el-upload :action="uploadUrl(scope.row.picId)" :before-upload="beforeImgUpload" :on-success="handleImgSuccess">
-              <el-button type="primary" link>更新图片</el-button>
-            </el-upload>
-            <div class="el-divider el-divider--vertical" direction="vertical" />
             <el-button type="primary" link @click="handleEdit(scope.row)">编辑</el-button>
             <div class="el-divider el-divider--vertical" direction="vertical" />
             <el-button type="primary" link @click="handleDelete(scope.row.blogId)">删除</el-button>
