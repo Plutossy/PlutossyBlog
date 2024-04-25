@@ -8,7 +8,7 @@
 -->
 <template>
   <header>
-    <MySearch :type="'picture'" :multipleSelection="multipleSelection" @searchResult="searchResult" />
+    <MySearch type="picture" :multipleSelection="multipleSelection" @searchResult="searchResult" />
   </header>
   <main>
     <el-table :data="pictureData" max-height="568" @selection-change="handleSelectionChange">

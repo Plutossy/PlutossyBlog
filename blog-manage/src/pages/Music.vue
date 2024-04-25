@@ -8,7 +8,7 @@
 -->
 <template>
   <header>
-    <MySearch :type="'music'" :multipleSelection="multipleSelection" @searchResult="searchResult" />
+    <MySearch type="music" :multipleSelection="multipleSelection" @searchResult="searchResult" />
   </header>
   <main>
     <div class="my-freemp3-show">

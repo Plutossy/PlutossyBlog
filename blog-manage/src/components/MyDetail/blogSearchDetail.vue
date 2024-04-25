@@ -19,7 +19,6 @@
 </template>
 
 <script setup lang="ts">
-import { ElMessageBox, ElNotification } from 'element-plus';
 import { Search } from '@element-plus/icons-vue';
 import type { FormInstance, FormRules } from 'element-plus';
 
