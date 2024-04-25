@@ -24,7 +24,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="author" label="作者" width="150" align="center" />
-      <el-table-column prop="flag" label="博客类型" width="150" align="center">
+      <el-table-column prop="flag" label="博客类型" width="100" align="center">
         <template #default="{ row }">
           <div v-if="row.flag === 0" class="publish-item no-status">原创</div>
           <div v-if="row.flag === 1" class="publish-item is-status">转载</div>
@@ -160,6 +160,7 @@ const getData = () => {
       shared: true,
       views: 100,
       description: '博介博客简介博客简介博客简介博客简博客简介博客简介',
+      content: '122222222222',
     },
     {
       id: 2,
@@ -173,6 +174,7 @@ const getData = () => {
       shared: true,
       views: 100,
       description: '博客简介',
+      content: '122222222222',
     },
     {
       id: 3,
@@ -186,6 +188,7 @@ const getData = () => {
       shared: true,
       views: 200,
       description: '博客简介',
+      content: '122222222222',
     },
   ];
   blogData.splice(0, blogData.length, ...data1);

@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-03-01 10:19:31
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-25 11:20:38
+ * @LastEditTime: 2024-04-25 19:06:02
  * @FilePath: \blog-manage\src\pages\layout\MyBlogDetail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -67,27 +67,6 @@
 </template>
 
 <script setup lang="ts">
-// mode
-import 'codemirror/mode/markdown/markdown';
-import 'codemirror/mode/javascript/javascript';
-import 'codemirror/mode/css/css';
-import 'codemirror/mode/htmlmixed/htmlmixed';
-import 'codemirror/mode/vue/vue';
-// edit
-import 'codemirror/addon/edit/closebrackets';
-import 'codemirror/addon/edit/closetag';
-import 'codemirror/addon/edit/matchbrackets';
-// placeholder
-import 'codemirror/addon/display/placeholder';
-// active-line
-import 'codemirror/addon/selection/active-line';
-// scrollbar
-import 'codemirror/addon/scroll/simplescrollbars';
-import 'codemirror/addon/scroll/simplescrollbars.css';
-// style
-import 'codemirror/lib/codemirror.css';
-
-import { ElNotification } from 'element-plus';
 import { ArrowLeft } from '@element-plus/icons-vue';
 import type { FormInstance, FormRules } from 'element-plus';
 
