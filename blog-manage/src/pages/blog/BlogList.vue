@@ -4,12 +4,12 @@
   </header>
   <main>
     <el-table :data="blogData" :max-height="tableHeight" @selection-change="handleSelectionChange">
-      <el-table-column fixed type="selection" width="60" align="center"></el-table-column>
+      <el-table-column fixed type="selection" width="60" align="center" />
       <el-table-column prop="firstImg" label="博客首图" width="120" align="center">
         <template #default="scope">
           <div class="first-img">
-            <!-- <img :src="scope.row.firstImg" alt="博客首图" /> -->
-            <img :src="scope.row.picture" alt="博客首图" />
+            <!-- <img :src="scope.row.picture" alt="博客首图" /> -->
+            <img src="@/assets/img/spaceAvatar.jpg" alt="博客首图" />
           </div>
           <el-upload :action="uploadUrl(scope.row.picId)" :before-upload="beforeImgUpload" :on-success="handleImgSuccess">
             <el-button size="small">更新图片</el-button>
@@ -19,16 +19,45 @@
       <el-table-column prop="title" label="标题" min-width="200">
         <template #default="scope">
           <el-tooltip class="item" effect="dark" :content="scope.row.title" placement="top-start">
-            <a class="blog-title" target="_blank" :href="scope.row.blogUrl">{{ scope.row.title }}</a>
+            <span class="blog-title">{{ scope.row.title }}</span>
           </el-tooltip>
         </template>
       </el-table-column>
-      <el-table-column prop="author" label="作者" width="150" />
-      <el-table-column prop="introduction" label="介绍" min-width="400">
+      <el-table-column prop="author" label="作者" width="150" align="center" />
+      <el-table-column prop="recommend" label="是否推荐" width="120" align="center">
+        <template #default="{ row }">
+          <el-tooltip :content="row.recommend ? '是' : '否'" placement="top">
+            <el-switch v-model="row.recommend" style="--el-switch-on-color: #13ce66" inline-prompt :active-icon="Check" :inactive-icon="Close" />
+          </el-tooltip>
+        </template>
+      </el-table-column>
+      <el-table-column prop="published" label="博客状态" width="100" align="center">
+        <template #default="{ row }">
+          <div v-if="row.published === 0" class="publish-item no-status">未发布</div>
+          <div v-if="row.published === 1" class="publish-item is-status">发布</div>
+          <div v-if="row.published === 2" class="publish-item set-status">草稿</div>
+        </template>
+      </el-table-column>
+      <el-table-column prop="commentabled" label="是否可评论" width="120" align="center">
+        <template #default="{ row }">
+          <el-tooltip :content="row.commentabled ? '是' : '否'" placement="top">
+            <el-switch v-model="row.commentabled" style="--el-switch-on-color: #13ce66" inline-prompt :active-icon="Check" :inactive-icon="Close" />
+          </el-tooltip>
+        </template>
+      </el-table-column>
+      <el-table-column prop="shared" label="是否可分享" width="120" align="center">
+        <template #default="{ row }">
+          <el-tooltip :content="row.shared ? '是' : '否'" placement="top">
+            <el-switch v-model="row.shared" style="--el-switch-on-color: #13ce66" inline-prompt :active-icon="Check" :inactive-icon="Close" />
+          </el-tooltip>
+        </template>
+      </el-table-column>
+      <el-table-column prop="views" label="查看数量" width="120" align="center" />
+      <el-table-column prop="description" label="简介" min-width="400" align="center">
         <template #default="scope">
           <!--  :teleported="false" -->
-          <el-tooltip popper-class="blog-int-tool" effect="dark" :content="scope.row.introduction" placement="top-start">
-            <div class="blog-intro">{{ scope.row.introduction }}</div>
+          <el-tooltip popper-class="blog-int-tool" effect="dark" :content="scope.row.description" placement="top-start">
+            <div class="blog-intro">{{ scope.row.description }}</div>
           </el-tooltip>
         </template>
       </el-table-column>
@@ -37,7 +66,7 @@
           <div class="operate">
             <el-button type="primary" link @click="handleEdit(scope.row)">编辑</el-button>
             <div class="el-divider el-divider--vertical" direction="vertical" />
-            <el-button type="primary" link @click="handleDelete(scope.row.blogId)">删除</el-button>
+            <el-button type="primary" link @click="handleDelete(scope.row.id)">删除</el-button>
           </div>
         </template>
       </el-table-column>
@@ -53,6 +82,7 @@
 // import VueOfficePdf from '@vue-office/pdf';
 //引入相关样式
 // import '@vue-office/pdf/lib/index.css';
+import { Check, Close } from '@element-plus/icons-vue';
 import { beforeImgUpload } from '@/mixins';
 import config from '@/config';
 import store from '@/store/store';
@@ -109,77 +139,28 @@ const getData = () => {
   // getUserCollect(id)
   let data1 = [
     {
-      blogId: 1,
+      id: 1,
       firstImg: 'https://img-blog.csdnimg.cn/20210125173259900.png',
       title: '博客1博客1博客1博客1博客1博客1博客1',
       blogUrl: 'https://blog.csdn.net/qq_41893274/article/details/113000000',
       author: '作者1',
-      introduction:
-        '博客简介博客简介博客简介博客简介博客简介博客简介博客简介博客简介博介博客简介博客简介博客简介博介博客简介博客简介博客简介博客简博客简介博客简介博客简介博客简介博客简博客简介博客简介博客简介博客简介博客简博客简介博客简介博客简介博客简介博客简博客简介博客简介博客简介博客简介博客简博客简介博客简介博客简介博客简介博客简介博客简介博客简介博客简介博客简介博客简介博客简介博客简介博客简介博客简介博客简介博客简介博客简介博客简介博客简介博客简介博客简介博客简介博客简介博客简介博客简介博客简介博客简介',
+      recommend: true,
+      published: 0,
+      commentabled: true,
+      shared: true,
+      description: '博介博客简介博客简介博客简介博客简博客简介博客简介',
     },
     {
-      blogId: 2,
+      id: 2,
       firstImg: 'https://img-blog.csdnimg.cn/20210125173259900.png',
       blogUrl: 'https://blog.csdn.net/qq_41893274/article/details/113000000',
       title: '博客2',
       author: '作者2',
-      introduction: '博客简介',
-    },
-    {
-      blogId: 3,
-      firstImg: 'https://img-blog.csdnimg.cn/20210125173259900.png',
-      blogUrl: 'https://blog.csdn.net/qq_41893274/article/details/113000000',
-      title: '博客3',
-      author: '作者3',
-      introduction: '博客简介',
-    },
-    {
-      id: 4,
-      firstImg: 'https://img-blog.csdnimg.cn/20210125173259900.png',
-      blogUrl: 'https://blog.csdn.net/qq_41893274/article/details/113000000',
-      title: '博客4',
-      author: '作者4',
-      introduction: '博客简介',
-    },
-    {
-      blogId: 5,
-      firstImg: 'https://img-blog.csdnimg.cn/20210125173259900.png',
-      blogUrl: 'https://blog.csdn.net/qq_41893274/article/details/113000000',
-      title: '博客5',
-      author: '作者5',
-      introduction: '博客简介',
-    },
-    {
-      blogId: 6,
-      firstImg: 'https://img-blog.csdnimg.cn/20210125173259900.png',
-      blogUrl: 'https://blog.csdn.net/qq_41893274/article/details/113000000',
-      title: '博客6',
-      author: '作者6',
-      introduction: '博客简介',
-    },
-    {
-      blogId: 7,
-      firstImg: 'https://img-blog.csdnimg.cn/20210125173259900.png',
-      blogUrl: 'https://blog.csdn.net/qq_41893274/article/details/113000000',
-      title: '博客6',
-      author: '作者6',
-      introduction: '博客简介',
-    },
-    {
-      blogId: 8,
-      firstImg: 'https://img-blog.csdnimg.cn/20210125173259900.png',
-      blogUrl: 'https://blog.csdn.net/qq_41893274/article/details/113000000',
-      title: '博客6',
-      author: '作者6',
-      introduction: '博客简介',
-    },
-    {
-      blogId: 9,
-      firstImg: 'https://img-blog.csdnimg.cn/20210125173259900.png',
-      blogUrl: 'https://blog.csdn.net/qq_41893274/article/details/113000000',
-      title: '博客6',
-      author: '作者6',
-      introduction: '博客简介',
+      recommend: true,
+      published: 1,
+      commentabled: true,
+      shared: true,
+      description: '博客简介',
     },
   ];
   blogData.splice(0, blogData.length, ...data1);
@@ -281,6 +262,25 @@ main {
       }
     }
 
+    .publish-item {
+      width: 100%;
+      height: 100%;
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 5px;
+      color: #fff;
+      // font-weight: bold;
+      &.no-status {
+        background-color: #f56c6c;
+      }
+      &.is-status {
+        background-color: #67c23a;
+      }
+      &.set-status {
+        background-color: #409eff;
+      }
+    }
+
     .blog-intro {
       line-height: 1.5;
       text-indent: 2em;
@@ -296,13 +296,9 @@ main {
       -webkit-box-orient: vertical;
     }
     .blog-title {
-      color: var(--el-color-primary);
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
-      &:hover {
-        color: var(--el-color-primary-light-3);
-      }
     }
     .operate {
       display: flex;

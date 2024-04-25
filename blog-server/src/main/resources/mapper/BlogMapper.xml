@@ -11,7 +11,7 @@
         <result column="picture" jdbcType="VARCHAR" property="picture"/>
         <result column="flag" jdbcType="VARCHAR" property="flag"/>
         <result column="recommend" jdbcType="BIT" property="recommend"/>
-        <result column="published" jdbcType="BIT" property="published"/>
+        <result column="published" jdbcType="INTEGER" property="published"/>
         <result column="commentabled" jdbcType="BIT" property="commentabled"/>
         <result column="shared" jdbcType="BIT" property="shared"/>
         <result column="views" jdbcType="INTEGER" property="views"/>
