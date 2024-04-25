@@ -2,13 +2,13 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-19 23:25:24
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-25 10:47:50
+ * @LastEditTime: 2024-04-25 16:19:21
  * @FilePath: \blog-manage\src\pages\User.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
 <template>
   <header>
-    <MySearch type="picture" :multipleSelection="multipleSelection" @searchResult="searchResult" />
+    <MySearch type="picture" :multipleSelection="multipleSelection" @searchResult="searchResult" @delAllSuccess="delAllSuccess" @reset="reset" />
   </header>
   <main>
     <el-table :data="pictureData" max-height="568" @selection-change="handleSelectionChange">
@@ -212,6 +212,16 @@ const searchResult = async (param: string) => {
   } catch (error) {
     console.log(error);
   }
+};
+
+const delAllSuccess = (val: boolean) => {
+  val && getData();
+};
+
+const reset = () => {
+  queryParam.pageNum = 1;
+  queryParam.pageSize = 10;
+  getData();
 };
 
 // 页面变换页发起请求
