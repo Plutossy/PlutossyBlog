@@ -1,15 +1,15 @@
 <template>
   <header>
-    <MySearch type="blog" :multipleSelection="multipleSelection" @searchResult="searchResult" :goCom="goComAdd" />
+    <MySearch type="blog" :multipleSelection="multipleSelection" @searchResult="searchResult" :goCom="goComAdd" @reset="reset" />
   </header>
   <main>
-    <el-table :data="blogData" max-height="568" @selection-change="handleSelectionChange">
+    <el-table :data="blogData" :max-height="tableHeight" @selection-change="handleSelectionChange">
       <el-table-column fixed type="selection" width="60" align="center"></el-table-column>
       <el-table-column prop="firstImg" label="博客首图" width="120" align="center">
         <template #default="scope">
           <div class="first-img">
             <!-- <img :src="scope.row.firstImg" alt="博客首图" /> -->
-            <img src="@/assets/img/spaceAvatar.jpg" alt="博客首图" />
+            <img :src="scope.row.picture" alt="博客首图" />
           </div>
         </template>
       </el-table-column>
@@ -44,6 +44,9 @@
       </el-table-column>
     </el-table>
   </main>
+  <footer>
+    <my-page v-model:queryParam="queryParam" :total="newTotal" @tempParams="getTempParams" />
+  </footer>
 </template>
 
 <script setup lang="ts">
@@ -51,9 +54,11 @@
 // import VueOfficePdf from '@vue-office/pdf';
 //引入相关样式
 // import '@vue-office/pdf/lib/index.css';
-import { ElNotification, ElMessageBox } from 'element-plus';
 import { beforeImgUpload } from '@/mixins';
 import config from '@/config';
+import store from '@/store/store';
+import eventBus from '@/assets/js/eventBus';
+const emitter = eventBus();
 
 const props = defineProps({
   forward: {
@@ -69,11 +74,36 @@ const props = defineProps({
 
 let blogData: any = reactive([]); // 数据
 let multipleSelection = ref([]); // 用于存放多选框选中的数据
+let queryParam = reactive({
+  pageNum: 1,
+  pageSize: 10,
+});
+let tableHeight = ref(568); // 表格高度
+let newTotal = ref(0); // 总数
 
 onMounted(() => {
   nextTick(() => {
     getData();
   });
+});
+
+let timer: any = null;
+nextTick(() => {
+  store.commit('table/setTableHeight');
+  tableHeight.value = store.getters['table/tableHeight'];
+
+  window.addEventListener('resize', () => {
+    timer = setTimeout(() => {
+      store.commit('table/setTableHeight');
+      tableHeight.value = store.getters['table/tableHeight'];
+    }, 80);
+  });
+});
+
+onUnmounted(() => {
+  emitter.off('addSuccess');
+  window.removeEventListener('resize', () => {});
+  clearTimeout(timer);
 });
 
 const getData = () => {
@@ -157,7 +187,7 @@ const getData = () => {
 };
 
 // 把已经选择的项赋值给multipleSelection
-const handleSelectionChange = val => {
+const handleSelectionChange = (val: any) => {
   multipleSelection.value = val;
 };
 
@@ -167,11 +197,11 @@ const goComAdd = () => {
 };
 
 // 更新图片
-const uploadUrl = id => {
+const uploadUrl = (id: string | number) => {
   return `${config.HOST}/blog/updateUserPic?id=${id}`;
 };
 // 上传图片之后要做的事情
-const handleImgSuccess = (res: { code: number }, file: any) => {
+const handleImgSuccess = (res: { code: number }, _file: any) => {
   if (res.code === 1) {
     ElNotification({
       message: '头像上传成功',
@@ -187,12 +217,12 @@ const handleImgSuccess = (res: { code: number }, file: any) => {
 };
 
 // 编辑
-const handleEdit = row => {
+const handleEdit = (row: any) => {
   console.log('handleEdit--', row);
   props.forward('BlogDetail', row);
 };
 
-const handleDelete = id => {
+const handleDelete = (id: string | number) => {
   console.log(id);
   ElMessageBox.confirm('此操作将永久删除该文件, 是否继续?', '提示', {
     confirmButtonText: '确定',
@@ -215,10 +245,21 @@ const handleDelete = id => {
   getData();
 };
 
-const searchResult = data => {
-  console.log('searchResult--', data);
+const searchResult = async (param: string) => {
+  console.log('searchResult--', param);
   // 因为 reactive 不能直接赋值，所以用 splice
-  blogData.splice(0, blogData.length, data);
+  blogData.splice(0, blogData.length, ...param);
+};
+
+const reset = () => {
+  queryParam.pageNum = 1;
+  queryParam.pageSize = 10;
+  getData();
+};
+
+// 页面变换页发起请求
+const getTempParams = () => {
+  getData();
 };
 </script>
 
