@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-02-05 09:43:12
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-18 18:52:09
+ * @LastEditTime: 2024-04-25 18:23:15
  * @FilePath: \blog-manage\src\components\MyPage.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -76,6 +76,7 @@ nextTick(() => {
   store.commit('table/setFooterHeight', footerElement?.clientHeight);
 
   window.addEventListener('resize', () => {
+    const footerElement: HTMLElement | null = document.querySelector('.el-pagination');
     store.commit('table/setFooterHeight', footerElement?.clientHeight);
   });
 });

@@ -94,7 +94,10 @@ import { beforeImgUpload } from '@/mixins';
 import config from '@/config';
 import store from '@/store/store';
 import eventBus from '@/assets/js/eventBus';
+import { ComponentInternalInstance } from 'vue';
+
 const emitter = eventBus();
+const { proxy } = getCurrentInstance() as ComponentInternalInstance | any;
 
 const props = defineProps({
   forward: {
