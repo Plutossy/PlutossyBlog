@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC
+        "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.plutossy.dao.PictureMapper">
+    <resultMap id="BaseResultMap" type="com.plutossy.domain.Picture">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="url" jdbcType="VARCHAR" property="url"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="description" jdbcType="VARCHAR" property="description"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+
+    <sql id="Base_Columns">
+        id, url, name, description, create_time, update_time
+    </sql>
+
+    <insert id="insertPicture" parameterType="com.plutossy.domain.Picture">
+        insert into t_picture
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="url != null">
+                url,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            create_time,
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="url != null">
+                #{url},
+            </if>
+            <if test="name != null">
+                #{name},
+            </if>
+            <if test="description != null">
+                #{description},
+            </if>
+            now(),
+        </trim>
+    </insert>
+
+    <delete id="deletePictureById" parameterType="java.lang.Long">
+        delete from t_picture
+        where id = #{id}
+    </delete>
+
+    <update id="updatePicture" parameterType="com.plutossy.domain.Picture">
+        update t_picture
+        <set>
+            <if test="url != null">
+                url = #{url},
+            </if>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="description != null">
+                description = #{description},
+            </if>
+            update_time = now(),
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="selectPictureById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select *
+        from t_picture
+        where id = #{id}
+    </select>
+
+    <select id="selectAllPicture" resultMap="BaseResultMap">
+        select * from t_picture order by create_time desc
+    </select>
+
+    <select id="selectPictureByQuery" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select *
+        from t_picture
+        where (name like CONCAT('%', #{queryParam}, '%')) order by create_time desc
+    </select>
+
+</mapper>
