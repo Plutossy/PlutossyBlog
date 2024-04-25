@@ -118,6 +118,12 @@ const setTipBgc = () => {
       item.style.backgroundColor = '#ffffff';
     });
   }
+  if (collapse.value && !switchLight.value) {
+    const popperDarkAll: any = document.querySelectorAll('.el-popper.is-dark');
+    popperDarkAll.forEach((item: any) => {
+      item.style.backgroundColor = '#464646';
+    });
+  }
 };
 
 onUnmounted(() => {
