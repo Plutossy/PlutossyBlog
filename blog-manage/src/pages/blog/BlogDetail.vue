@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-03-01 10:19:31
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-03-05 09:04:56
+ * @LastEditTime: 2024-04-25 11:20:38
  * @FilePath: \blog-manage\src\pages\layout\MyBlogDetail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -163,7 +163,7 @@ const goBack = () => {
 // 保存草稿
 const saveForm = (val?: boolean) => {
   if (val) {
-    publishVisible = false;
+    publishVisible.value = false;
   }
   if (!blogForm.content) return ElNotification.warning('博客内容不能为空');
   console.log('save!');
@@ -171,7 +171,7 @@ const saveForm = (val?: boolean) => {
 };
 
 // 发布
-const publishForm = async (formEl: FormInstance | undefined, val: boolean) => {
+const publishForm = async (formEl: FormInstance | undefined, val?: boolean) => {
   if (!formEl) return;
   await formEl.validate((valid, fields) => {
     if (valid) {
@@ -190,7 +190,7 @@ const publishForm = async (formEl: FormInstance | undefined, val: boolean) => {
   });
 };
 
-function handleUploadImage(event: any, insertImage: any, files: any) {
+function handleUploadImage(_event: any, insertImage: any, files: any) {
   // 拿到 files 之后上传到文件服务器，然后向编辑框中插入对应的内容
   console.log(files);
 
