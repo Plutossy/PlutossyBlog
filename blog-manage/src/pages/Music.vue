@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-08 19:17:21
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-24 18:58:30
+ * @LastEditTime: 2024-04-25 10:22:20
  * @FilePath: \PlutossyBlog\blog-manage\src\pages\Blog.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -175,7 +175,6 @@ const handleEdit = (row: {}) => {
 };
 
 const handleDelete = (id: string | number) => {
-  console.log(id);
   ElMessageBox.confirm('此操作将永久删除该文件, 是否继续?', '提示', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',

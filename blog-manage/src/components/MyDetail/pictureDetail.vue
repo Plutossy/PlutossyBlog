@@ -1,11 +1,16 @@
 <template>
   <el-dialog v-model="detailVisible" :title="props.dialogTitle">
     <el-form ref="ruleFormRef" :rules="rules" :model="detailData" label-width="80px">
-      <el-form-item label="作者" prop="author">
-        <el-input v-model="detailData.author" :disabled="props.dialogTitle !== '新增'" />
+      <el-form-item label="照片地址" prop="url">
+        <div class="item-picUrl">
+          <el-image :src="detailData.url" fit="contain" />
+          <el-upload :action="uploadUrl(detailData.url)" :before-upload="beforeImgUpload" :on-success="handleImgSuccess">
+            <el-button type="primary" link>更新图片</el-button>
+          </el-upload>
+        </div>
       </el-form-item>
-      <el-form-item label="标题" prop="picTitle">
-        <el-input v-model="detailData.picTitle" autocomplete="off" />
+      <el-form-item label="标题" prop="name">
+        <el-input v-model="detailData.name" autocomplete="off" />
       </el-form-item>
       <el-form-item label="描述" prop="description">
         <el-input type="textarea" :rows="3" v-model="detailData.description" autocomplete="off" />
@@ -21,8 +26,14 @@
 </template>
 
 <script setup lang="ts">
-import { ElMessageBox, ElNotification } from 'element-plus';
+import { beforeImgUpload } from '@/mixins';
 import type { FormInstance, FormRules } from 'element-plus';
+import config from '@/config';
+import { ComponentInternalInstance } from 'vue';
+import eventBus from '@/assets/js/eventBus';
+
+const emitter = eventBus();
+const { proxy } = getCurrentInstance() as ComponentInternalInstance | any;
 
 const props = defineProps({
   dialogVisible: {
@@ -43,24 +54,21 @@ let detailVisible = ref(false);
 
 interface RuleForm {
   // 表单数据类型
-  author: string;
-  picTitle: string;
+  url: string;
+  name: string;
   description: string;
 }
 const ruleFormRef: any = ref<FormInstance>(); // 表单实例
 let detailData = reactive<RuleForm>({
   // 表单数据
-  author: '',
-  picTitle: '',
+  url: '',
+  name: '',
   description: '',
 });
 const rules = reactive<FormRules<RuleForm>>({
   // 表单验证规则
-  author: [
-    { required: true, message: '请输入作者', trigger: 'blur' },
-    { min: 2, max: 10, message: '长度在 2 到 10 个字符', trigger: 'blur' },
-  ],
-  picTitle: [{ required: true, message: '请输入照片标题', trigger: 'blur' }],
+  url: [{ required: true, message: '请输入照片链接', trigger: 'blur' }],
+  name: [{ required: true, message: '请输入照片标题', trigger: 'blur' }],
   description: [{ message: '请输入照片描述', trigger: 'blur' }],
 });
 
@@ -80,6 +88,30 @@ watch(
 watch(detailVisible, val => {
   emit('update:dialogVisible', val);
 });
+
+// 更新图片
+const uploadUrl = (id: string | number) => {
+  return `${config.HOST}/user/updateUserPic?id=${id}`;
+};
+// 上传图片之后要做的事情
+const handleImgSuccess = (res: { code: number }, _file: any) => {
+  if (res.code === 1) {
+    ElNotification({
+      message: '头像上传成功',
+      type: 'success',
+      showClose: true,
+      duration: 1000,
+    });
+    // getData(id); // 重新获取数据
+  } else {
+    ElNotification({
+      message: '头像上传失败',
+      type: 'error',
+      showClose: true,
+      duration: 1000,
+    });
+  }
+};
 
 const cancel = () => {
   detailVisible.value = false;
@@ -107,20 +139,53 @@ const confirm = async (formEl: FormInstance | undefined) => {
           }
         },
       })
-        .then(() => {
+        .then(async () => {
           detailVisible.value = false;
           if (props.dialogTitle === '编辑') {
-            // updateUser(detailData)
-            ElNotification({
-              type: 'success',
-              message: '修改成功!',
-            });
+            try {
+              const { code } = await proxy.$apis.picture.updatePicture(detailData);
+              if (code === 200) {
+                ElNotification({
+                  type: 'success',
+                  message: '修改成功!',
+                  showClose: true,
+                  duration: 1000,
+                });
+                detailVisible.value = false;
+              } else {
+                ElNotification({
+                  type: 'error',
+                  message: '修改失败!',
+                  showClose: true,
+                  duration: 1000,
+                });
+              }
+            } catch (error) {
+              console.log(error);
+            }
           } else if (props.dialogTitle === '新增') {
-            // addUser(detailData)
-            ElNotification({
-              type: 'success',
-              message: '新增成功!',
-            });
+            try {
+              const { code } = await proxy.$apis.picture.addPicture(detailData);
+              if (code === 200) {
+                ElNotification({
+                  type: 'success',
+                  message: '新增成功!',
+                  showClose: true,
+                  duration: 1000,
+                });
+                detailVisible.value = false;
+                emitter.emit('addSuccess', true);
+              } else {
+                ElNotification({
+                  type: 'error',
+                  message: '新增失败!',
+                  showClose: true,
+                  duration: 1000,
+                });
+              }
+            } catch (error) {
+              console.log(error);
+            }
           }
         })
         .catch(() => {
@@ -141,4 +206,19 @@ const confirm = async (formEl: FormInstance | undefined) => {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.item-picUrl {
+  display: flex;
+  align-items: center;
+  .el-image {
+    width: 100px;
+    height: 100px;
+    margin-right: 20px;
+  }
+  .el-upload {
+    .el-button {
+      margin-top: 20px;
+    }
+  }
+}
+</style>
