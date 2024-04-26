@@ -40,7 +40,6 @@
       </el-table-column>
       <el-table-column prop="published" label="博客状态" width="100" align="center">
         <template #default="{ row }">
-          <div v-if="row.published === 0" class="publish-item no-status">未发布</div>
           <div v-if="row.published === 1" class="publish-item is-status">发布</div>
           <div v-if="row.published === 2" class="publish-item set-status">草稿</div>
         </template>
