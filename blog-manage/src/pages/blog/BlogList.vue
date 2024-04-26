@@ -214,12 +214,16 @@ const handleImgSuccess = (res: { code: number }, _file: any) => {
     ElNotification({
       message: '头像上传成功',
       type: 'success',
+      duration: 1000,
+      showClose: true,
     });
     getData(); // 重新获取数据
   } else {
     ElNotification({
       message: '头像上传失败',
       type: 'error',
+      duration: 1000,
+      showClose: true,
     });
   }
 };

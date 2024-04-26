@@ -6,9 +6,9 @@
     <el-table :data="blogData" max-height="568" @selection-change="handleSelectionChange">
       <el-table-column fixed type="selection" width="60" align="center"></el-table-column>
       <el-table-column prop="firstImg" label="博客首图" width="120" align="center">
-        <template #default="scope">
+        <template #default="{ row }">
           <div class="first-img">
-            <!-- <img :src="scope.row.firstImg" alt="博客首图" /> -->
+            <!-- <img :src="row.picture" alt="博客首图" /> -->
             <img src="@/assets/img/spaceAvatar.jpg" alt="博客首图" />
           </div>
         </template>
@@ -22,16 +22,16 @@
       </el-table-column>
       <el-table-column prop="author" label="作者" width="150" />
       <el-table-column prop="introduction" label="介绍" min-width="400">
-        <template #default="scope">
+        <template #default="{ row }">
           <!--  :teleported="false" -->
-          <el-tooltip popper-class="blog-int-tool" effect="dark" :content="scope.row.introduction" placement="top-start">
-            <div class="blog-intro">{{ scope.row.introduction }}</div>
+          <el-tooltip popper-class="blog-int-tool" effect="dark" :content="row.introduction" placement="top-start">
+            <div class="blog-intro">{{ row.introduction }}</div>
           </el-tooltip>
         </template>
       </el-table-column>
       <el-table-column fixed="right" label="操作" width="180" align="center">
-        <template #default="scope">
-          <el-button type="primary" link @click="handleDelete(scope.row.blogId)">删除</el-button>
+        <template #default="{ row }">
+          <el-button type="primary" link @click="handleDelete(row.blogId)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -43,7 +43,6 @@
 // import VueOfficePdf from '@vue-office/pdf';
 //引入相关样式
 // import '@vue-office/pdf/lib/index.css';
-import { ElNotification, ElMessageBox } from 'element-plus';
 
 const props = defineProps({
   type: {
@@ -119,12 +118,11 @@ const getData = (id: string | number) => {
 };
 
 // 把已经选择的项赋值给multipleSelection
-const handleSelectionChange = val => {
+const handleSelectionChange = (val: any) => {
   multipleSelection.value = val;
 };
 
-const handleDelete = id => {
-  console.log(id);
+const handleDelete = (id: string | number) => {
   ElMessageBox.confirm('此操作将永久删除该文件, 是否继续?', '提示', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
@@ -146,10 +144,10 @@ const handleDelete = id => {
   getData(id);
 };
 
-const searchResult = data => {
-  console.log('searchResult--', data);
+const searchResult = (param: string) => {
+  console.log('searchResult--', param);
   // 因为 reactive 不能直接赋值，所以用 splice
-  blogData.splice(0, blogData.length, data);
+  // blogData.splice(0, blogData.length, ...data);
 };
 </script>
 
