@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-03-01 10:19:31
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-25 19:06:02
+ * @LastEditTime: 2024-04-26 10:22:02
  * @FilePath: \blog-manage\src\pages\layout\MyBlogDetail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -34,12 +34,12 @@
     <el-form ref="rulePublishRef" :model="blogForm" :rules="rules" size="default">
       <el-form-item label="文章分类：" prop="type">
         <el-select v-model="blogForm.type" filterable clearable placeholder="请选择文章分类">
-          <el-option v-for="item in typeOptions" :key="item.value" :label="item.label" :value="item.value" />
+          <el-option v-for="item in typeOptions" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>
       </el-form-item>
       <el-form-item label="文章标签：" prop="tag">
         <el-select v-model="blogForm.tag" filterable clearable placeholder="请选择文章标签">
-          <el-option v-for="item in tagOptions" :key="item.value" :label="item.label" :value="item.value" />
+          <el-option v-for="item in tagOptions" :key="item.id" :label="item.name" :value="item.id" />
         </el-select>
       </el-form-item>
       <el-form-item label="文章简介：" prop="introduction">
@@ -69,6 +69,9 @@
 <script setup lang="ts">
 import { ArrowLeft } from '@element-plus/icons-vue';
 import type { FormInstance, FormRules } from 'element-plus';
+import { ComponentInternalInstance } from 'vue';
+
+const { proxy } = getCurrentInstance() as ComponentInternalInstance | any;
 
 const props = defineProps({
   forward: {
@@ -91,8 +94,8 @@ interface RuleForm {
 }
 
 type TypeTagItem = {
-  value: string;
-  label: string;
+  id: string | number;
+  name: string;
 };
 type TypeTagList = TypeTagItem[];
 
@@ -182,21 +185,20 @@ function handleUploadImage(_event: any, insertImage: any, files: any) {
   });
 }
 
-const getTypeTagList = () => {
-  typeOptions = [
-    { value: '分类1', label: '前端' },
-    { value: '分类2', label: '后端' },
-    { value: '分类3', label: '数据库' },
-    { value: '分类4', label: '运维' },
-    { value: '分类5', label: '其他' },
-  ];
-  tagOptions = [
-    { value: '标签1', label: 'Vue' },
-    { value: '标签2', label: 'React' },
-    { value: '标签3', label: 'Angular' },
-    { value: '标签4', label: 'Node' },
-    { value: '标签5', label: 'Webpack' },
-  ];
+const getTypeTagList = async () => {
+  const param = {
+    type: 'all',
+  };
+  {
+    const { code, data } = await proxy.$apis.type.selectTypeList(param);
+    code === 200 && (typeOptions = reactive(data) as TypeTagList);
+    // typeOptions.splice(0, typeOptions.length, ...data);
+  }
+  {
+    const { code, data } = await proxy.$apis.tag.selectTagList(param);
+    code === 200 && (tagOptions = reactive(data) as TypeTagList);
+    // tagOptions.splice(0, tagOptions.length, ...data);
+  }
 };
 </script>
 

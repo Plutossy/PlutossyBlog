@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Objects;
 
 @RestController
 public class TypeController {
@@ -31,8 +32,13 @@ public class TypeController {
 
     @RequestMapping(value = "/manage/typeList", method = RequestMethod.POST)
     public Object selectAllType(@RequestBody Map<String, Object> jsonData) {
+        String type = jsonData.get("type") == null ? "" : (String) jsonData.get("type");
         Integer pageNum = jsonData.get("pageNum") == null ? PageDefault.PAGE_NUM : (Integer) jsonData.get("pageNum");
         Integer pageSize = jsonData.get("pageSize") == null ? PageDefault.PAGE_SIZE : (Integer) jsonData.get("pageSize");
+        if (Objects.equals(type, "all")) {
+            pageNum = 1;
+            pageSize = -1;
+        }
         JSONObject jsonObject = new JSONObject();
         PageInfo<Type> pageData = typeService.selectAllType(pageNum, pageSize);
         return getObject(jsonObject, pageData);
