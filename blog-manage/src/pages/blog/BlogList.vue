@@ -242,7 +242,7 @@ const searchResult = async (param: string) => {
       pageSize: queryParam.pageSize,
       queryParam: param,
     };
-    const { data, code, total } = await proxy.$apis.blog.searchBlog(query);
+    const { data, code, total } = await proxy.$apis.blog.selectBlogByQuery(query);
     if (code === 200) {
       newTotal.value = total;
       // 因为 reactive 不能直接赋值，所以用 splice
