@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-08 19:17:21
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-25 16:19:23
+ * @LastEditTime: 2024-04-28 11:54:04
  * @FilePath: \PlutossyBlog\blog-manage\src\pages\Blog.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -220,8 +220,9 @@ const searchResult = async (param: string) => {
       pageSize: queryParam.pageSize,
       queryParam: param,
     };
-    const { data, code } = await proxy.$apis.music.selectMusicByQuery(query);
+    const { data, code, total } = await proxy.$apis.music.selectMusicByQuery(query);
     if (code === 200) {
+      newTotal.value = total;
       // 因为 reactive 不能直接赋值，所以用 splice
       musicData.splice(0, musicData.length, ...data);
     } else {

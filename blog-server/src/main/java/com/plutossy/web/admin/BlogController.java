@@ -1,6 +1,8 @@
 package com.plutossy.web.admin;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageInfo;
+import com.plutossy.domain.Blog;
 import com.plutossy.service.BlogService;
 import com.plutossy.utils.Consts;
 import org.jetbrains.annotations.NotNull;
@@ -17,8 +19,20 @@ public class BlogController {
     @Autowired
     private BlogService blogService;
 
+    @NotNull
+    private Object getObject(JSONObject jsonObject, PageInfo<Blog> pageData) {
+        jsonObject.put(Consts.CODE, 200);
+        jsonObject.put(Consts.MSG, "查询成功！");
+        jsonObject.put(Consts.TOTAL, pageData.getTotal());
+        jsonObject.put(Consts.PAGES, pageData.getPages());
+        jsonObject.put(Consts.PAGE_NUM, pageData.getPageNum());
+        jsonObject.put(Consts.PAGE_SIZE, pageData.getPageSize());
+        jsonObject.put(Consts.DATA, pageData.getList());
+        return jsonObject;
+    }
+
     // 添加博客
-    @RequestMapping(value = "/manage/insertBlog", method = RequestMethod.POST)
+    @RequestMapping(value = "/manage/addBlog", method = RequestMethod.POST)
     public Object insertBlog(@RequestBody Map<String, Object> jsonData) {
         String title = jsonData.get("title") == null ? "" : (String) jsonData.get("title");
         String content = jsonData.get("content") == null ? "" : (String) jsonData.get("content");
@@ -131,14 +145,13 @@ public class BlogController {
     }
 
     // 查询所有博客
-    @RequestMapping(value = "/manage/selectAllBlog", method = RequestMethod.POST)
-    public Object selectAllBlog(@RequestBody Map<String, Object> jsonData) {
+    @RequestMapping(value = "/manage/blogList", method = RequestMethod.POST)
+    public Object selectBlogList(@RequestBody Map<String, Object> jsonData) {
         Integer pageNum = jsonData.get("pageNum") == null ? 1 : (Integer) jsonData.get("pageNum");
         Integer pageSize = jsonData.get("pageSize") == null ? 10 : (Integer) jsonData.get("pageSize");
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put(Consts.CODE, 200);
-        jsonObject.put(Consts.DATA, blogService.selectAllBlog(pageNum, pageSize));
-        return jsonObject;
+        PageInfo<Blog> pageData = blogService.selectAllBlog(pageNum, pageSize);
+        return getObject(jsonObject, pageData);
     }
 
     // 根据条件查询博客
@@ -148,8 +161,7 @@ public class BlogController {
         Integer pageSize = jsonData.get("pageSize") == null ? 10 : (Integer) jsonData.get("pageSize");
         String queryParam = jsonData.get("queryParam") == null ? "" : (String) jsonData.get("queryParam");
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put(Consts.CODE, 200);
-        jsonObject.put(Consts.DATA, blogService.selectBlogByQuery(pageNum, pageSize, queryParam));
-        return jsonObject;
+        PageInfo<Blog> pageData = blogService.selectBlogByQuery(pageNum, pageSize, queryParam);
+        return getObject(jsonObject, pageData);
     }
 }

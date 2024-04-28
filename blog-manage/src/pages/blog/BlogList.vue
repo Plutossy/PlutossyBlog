@@ -93,7 +93,7 @@ import { beforeImgUpload } from '@/mixins';
 import config from '@/config';
 import store from '@/store/store';
 import eventBus from '@/assets/js/eventBus';
-import { ComponentInternalInstance } from 'vue';
+import type { ComponentInternalInstance } from 'vue';
 
 const emitter = eventBus();
 const { proxy } = getCurrentInstance() as ComponentInternalInstance | any;
@@ -144,53 +144,16 @@ onUnmounted(() => {
   clearTimeout(timer);
 });
 
-const getData = () => {
-  // getUserCollect(id)
-  let data1 = [
-    {
-      id: 1,
-      picture: 'https://img-blog.csdnimg.cn/20210125173259900.png',
-      title: '博客1博客1博客1博客1博客1博客1博客1',
-      author: '作者1',
-      flag: 0,
-      recommend: true,
-      published: 0,
-      commentabled: true,
-      shared: true,
-      views: 100,
-      description: '博介博客简介博客简介博客简介博客简博客简介博客简介',
-      content: '122222222222',
-    },
-    {
-      id: 2,
-      firstImg: 'https://img-blog.csdnimg.cn/20210125173259900.png',
-      title: '博客2',
-      author: '作者2',
-      flag: 1,
-      recommend: true,
-      published: 1,
-      commentabled: true,
-      shared: true,
-      views: 100,
-      description: '博客简介',
-      content: '122222222222',
-    },
-    {
-      id: 3,
-      firstImg: 'https://img-blog.csdnimg.cn/20210125173259900.png',
-      title: '博客3',
-      author: '作者3',
-      flag: 2,
-      recommend: true,
-      published: 2,
-      commentabled: true,
-      shared: true,
-      views: 200,
-      description: '博客简介',
-      content: '122222222222',
-    },
-  ];
-  blogData.splice(0, blogData.length, ...data1);
+const getData = async () => {
+  try {
+    const { data, code, total } = await proxy.$apis.blog.getBlogList(queryParam);
+    if (code === 200) {
+      blogData.splice(0, blogData.length, ...data);
+      newTotal.value = total;
+    }
+  } catch (error) {
+    console.error('getData error--', error);
+  }
 };
 
 // 把已经选择的项赋值给multipleSelection
@@ -234,32 +197,67 @@ const handleEdit = (row: any) => {
 };
 
 const handleDelete = (id: string | number) => {
-  console.log(id);
   ElMessageBox.confirm('此操作将永久删除该文件, 是否继续?', '提示', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
     type: 'warning',
   })
-    .then(() => {
-      // delUser(id)
-      ElNotification({
-        type: 'success',
-        message: '删除成功!',
-      });
+    .then(async () => {
+      try {
+        const { code } = await proxy.$apis.blog.deleteBlog(id);
+        if (code === 200) {
+          ElNotification({
+            type: 'success',
+            message: '删除成功!',
+            duration: 1000,
+            showClose: true,
+          });
+          getData();
+        } else {
+          ElNotification({
+            type: 'error',
+            message: '删除失败!',
+            duration: 1000,
+            showClose: true,
+          });
+        }
+      } catch (error) {
+        console.log(error);
+      }
     })
     .catch(() => {
       ElNotification({
         type: 'info',
         message: '已取消删除',
+        duration: 1000,
+        showClose: true,
       });
     });
-  getData();
 };
 
 const searchResult = async (param: string) => {
-  console.log('searchResult--', param);
-  // 因为 reactive 不能直接赋值，所以用 splice
-  blogData.splice(0, blogData.length, ...param);
+  try {
+    const query = {
+      pageNum: queryParam.pageNum,
+      pageSize: queryParam.pageSize,
+      queryParam: param,
+    };
+    const { data, code, total } = await proxy.$apis.blog.searchBlog(query);
+    if (code === 200) {
+      newTotal.value = total;
+      // 因为 reactive 不能直接赋值，所以用 splice
+      blogData.splice(0, blogData.length, ...data);
+    } else {
+      ElNotification({
+        type: 'error',
+        message: '查询失败!',
+        showClose: true,
+        duration: 1000,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const reset = () => {

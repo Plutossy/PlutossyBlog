@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-08 19:17:21
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-23 10:29:00
+ * @LastEditTime: 2024-04-28 11:55:22
  * @FilePath: \PlutossyBlog\blog-manage\src\pages\Blog.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -162,8 +162,9 @@ const searchResult = async (param: string) => {
       pageSize: queryParam.pageSize,
       name: param,
     };
-    const { data, code } = await selectTypeByName(query);
+    const { data, code, total } = await selectTypeByName(query);
     if (code === 200) {
+      newTotal.value = total;
       // 因为 reactive 不能直接赋值，所以用 splice
       typeData.splice(0, typeData.length, ...data);
     } else {
