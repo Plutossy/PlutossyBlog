@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-22 11:33:53
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-25 18:26:27
+ * @LastEditTime: 2024-04-28 12:04:43
  * @FilePath: \blog-manage\src\components\MySearch\MySearch.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -116,6 +116,9 @@ const delAll = () => {
           break;
         case 'picture':
           var { code } = await proxy.$apis.picture.deletePictures(ids);
+          break;
+        case 'blog':
+          var { code } = await proxy.$apis.blog.deleteBlogs(ids);
           break;
         default:
           break;
