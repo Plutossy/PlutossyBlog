@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-09 08:56:06
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-17 11:45:44
+ * @LastEditTime: 2024-04-28 16:49:56
  * @FilePath: \blog-manage\src\pages\Login.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -40,7 +40,7 @@
         <div v-if="tologin" class="title login">LOGIN</div>
         <div v-else class="title register">REGISTER</div>
         <div class="content">
-          <el-form ref="ruleFormRef" :model="ruleForm" :rules="rules" label-width="100px" size="large">
+          <el-form ref="ruleFormRef" :model="ruleForm" :rules="rules" :label-width="tologin ? '70px' : '100px'" :label-position="tologin ? 'left' : 'right'" size="large">
             <el-form-item v-if="!tologin" label="用户名：" prop="username" size="large" class="animate__animated animate__bounceIn">
               <el-input v-model="ruleForm.username" placeholder="请输入用户名" clearable></el-input>
             </el-form-item>
@@ -56,6 +56,10 @@
             <el-form-item v-if="!tologin" label="确认密码：" prop="confirmPwd" size="large" class="animate__animated animate__bounceIn">
               <el-input type="password" v-model="ruleForm.confirmPwd" placeholder="请再次输入密码" show-password></el-input>
             </el-form-item>
+            <div class="login-tools" v-if="tologin">
+              <el-checkbox v-model="ruleForm.remember">记住密码</el-checkbox>
+              <!-- <el-button type="primary" link style="font-weight: 400">忘记密码？</el-button> -->
+            </div>
             <div class="btn">
               <el-button v-if="tologin" type="primary" @click="submitForm(ruleFormRef)" size="large">登录</el-button>
               <el-button v-else type="primary" @click="submitForm(ruleFormRef)" size="large">注册</el-button>
@@ -68,6 +72,8 @@
 </template>
 
 <script setup lang="ts">
+import Cookies from 'js-cookie';
+import { encrypt, decrypt } from '@/utils/cryptoJs';
 import { login, register } from '@/api/modules/user';
 import store from '@/store/store';
 import { FormInstance, FormRules } from 'element-plus';
@@ -80,6 +86,7 @@ interface RuleForm {
   email: string;
   password: string;
   confirmPwd: string;
+  remember?: boolean;
 }
 const ruleFormRef: any = ref<FormInstance>(); // 表单实例
 
@@ -91,6 +98,7 @@ let ruleForm = reactive<RuleForm>({
   email: '',
   password: '',
   confirmPwd: '',
+  remember: false,
 });
 const rules = reactive<FormRules<RuleForm>>({
   // 表单验证规则
@@ -132,6 +140,10 @@ const router = useRouter();
 const appContext = instance?.appContext;
 const apis = appContext?.config.globalProperties.$apis;
  */
+
+onMounted(() => {
+  getCookie();
+});
 // 切换登录注册
 const loginToggle = () => {
   tologin.value = !tologin.value;
@@ -169,6 +181,7 @@ const toLogin = async () => {
     if (res.code === 200) {
       const token = 'Bearer ' + res.token;
       store.commit('user/setToken', token);
+      setCookie();
       store.commit('user/setUserInfo', { id: res.data.id });
       ElNotification({
         message: '登录成功！',
@@ -216,6 +229,26 @@ const toRegister = async () => {
       showClose: true,
     });
   }
+};
+
+const setCookie = () => {
+  if (ruleForm.remember) {
+    Cookies.set('nickname', encrypt(ruleForm.nickname), { expires: 30 });
+    Cookies.set('password', encrypt(ruleForm.password), { expires: 30 });
+    Cookies.set('remember', ruleForm.remember.toString(), { expires: 30 });
+  } else {
+    Cookies.remove('nickname');
+    Cookies.remove('password');
+    Cookies.remove('remember');
+  }
+};
+const getCookie = () => {
+  const nickname = decrypt(Cookies.get('nickname'));
+  const password = decrypt(Cookies.get('password'));
+  const remember = Cookies.get('remember');
+  ruleForm.nickname = nickname ?? '';
+  ruleForm.password = password ?? '';
+  ruleForm.remember = remember === 'true';
 };
 </script>
 
@@ -377,9 +410,18 @@ const toRegister = async () => {
         .el-form {
           width: 100%;
           margin: 0 10px;
-          .captcha-btn {
-            .el-button {
-              width: 100%;
+          .login-tools {
+            display: flex;
+            align-items: center;
+            margin-bottom: 32px;
+
+            .el-checkbox {
+              font-weight: 400;
+              // color: #aeaeae;
+
+              &.is-checked :deep(.el-checkbox__label) {
+                color: var(--el-checkbox-checked-bg-color) !important;
+              }
             }
           }
           .btn button {

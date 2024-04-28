@@ -2,10 +2,11 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-04-10 11:37:12
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-16 14:14:43
+ * @LastEditTime: 2024-04-28 16:15:59
  * @FilePath: \blog-manage\src\store\modules\user.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
+import { getCookiesToken, setCookiesToken, removeCookiesToken } from '@/utils/auth';
 export default {
   namespaced: true,
   state: {
@@ -15,7 +16,7 @@ export default {
   getters: {
     token: (state: { token: string }) => {
       if (!state.token) {
-        state.token = JSON.parse(localStorage.getItem('token') || '');
+        state.token = getCookiesToken() || JSON.parse(localStorage.getItem('token') || '');
       }
       return state.token;
     },
@@ -29,6 +30,7 @@ export default {
   mutations: {
     setToken(state: { token: string }, token: string) {
       state.token = token;
+      setCookiesToken(token);
       // 保存到本地缓存
       localStorage.setItem('token', JSON.stringify(state.token));
     },
@@ -41,6 +43,7 @@ export default {
   actions: {
     removeToken(context: { commit: (arg0: string, arg1: any) => void }) {
       context.commit('setToken', '');
+      removeCookiesToken();
     },
     removeUserInfo(context: { commit: (arg0: string, arg1: any) => void }) {
       context.commit('setUserInfo', {});
