@@ -7,6 +7,8 @@ import com.plutossy.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 /**
  * 博客service实现类
  */
@@ -25,7 +27,6 @@ public class BlogServiceImpl implements BlogService {
      * @param published
      * @param commentabled
      * @param shared
-     * @param views
      * @param typeId
      * @param userId
      * @return
@@ -55,14 +56,14 @@ public class BlogServiceImpl implements BlogService {
      * @param published
      * @param commentabled
      * @param shared
-     * @param views
      * @param typeId
      * @param userId
      * @return
      */
     @Override
     public Boolean updateBlog(Long id, String title, String content, String description, String picture, Integer flag, Boolean recommend, Integer published, Boolean commentabled, Boolean shared, Long typeId, Long userId) {
-        return blogMapper.updateBlog(id, title, content, description, picture, flag, recommend, published, commentabled, shared, typeId, userId) > 0;
+        Date updateTime = new Date();
+        return blogMapper.updateBlog(id, title, content, description, picture, flag, recommend, published, commentabled, shared, updateTime, typeId, userId) > 0;
     }
 
     /**

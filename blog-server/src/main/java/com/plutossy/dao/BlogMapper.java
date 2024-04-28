@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.Date;
 import java.util.List;
 
 @Mapper
@@ -48,11 +49,12 @@ public interface BlogMapper {
      * @param published
      * @param commentabled
      * @param shared
+     * @param updateTime
      * @param typeId
      * @param userId
      * @return
      */
-    public int updateBlog(Long id, String title,String content,String description,String picture,Integer flag,Boolean recommend,Integer published,Boolean commentabled,Boolean shared,Long typeId,Long userId);
+    public int updateBlog(Long id, String title, String content, String description, String picture, Integer flag, Boolean recommend, Integer published, Boolean commentabled, Boolean shared, Date updateTime, Long typeId, Long userId);
 
     // 根据主键id查询博客信息
     /**
