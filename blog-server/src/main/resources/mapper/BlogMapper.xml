@@ -25,4 +25,151 @@
         id, title, content, description, picture, flag, recommend, published, commentabled, shared, views, create_time, update_time, type_id, user_id
     </sql>
 
+    <insert id="insertBlog" parameterType="com.plutossy.domain.Blog">
+        insert into t_blog
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="title != null">
+                title,
+            </if>
+            <if test="content != null">
+                content,
+            </if>
+            <if test="description != null">
+                description,
+            </if>
+            <if test="picture != null">
+                picture,
+            </if>
+            <if test="flag != null">
+                flag,
+            </if>
+            <if test="recommend != null">
+                recommend,
+            </if>
+            <if test="published != null">
+                published,
+            </if>
+            <if test="commentabled != null">
+                commentabled,
+            </if>
+            <if test="shared != null">
+                shared,
+            </if>
+            <if test="views != null">
+                views,
+            </if>
+                create_time, update_time,
+            <if test="typeId != null">
+                type_id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="title != null">
+                #{title},
+            </if>
+            <if test="content != null">
+                #{content},
+            </if>
+            <if test="description != null">
+                #{description},
+            </if>
+            <if test="picture != null">
+                #{picture},
+            </if>
+            <if test="flag != null">
+                #{flag},
+            </if>
+            <if test="recommend != null">
+                #{recommend},
+            </if>
+            <if test="published != null">
+                #{published},
+            </if>
+            <if test="commentabled != null">
+                #{commentabled},
+            </if>
+            <if test="shared != null">
+                #{shared},
+            </if>
+            <if test="views != null">
+                #{views},
+            </if>
+            now(),now(),
+            <if test="typeId != null">
+                #{typeId},
+            </if>
+            <if test="userId != null">
+                #{userId}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="deleteBlogById" parameterType="java.lang.Long">
+        delete from t_blog
+        where id = #{id}
+    </delete>
+
+    <update id="updateBlog" parameterType="com.plutossy.domain.Blog">
+        update t_blog
+        <set>
+            <if test="title != null">
+                title = #{title},
+            </if>
+            <if test="content != null">
+                content = #{content},
+            </if>
+            <if test="description != null">
+                description = #{description},
+            </if>
+            <if test="picture != null">
+                picture = #{picture},
+            </if>
+            <if test="flag != null">
+                flag = #{flag},
+            </if>
+            <if test="recommend != null">
+                recommend = #{recommend},
+            </if>
+            <if test="published != null">
+                published = #{published},
+            </if>
+            <if test="commentabled != null">
+                commentabled = #{commentabled},
+            </if>
+            <if test="shared != null">
+                shared = #{shared},
+            </if>
+            <if test="views != null">
+                views = #{views},
+            </if>
+                update_time = now(),
+            <if test="typeId != null">
+                type_id = #{typeId},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="selectBlogById" resultType="com.plutossy.domain.Blog" parameterType="java.lang.Long">
+        select *
+        from t_blog
+        where id = #{id}
+    </select>
+
+    <select id="selectAllBlog" resultMap="BaseResultMap">
+        select * from t_blog order by update_time desc
+    </select>
+
+    <select id="selectBlogByQuery" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select *
+        from t_blog
+        where (title like CONCAT('%', #{queryParam}, '%')) or (description like CONCAT('%', #{queryParam}, '%')) order by update_time desc
+    </select>
+
 </mapper>

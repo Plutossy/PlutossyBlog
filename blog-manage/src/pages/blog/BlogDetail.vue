@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-03-01 10:19:31
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-26 15:30:28
+ * @LastEditTime: 2024-04-28 09:28:51
  * @FilePath: \blog-manage\src\pages\layout\MyBlogDetail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -89,7 +89,7 @@
 <script setup lang="ts">
 import { ArrowLeft } from '@element-plus/icons-vue';
 import type { FormInstance, FormRules } from 'element-plus';
-import { ComponentInternalInstance } from 'vue';
+import type { ComponentInternalInstance } from 'vue';
 import { clearForm } from '@/mixins';
 import stroe from '@/store/store';
 
