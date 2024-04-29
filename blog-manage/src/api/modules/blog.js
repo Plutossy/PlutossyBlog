@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-04-28 11:32:43
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-29 10:31:00
+ * @LastEditTime: 2024-04-29 15:15:18
  * @FilePath: \blog-manage\src\api\modules\blog.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -16,13 +16,21 @@ export function selectBlogByQuery(data) {
   });
 }
 
-export function selectBlogById(params) {
+export function selectBlogById(data) {
   return request({
     url: '/manage/selectBlogById',
-    method: 'get',
-    params,
+    method: 'post',
+    data,
   });
 }
+
+export const selectBlogByPublished = data => {
+  return request({
+    url: '/manage/selectBlogByPublished',
+    method: 'post',
+    data,
+  });
+};
 
 export function addBlog(data) {
   return request({

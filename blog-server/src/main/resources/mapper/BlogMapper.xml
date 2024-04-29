@@ -164,10 +164,16 @@
         where id = #{id}
     </select>
 
-    <select id="selectBlogByQuery" resultMap="BaseResultMap" parameterType="java.lang.String">
+    <select id="selectBlogByPublished" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select *
         from t_blog
-        where (title like CONCAT('%', #{queryParam}, '%')) or (description like CONCAT('%', #{queryParam}, '%')) order by update_time desc
+        where published = #{published}
+    </select>
+
+    <select id="selectBlogByQuery" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        select *
+        from t_blog
+        where (title like CONCAT('%', #{queryParam}, '%')) or (description like CONCAT('%', #{queryParam}, '%')) and (published != #{notPublished}) order by update_time desc
     </select>
 
     <update id="updateBlogRecommend" parameterType="java.util.HashMap">

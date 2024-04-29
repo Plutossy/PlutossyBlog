@@ -3,6 +3,8 @@ package com.plutossy.service;
 import com.github.pagehelper.PageInfo;
 import com.plutossy.domain.Blog;
 
+import java.util.List;
+
 // 博客Service接口
 public interface BlogService {
     // 添加博客
@@ -50,6 +52,12 @@ public interface BlogService {
      * @return
      */
     public Blog selectBlogById(Long id);
+
+    /**
+     * @param published
+     * @return
+     */
+    public PageInfo<Blog> selectBlogByPublished(Integer pageNum, Integer pageSize, Integer published);
 
     /**
      * @param pageNum

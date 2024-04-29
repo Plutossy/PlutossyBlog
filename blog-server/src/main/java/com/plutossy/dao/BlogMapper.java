@@ -63,16 +63,29 @@ public interface BlogMapper {
      */
     public Blog selectBlogById(Long id);
 
+    // 根据博客状态查询博客
+    /**
+     * @param published
+     * @return
+     */
+    @Select("select * from t_blog where published = #{published} order by update_time desc")
+    public List<Blog> selectBlogByPublishedByCondition(Integer published);
+    default PageInfo<Blog> selectBlogByPublished(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize, Integer published) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Blog> blogs = selectBlogByPublishedByCondition(published);
+        return new PageInfo<>(blogs);
+    };
+
     // 根据博客标题和博客描述模糊查询博客
     /**
      * @param queryParam
      * @return
      */
-    @Select("select * from t_blog where (title like CONCAT('%', #{queryParam}, '%')) or (description like CONCAT('%', #{queryParam}, '%')) order by update_time desc")
-    public List<Blog> selectBlogByQueryByCondition(String queryParam);
-    default PageInfo<Blog> selectBlogByQuery(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize, String queryParam) {
+    @Select("select * from t_blog where (title like CONCAT('%', #{queryParam}, '%')) or (description like CONCAT('%', #{queryParam}, '%')) and (published != #{notPublished}) order by update_time desc")
+    public List<Blog> selectBlogByQueryByCondition(String queryParam, Integer notPublished);
+    default PageInfo<Blog> selectBlogByQuery(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize, String queryParam, @Param("notPublished") Integer notPublished) {
         PageHelper.startPage(pageNum, pageSize);
-        List<Blog> blogs = selectBlogByQueryByCondition(queryParam);
+        List<Blog> blogs = selectBlogByQueryByCondition(queryParam, notPublished);
         return new PageInfo<>(blogs);
     };
 

@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.plutossy.domain.Blog;
 import com.plutossy.service.BlogService;
 import com.plutossy.utils.Consts;
+import com.plutossy.utils.PageDefault;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -144,11 +145,25 @@ public class BlogController {
         return jsonObject;
     }
 
+    // 根据博客published状态查询博客
+    @RequestMapping(value = "/manage/selectBlogByPublished", method = RequestMethod.POST)
+    public Object selectBlogByPublished(@RequestBody Map<String, Object> jsonData) {
+        Integer pageNum = jsonData.get("pageNum") == null ? PageDefault.PAGE_NUM : (Integer) jsonData.get("pageNum");
+        Integer pageSize = jsonData.get("pageSize") == null ? PageDefault.PAGE_SIZE : (Integer) jsonData.get("pageSize");
+        Integer published = jsonData.get("published") == null ? 1 : (Integer) jsonData.get("published"); // 默认查询已发布的博客
+        if (published == 0) {
+            pageSize = -1; // 查询所有暂存博客
+        }
+        JSONObject jsonObject = new JSONObject();
+        PageInfo<Blog> pageData = blogService.selectBlogByPublished(pageNum, pageSize, published);
+        return getObject(jsonObject, pageData);
+    }
+
     // 根据条件查询博客
     @RequestMapping(value = "/manage/selectBlogByQuery", method = RequestMethod.POST)
     public Object selectBlogByQuery(@RequestBody Map<String, Object> jsonData) {
-        Integer pageNum = jsonData.get("pageNum") == null ? 1 : (Integer) jsonData.get("pageNum");
-        Integer pageSize = jsonData.get("pageSize") == null ? 10 : (Integer) jsonData.get("pageSize");
+        Integer pageNum = jsonData.get("pageNum") == null ? PageDefault.PAGE_NUM : (Integer) jsonData.get("pageNum");
+        Integer pageSize = jsonData.get("pageSize") == null ? PageDefault.PAGE_SIZE : (Integer) jsonData.get("pageSize");
         String queryParam = jsonData.get("queryParam") == null ? "" : (String) jsonData.get("queryParam");
         JSONObject jsonObject = new JSONObject();
         PageInfo<Blog> pageData = blogService.selectBlogByQuery(pageNum, pageSize, queryParam);

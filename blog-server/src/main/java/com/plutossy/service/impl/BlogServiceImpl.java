@@ -76,6 +76,15 @@ public class BlogServiceImpl implements BlogService {
     }
 
     /**
+     * @param published
+     * @return
+     */
+    @Override
+    public PageInfo<Blog> selectBlogByPublished(Integer pageNum, Integer pageSize,Integer published) {
+        return blogMapper.selectBlogByPublished(pageNum, pageSize, published);
+    }
+
+    /**
      * @param pageNum
      * @param pageSize
      * @param queryParam
@@ -83,7 +92,8 @@ public class BlogServiceImpl implements BlogService {
      */
     @Override
     public PageInfo<Blog> selectBlogByQuery(Integer pageNum, Integer pageSize, String queryParam) {
-        return blogMapper.selectBlogByQuery(pageNum, pageSize, queryParam);
+        Integer notPublished = 0;
+        return blogMapper.selectBlogByQuery(pageNum, pageSize, queryParam, notPublished);
     }
 
     /**

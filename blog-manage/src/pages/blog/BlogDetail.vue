@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-03-01 10:19:31
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-29 11:55:07
+ * @LastEditTime: 2024-04-29 15:17:27
  * @FilePath: \blog-manage\src\pages\layout\MyBlogDetail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -92,6 +92,7 @@ import type { FormInstance, FormRules } from 'element-plus';
 import type { ComponentInternalInstance } from 'vue';
 import { clearForm } from '@/mixins';
 import stroe from '@/store/store';
+import { keysOf } from 'element-plus/es/utils/objects.mjs';
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance | any;
 
@@ -154,12 +155,7 @@ watch(publishVisible, val => {
 onMounted(() => {
   getTypeList();
   getTagList();
-  // 博客 - 暂存
-
-  // 博客 - 编辑
-  if (props.blogDetail.id) {
-    getBlogDetail(props.blogDetail.id);
-  }
+  getBlogDetail(props.blogDetail.id);
 });
 
 const rules = reactive<FormRules<RuleForm>>({
@@ -173,8 +169,20 @@ const rules = reactive<FormRules<RuleForm>>({
   status: [{ required: true, message: '请选择文章类型', trigger: 'blur' }],
 });
 
-const getBlogDetail = (id: string | number) => {
-  blogForm.content = '```vue\n' + 'console.log("hello world", ' + id + ')' + '\n```';
+const getBlogDetail = async (id?: string | number) => {
+  try {
+    // 博客 - 编辑 // 博客 - 暂存
+    const { code, data } = id ? await proxy.$apis.blog.selectBlogById(id) : await proxy.$apis.blog.selectBlogByPublished({ published: 0 });
+    if (code === 200) {
+      keysOf(blogForm).forEach(key => {
+        if (key in data) {
+          blogForm[key] = data[key];
+        }
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 // 返回

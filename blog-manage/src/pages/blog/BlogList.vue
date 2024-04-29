@@ -398,6 +398,7 @@ main {
     .operate {
       display: flex;
       align-items: center;
+      justify-content: center;
       > :first-child {
         display: flex;
         align-items: center;
