@@ -55,22 +55,12 @@ public class TypeServiceImpl implements TypeService {
     /**
      * @param pageNum
      * @param pageSize
-     * @return
-     */
-    @Override
-    public PageInfo<Type> selectAllType(Integer pageNum, Integer pageSize) {
-        return typeMapper.selectAllType(pageNum, pageSize);
-    }
-
-    /**
-     * @param pageNum
-     * @param pageSize
      * @param name
      * @return
      */
     @Override
-    public PageInfo<Type> selectTypeByName(Integer pageNum, Integer pageSize, String name) {
-        return typeMapper.selectTypeByName(pageNum, pageSize, name);
+    public PageInfo<Type> selectTypeByQuery(Integer pageNum, Integer pageSize, String name) {
+        return typeMapper.selectTypeByQuery(pageNum, pageSize, name);
     }
 
     /**

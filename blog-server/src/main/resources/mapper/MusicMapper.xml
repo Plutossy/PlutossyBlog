@@ -90,11 +90,6 @@
         where id = #{id}
     </select>
 
-    <select id="selectAllMusic" resultMap="BaseResultMap">
-        select *
-        from t_music order by create_time desc
-    </select>
-
     <select id="selectMusicByQuery" resultMap="BaseResultMap" parameterType="java.lang.String">
         select *
         from t_music

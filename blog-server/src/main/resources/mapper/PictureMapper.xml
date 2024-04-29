@@ -72,14 +72,10 @@
         where id = #{id}
     </select>
 
-    <select id="selectAllPicture" resultMap="BaseResultMap">
-        select * from t_picture order by create_time desc
-    </select>
-
     <select id="selectPictureByQuery" resultMap="BaseResultMap" parameterType="java.lang.String">
         select *
         from t_picture
-        where (name like CONCAT('%', #{queryParam}, '%')) order by create_time desc
+        where ((name like CONCAT('%', #{queryParam}, '%')) or (description like CONCAT('%', #{queryParam}, '%'))) order by create_time desc
     </select>
 
 </mapper>

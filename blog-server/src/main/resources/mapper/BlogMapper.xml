@@ -164,10 +164,6 @@
         where id = #{id}
     </select>
 
-    <select id="selectAllBlog" resultMap="BaseResultMap">
-        select * from t_blog order by update_time desc
-    </select>
-
     <select id="selectBlogByQuery" resultMap="BaseResultMap" parameterType="java.lang.String">
         select *
         from t_blog

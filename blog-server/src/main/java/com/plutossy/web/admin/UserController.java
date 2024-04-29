@@ -113,23 +113,23 @@ public class UserController {
         return jsonObject;
     }
 
-    /* 查询用户信息 */
-    @RequestMapping(value = "/manage/userList", method = RequestMethod.POST)
-    public Object selectUserInfo(@RequestBody Map<String, Object> jsonData) {
+    // 模糊查询
+    @RequestMapping(value = "/manage/selectUserByQuery", method = RequestMethod.POST)
+    public Object selectUserByQuery(@RequestBody Map<String, Object> jsonData) {
         Long id = Long.valueOf((String) jsonData.get("id"));
-        // 通过PageDefault为pageNum和pageSize设置默认值
+        String queryParam = jsonData.get("queryParam") == null ? "" : (String) jsonData.get("queryParam");
+        boolean type = jsonData.get("type") != null && (Boolean) jsonData.get("type");
         Integer pageNum = jsonData.get("pageNum") == null ? PageDefault.PAGE_NUM : (Integer) jsonData.get("pageNum");
         Integer pageSize = jsonData.get("pageSize") == null ? PageDefault.PAGE_SIZE : (Integer) jsonData.get("pageSize");
-        boolean type = jsonData.get("type") != null && (Boolean) jsonData.get("type");
         JSONObject jsonObject = new JSONObject();
         // 如果type为空或者为false，则只查询当前用户信息
         PageInfo<User> pageData;
         if (!type) {
             // 查询当前用户信息
-            pageData = userService.selectUserByIdAndType(pageNum, pageSize, id, false);
+            pageData = userService.selectUserByQueryByIdAndType(pageNum, pageSize, id, queryParam, false);
         } else {
             // 查询所有用户信息
-            pageData = userService.selectAllUser(pageNum, pageSize);
+            pageData = userService.selectAllUser(pageNum, pageSize, queryParam);
         }
         return getObject(jsonObject, pageData);
     }
@@ -265,17 +265,5 @@ public class UserController {
         jsonObject.put(Consts.CODE, 200);
         jsonObject.put(Consts.MSG, "删除成功！");
         return jsonObject;
-    }
-
-    // 模糊查询
-    @RequestMapping(value = "/manage/selectUserByName", method = RequestMethod.POST)
-    public Object selectUserByName(@RequestBody Map<String, Object> jsonData) {
-        String queryParam = (String) jsonData.get("queryParam");
-        Boolean type = jsonData.get("type") != null && (Boolean) jsonData.get("type");
-        Integer pageNum = jsonData.get("pageNum") == null ? PageDefault.PAGE_NUM : (Integer) jsonData.get("pageNum");
-        Integer pageSize = jsonData.get("pageSize") == null ? PageDefault.PAGE_SIZE : (Integer) jsonData.get("pageSize");
-        JSONObject jsonObject = new JSONObject();
-        PageInfo<User> pageData = userService.selectUserByName(pageNum, pageSize, queryParam, type);
-        return getObject(jsonObject, pageData);
     }
 }

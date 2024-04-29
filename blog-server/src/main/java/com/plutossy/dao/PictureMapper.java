@@ -44,24 +44,12 @@ public interface PictureMapper {
      */
     public Picture selectPictureById(Long id);
 
-    // 查询所有图片
-    /**
-     * @return
-     */
-    @Select("select * from t_picture order by create_time desc")
-    public List<Picture> selectAllPictureByCondition();
-    default PageInfo<Picture> selectAllPicture(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize) {
-        PageHelper.startPage(pageNum, pageSize);
-        List<Picture> pictures = selectAllPictureByCondition();
-        return new PageInfo<>(pictures);
-    }
-
-    // 根据图片名称和歌手名称模糊查询图片
+    // 根据歌手名称模糊查询图片
     /**
      * @param queryParam
      * @return
      */
-    @Select("select * from t_picture where (name like CONCAT('%', #{queryParam}, '%')) order by create_time desc")
+    @Select("select * from t_picture where ((name like CONCAT('%', #{queryParam}, '%')) or (description like CONCAT('%', #{queryParam}, '%'))) order by create_time desc")
     public List<Picture> selectPictureByQueryByCondition(String queryParam);
     default PageInfo<Picture> selectPictureByQuery(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize, String queryParam) {
         PageHelper.startPage(pageNum, pageSize);

@@ -29,15 +29,6 @@ public class MusicController {
         return jsonObject;
     }
 
-    @RequestMapping(value = "/manage/musicList", method = RequestMethod.POST)
-    public Object selectAllMusic(@RequestBody Map<String, Object> jsonData) {
-        Integer pageNum = jsonData.get("pageNum") == null ? PageDefault.PAGE_NUM : (Integer) jsonData.get("pageNum");
-        Integer pageSize = jsonData.get("pageSize") == null ? PageDefault.PAGE_SIZE : (Integer) jsonData.get("pageSize");
-        JSONObject jsonObject = new JSONObject();
-        PageInfo<Music> pageData = musicService.selectAllMusic(pageNum, pageSize);
-        return getObject(jsonObject, pageData);
-    }
-
     @RequestMapping(value = "/manage/selectMusicByQuery", method = RequestMethod.POST)
     public Object selectMusicByQuery(@RequestBody Map<String, Object> jsonData) {
         Integer pageNum = jsonData.get("pageNum") == null ? PageDefault.PAGE_NUM : (Integer) jsonData.get("pageNum");

@@ -30,27 +30,18 @@ public class TagController {
         return jsonObject;
     }
 
-    @RequestMapping(value = "/manage/tagList", method = RequestMethod.POST)
-    public Object selectAllTag(@RequestBody Map<String, Object> jsonData) {
-        String type = jsonData.get("type") == null ? "" : (String) jsonData.get("type");
+    @RequestMapping(value = "/manage/selectTagByQuery", method = RequestMethod.POST)
+    public Object selectTagByQuery(@RequestBody Map<String, Object> jsonData) {
         Integer pageNum = jsonData.get("pageNum") == null ? PageDefault.PAGE_NUM : (Integer) jsonData.get("pageNum");
         Integer pageSize = jsonData.get("pageSize") == null ? PageDefault.PAGE_SIZE : (Integer) jsonData.get("pageSize");
+        String name = jsonData.get("name") == null ? "" : (String) jsonData.get("name");
+        String type = jsonData.get("type") == null ? "" : (String) jsonData.get("type");
         if (Objects.equals(type, "all")) {
             pageNum = 1;
             pageSize = -1;
         }
         JSONObject jsonObject = new JSONObject();
-        PageInfo<Tag> pageData = tagService.selectAllTag(pageNum, pageSize);
-        return getObject(jsonObject, pageData);
-    }
-
-    @RequestMapping(value = "/manage/selectTagByName", method = RequestMethod.POST)
-    public Object selectTagByName(@RequestBody Map<String, Object> jsonData) {
-        Integer pageNum = jsonData.get("pageNum") == null ? PageDefault.PAGE_NUM : (Integer) jsonData.get("pageNum");
-        Integer pageSize = jsonData.get("pageSize") == null ? PageDefault.PAGE_SIZE : (Integer) jsonData.get("pageSize");
-        String name = jsonData.get("name") == null ? "" : (String) jsonData.get("name");
-        JSONObject jsonObject = new JSONObject();
-        PageInfo<Tag> pageData = tagService.selectTagByName(pageNum, pageSize, name);
+        PageInfo<Tag> pageData = tagService.selectTagByQuery(pageNum, pageSize, name);
         return getObject(jsonObject, pageData);
     }
 

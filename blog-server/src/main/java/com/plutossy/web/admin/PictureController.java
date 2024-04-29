@@ -29,15 +29,6 @@ public class PictureController {
         return jsonObject;
     }
 
-    @RequestMapping(value = "/manage/pictureList", method = RequestMethod.POST)
-    public Object selectAllPicture(@RequestBody Map<String, Object> jsonData) {
-        Integer pageNum = jsonData.get("pageNum") == null ? PageDefault.PAGE_NUM : (Integer) jsonData.get("pageNum");
-        Integer pageSize = jsonData.get("pageSize") == null ? PageDefault.PAGE_SIZE : (Integer) jsonData.get("pageSize");
-        JSONObject jsonObject = new JSONObject();
-        PageInfo<Picture> pageData = pictureService.selectAllPicture(pageNum, pageSize);
-        return getObject(jsonObject, pageData);
-    }
-
     @RequestMapping(value = "/manage/selectPictureByQuery", method = RequestMethod.POST)
     public Object selectPictureByQuery(@RequestBody Map<String, Object> jsonData) {
         Integer pageNum = jsonData.get("pageNum") == null ? PageDefault.PAGE_NUM : (Integer) jsonData.get("pageNum");

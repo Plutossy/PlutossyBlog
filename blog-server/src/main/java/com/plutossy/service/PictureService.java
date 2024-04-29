@@ -37,13 +37,6 @@ public interface PictureService {
     /**
      * @param pageNum
      * @param pageSize
-     * @return
-     */
-    public PageInfo<Picture> selectAllPicture(Integer pageNum, Integer pageSize);
-
-    /**
-     * @param pageNum
-     * @param pageSize
      * @param queryParam
      * @return
      */

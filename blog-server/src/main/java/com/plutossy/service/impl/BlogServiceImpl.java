@@ -78,16 +78,6 @@ public class BlogServiceImpl implements BlogService {
     /**
      * @param pageNum
      * @param pageSize
-     * @return
-     */
-    @Override
-    public PageInfo<Blog> selectAllBlog(Integer pageNum, Integer pageSize) {
-        return blogMapper.selectAllBlog(pageNum, pageSize);
-    }
-
-    /**
-     * @param pageNum
-     * @param pageSize
      * @param queryParam
      * @return
      */

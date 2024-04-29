@@ -144,16 +144,6 @@ public class BlogController {
         return jsonObject;
     }
 
-    // 查询所有博客
-    @RequestMapping(value = "/manage/blogList", method = RequestMethod.POST)
-    public Object selectBlogList(@RequestBody Map<String, Object> jsonData) {
-        Integer pageNum = jsonData.get("pageNum") == null ? 1 : (Integer) jsonData.get("pageNum");
-        Integer pageSize = jsonData.get("pageSize") == null ? 10 : (Integer) jsonData.get("pageSize");
-        JSONObject jsonObject = new JSONObject();
-        PageInfo<Blog> pageData = blogService.selectAllBlog(pageNum, pageSize);
-        return getObject(jsonObject, pageData);
-    }
-
     // 根据条件查询博客
     @RequestMapping(value = "/manage/selectBlogByQuery", method = RequestMethod.POST)
     public Object selectBlogByQuery(@RequestBody Map<String, Object> jsonData) {

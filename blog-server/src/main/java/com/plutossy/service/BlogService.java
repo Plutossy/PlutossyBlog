@@ -54,13 +54,6 @@ public interface BlogService {
     /**
      * @param pageNum
      * @param pageSize
-     * @return
-     */
-    public PageInfo<Blog> selectAllBlog(Integer pageNum, Integer pageSize);
-
-    /**
-     * @param pageNum
-     * @param pageSize
      * @param queryParam
      * @return
      */

@@ -26,20 +26,20 @@ public interface UserMapper {
     public List<String> selectAllNickname();
 
     // 查询所有用户信息
-    @Select("select " + Base_Columns + " from t_user order by create_time")
-    public List<User> selectAllUserByCondition();
-    default PageInfo<User> selectAllUser(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize) {
+    @Select("select " + Base_Columns + " from t_user where (nickname like CONCAT('%', #{queryParam}, '%')) or (username like CONCAT('%', #{queryParam}, '%')) order by create_time")
+    public List<User> selectAllUserByCondition(String queryParam);
+    default PageInfo<User> selectAllUser(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize, @Param("queryParam") String queryParam) {
         PageHelper.startPage(pageNum, pageSize);
-        List<User> users = selectAllUserByCondition();
+        List<User> users = selectAllUserByCondition(queryParam);
         return new PageInfo<>(users);
     }
 
-    // 根据用户id和type查询用户信息
-    @Select("select " + Base_Columns + " from t_user where id = #{id} and type = #{type} order by create_time")
-    public List<User> selectAllUserByIdAndTypeByCondition(Long id, Boolean type);
-    default PageInfo<User> selectUserByIdAndType(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize, @Param("id") Long id, @Param("type") Boolean type) {
+    // 根据用户id、queryParam和type查询用户信息
+    @Select("select " + Base_Columns + " from t_user where id = #{id} and type = #{type} and ((nickname like CONCAT('%', #{queryParam}, '%')) or (username like CONCAT('%', #{queryParam}, '%'))) order by create_time")
+    public List<User> selectUserByQueryByIdAndTypeByCondition(Long id,String queryParam, Boolean type);
+    default PageInfo<User> selectUserByQueryByIdAndType(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize, @Param("id") Long id, @Param("queryParam") String queryParam, @Param("type") Boolean type) {
         PageHelper.startPage(pageNum, pageSize);
-        List<User> users = selectAllUserByIdAndTypeByCondition(id, type);
+        List<User> users = selectUserByQueryByIdAndTypeByCondition(id, queryParam, type);
         return new PageInfo<>(users);
     }
 
@@ -63,13 +63,4 @@ public interface UserMapper {
 
     // 删除用户
     public Integer deleteUserById(Long id);
-
-    // 根据用户昵称和用户名模糊查询用户信息
-    @Select("select " + Base_Columns + " from t_user where type = #{type} and nickname like CONCAT('%', #{queryParam}, '%') or username like CONCAT('%', #{queryParam}, '%') order by create_time")
-    public List<User> selectUserByNameByCondition(String queryParam, Boolean type);
-    default PageInfo<User> selectUserByName(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize, @Param("queryParam") String queryParam, @Param("type") Boolean type) {
-        PageHelper.startPage(pageNum, pageSize);
-        List<User> users = selectUserByNameByCondition(queryParam, type);
-        return new PageInfo<>(users);
-    }
 }

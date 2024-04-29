@@ -30,27 +30,18 @@ public class TypeController {
         return jsonObject;
     }
 
-    @RequestMapping(value = "/manage/typeList", method = RequestMethod.POST)
-    public Object selectAllType(@RequestBody Map<String, Object> jsonData) {
-        String type = jsonData.get("type") == null ? "" : (String) jsonData.get("type");
+    @RequestMapping(value = "/manage/selectTypeByQuery", method = RequestMethod.POST)
+    public Object selectTypeByQuery(@RequestBody Map<String, Object> jsonData) {
         Integer pageNum = jsonData.get("pageNum") == null ? PageDefault.PAGE_NUM : (Integer) jsonData.get("pageNum");
         Integer pageSize = jsonData.get("pageSize") == null ? PageDefault.PAGE_SIZE : (Integer) jsonData.get("pageSize");
+        String name = jsonData.get("name") == null ? "" : (String) jsonData.get("name");
+        String type = jsonData.get("type") == null ? "" : (String) jsonData.get("type");
         if (Objects.equals(type, "all")) {
             pageNum = 1;
             pageSize = -1;
         }
         JSONObject jsonObject = new JSONObject();
-        PageInfo<Type> pageData = typeService.selectAllType(pageNum, pageSize);
-        return getObject(jsonObject, pageData);
-    }
-
-    @RequestMapping(value = "/manage/selectTypeByName", method = RequestMethod.POST)
-    public Object selectTypeByName(@RequestBody Map<String, Object> jsonData) {
-        Integer pageNum = jsonData.get("pageNum") == null ? PageDefault.PAGE_NUM : (Integer) jsonData.get("pageNum");
-        Integer pageSize = jsonData.get("pageSize") == null ? PageDefault.PAGE_SIZE : (Integer) jsonData.get("pageSize");
-        String name = jsonData.get("name") == null ? "" : (String) jsonData.get("name");
-        JSONObject jsonObject = new JSONObject();
-        PageInfo<Type> pageData = typeService.selectTypeByName(pageNum, pageSize, name);
+        PageInfo<Type> pageData = typeService.selectTypeByQuery(pageNum, pageSize, name);
         return getObject(jsonObject, pageData);
     }
 

@@ -43,11 +43,7 @@
         where id = #{id}
     </select>
 
-    <select id="selectAllTag" resultMap="BaseResultMap">
-        select * from t_tag
-    </select>
-
-    <select id="selectTagByName" resultMap="BaseResultMap" parameterType="java.lang.String">
+    <select id="selectTagByQuery" resultMap="BaseResultMap" parameterType="java.lang.String">
         select *
         from t_tag
         where name like CONCAT('%', #{name}, '%')

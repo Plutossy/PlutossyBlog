@@ -59,16 +59,6 @@ public class PictureServiceImpl implements PictureService {
     /**
      * @param pageNum
      * @param pageSize
-     * @return
-     */
-    @Override
-    public PageInfo<Picture> selectAllPicture(Integer pageNum, Integer pageSize) {
-        return pictureMapper.selectAllPicture(pageNum, pageSize);
-    }
-
-    /**
-     * @param pageNum
-     * @param pageSize
      * @param queryParam
      * @return
      */

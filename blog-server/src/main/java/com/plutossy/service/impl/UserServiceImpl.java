@@ -65,23 +65,25 @@ public class UserServiceImpl implements UserService {
      *
      * @param pageNum
      * @param pageSize
+     * @param queryParam
      * @return
      */
     @Override
-    public PageInfo<User> selectAllUser(Integer pageNum, Integer pageSize) {
-        return userMapper.selectAllUser(pageNum, pageSize);
+    public PageInfo<User> selectAllUser(Integer pageNum, Integer pageSize, String queryParam) {
+        return userMapper.selectAllUser(pageNum, pageSize, queryParam);
     }
 
     /**
      * 根据用户id和type查询用户信息
      *
      * @param id
+     * @param queryParam
      * @param type
      * @return
      */
     @Override
-    public PageInfo<User> selectUserByIdAndType(Integer pageNum, Integer pageSize,Long id, Boolean type) {
-        return userMapper.selectUserByIdAndType(pageNum, pageSize, id, type);
+    public PageInfo<User> selectUserByQueryByIdAndType(Integer pageNum, Integer pageSize,Long id, String queryParam, Boolean type) {
+        return userMapper.selectUserByQueryByIdAndType(pageNum, pageSize, id, queryParam, type);
     }
 
     @Override
@@ -141,10 +143,5 @@ public class UserServiceImpl implements UserService {
     @Override
     public Boolean deleteUserById(Long id) {
         return userMapper.deleteUserById(id) > 0;
-    }
-
-    @Override
-    public PageInfo<User> selectUserByName(Integer pageNum, Integer pageSize, String queryParam, Boolean type) {
-        return userMapper.selectUserByName(pageNum, pageSize, queryParam, type);
     }
 }

@@ -47,18 +47,6 @@ public interface MusicMapper {
      */
     public Music selectMusicById(Long id);
 
-    // 查询所有歌曲
-    /**
-     * @return
-     */
-    @Select("select * from t_music order by create_time desc")
-    public List<Music> selectAllMusicByCondition();
-    default PageInfo<Music> selectAllMusic(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize) {
-        PageHelper.startPage(pageNum, pageSize);
-        List<Music> musics = selectAllMusicByCondition();
-        return new PageInfo<>(musics);
-    }
-
     // 根据歌曲名称和歌手名称模糊查询歌曲
     /**
      * @param queryParam

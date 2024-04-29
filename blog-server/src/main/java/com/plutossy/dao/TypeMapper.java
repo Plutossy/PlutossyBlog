@@ -40,27 +40,16 @@ public interface TypeMapper {
      */
     public Type selectTypeById(Long id);
 
-    // 查询所有类型
-    /**
-     * @return
-     */
-    @Select("select * from t_type")
-    public List<Type> selectAllTypeByCondition();
-    default PageInfo<Type> selectAllType(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize) {
-        PageHelper.startPage(pageNum, pageSize);
-        List<Type> types = selectAllTypeByCondition();
-        return new PageInfo<>(types);
-    }
     // 根据类型名称模糊查询类型
     /**
      * @param name
      * @return
      */
     @Select("select * from t_type where name like CONCAT('%', #{name}, '%')")
-    public List<Type> selectTypeByNameByCondition(String name);
-    default PageInfo<Type> selectTypeByName(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize, String name) {
+    public List<Type> selectTypeByQueryByCondition(String name);
+    default PageInfo<Type> selectTypeByQuery(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize, String name) {
         PageHelper.startPage(pageNum, pageSize);
-        List<Type> types = selectTypeByNameByCondition(name);
+        List<Type> types = selectTypeByQueryByCondition(name);
         return new PageInfo<>(types);
     };
 

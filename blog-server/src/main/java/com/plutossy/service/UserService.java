@@ -18,10 +18,10 @@ public interface UserService {
     public List<String> selectAllNickname();
 
     //    查询所有用户信息
-    public PageInfo<User> selectAllUser(Integer pageNum, Integer pageSize);
+    public PageInfo<User> selectAllUser(Integer pageNum, Integer pageSize, String queryParam);
 
-    //    根据用户id和type查询用户信息
-    public PageInfo<User> selectUserByIdAndType(Integer pageNum, Integer pageSize, Long id, Boolean type);
+    //    根据用户id和type和查询条件 查询用户信息
+    public PageInfo<User> selectUserByQueryByIdAndType(Integer pageNum, Integer pageSize, Long id, String queryParam, Boolean type);
 
     //    根据用户id查询用户信息
     public User selectUserById(Long id);
@@ -44,6 +44,4 @@ public interface UserService {
     //    根据id删除用户信息
     public Boolean deleteUserById(Long id);
 
-    //    模糊查询
-    public PageInfo<User> selectUserByName(Integer pageNum, Integer pageSize, String queryParam, Boolean type);
 }

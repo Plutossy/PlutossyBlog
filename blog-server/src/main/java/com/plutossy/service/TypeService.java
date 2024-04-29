@@ -33,17 +33,10 @@ public interface TypeService {
     /**
      * @param pageNum
      * @param pageSize
-     * @return
-     */
-    public PageInfo<Type> selectAllType(Integer pageNum, Integer pageSize);
-
-    /**
-     * @param pageNum
-     * @param pageSize
      * @param name
      * @return
      */
-    public PageInfo<Type> selectTypeByName(Integer pageNum, Integer pageSize, String name);
+    public PageInfo<Type> selectTypeByQuery(Integer pageNum, Integer pageSize, String name);
 
     /**
      * @param name

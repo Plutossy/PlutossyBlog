@@ -63,18 +63,6 @@ public interface BlogMapper {
      */
     public Blog selectBlogById(Long id);
 
-    // 查询所有博客
-    /**
-     * @return
-     */
-    @Select("select * from t_blog order by update_time desc")
-    public List<Blog> selectAllBlogByCondition();
-    default PageInfo<Blog> selectAllBlog(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize) {
-        PageHelper.startPage(pageNum, pageSize);
-        List<Blog> blogs = selectAllBlogByCondition();
-        return new PageInfo<>(blogs);
-    }
-
     // 根据博客标题和博客描述模糊查询博客
     /**
      * @param queryParam

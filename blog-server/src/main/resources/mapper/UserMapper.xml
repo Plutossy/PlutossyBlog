@@ -84,15 +84,17 @@
         select
         <include refid="Base_Columns"/>
         from t_user
+        where (nickname like CONCAT('%', #{queryParam}, '%')) or (username like CONCAT('%', #{queryParam}, '%'))
         order by create_time
     </select>
 
-    <select id="selectUserByIdAndType" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+    <select id="selectUserByQueryByIdAndType" resultMap="BaseResultMap" parameterType="java.util.HashMap">
         select
         <include refid="Base_Columns"/>
         from t_user
-        where type = #{type}
-        and id = #{id}
+        where id = #{id}
+        and type = #{type}
+        and ((nickname like CONCAT('%', #{queryParam}, '%')) or (username like CONCAT('%', #{queryParam}, '%')))
         order by create_time
     </select>
 

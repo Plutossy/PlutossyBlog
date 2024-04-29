@@ -33,17 +33,10 @@ public interface TagService {
     /**
      * @param pageNum
      * @param pageSize
-     * @return
-     */
-    public PageInfo<Tag> selectAllTag(Integer pageNum, Integer pageSize);
-
-    /**
-     * @param pageNum
-     * @param pageSize
      * @param name
      * @return
      */
-    public PageInfo<Tag> selectTagByName(Integer pageNum, Integer pageSize, String name);
+    public PageInfo<Tag> selectTagByQuery(Integer pageNum, Integer pageSize, String name);
 
     /**
      * @param name

@@ -62,16 +62,6 @@ public class MusicServiceImpl implements MusicService {
     /**
      * @param pageNum
      * @param pageSize
-     * @return
-     */
-    @Override
-    public PageInfo<Music> selectAllMusic(Integer pageNum, Integer pageSize) {
-        return musicMapper.selectAllMusic(pageNum, pageSize);
-    }
-
-    /**
-     * @param pageNum
-     * @param pageSize
      * @param queryParam
      * @return
      */

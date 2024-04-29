@@ -57,10 +57,10 @@ public interface TagMapper {
      * @return
      */
     @Select("select * from t_tag where name like CONCAT('%', #{name}, '%')")
-    public List<Tag> selectTagByNameByCondition(String name);
-    default PageInfo<Tag> selectTagByName(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize, String name) {
+    public List<Tag> selectTagByQueryByCondition(String name);
+    default PageInfo<Tag> selectTagByQuery(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize, String name) {
         PageHelper.startPage(pageNum, pageSize);
-        List<Tag> tags = selectTagByNameByCondition(name);
+        List<Tag> tags = selectTagByQueryByCondition(name);
         return new PageInfo<>(tags);
     };
 

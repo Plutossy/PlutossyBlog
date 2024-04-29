@@ -55,22 +55,12 @@ public class TagServiceImpl implements TagService {
     /**
      * @param pageNum
      * @param pageSize
-     * @return
-     */
-    @Override
-    public PageInfo<Tag> selectAllTag(Integer pageNum, Integer pageSize) {
-        return tagMapper.selectAllTag(pageNum, pageSize);
-    }
-
-    /**
-     * @param pageNum
-     * @param pageSize
      * @param name
      * @return
      */
     @Override
-    public PageInfo<Tag> selectTagByName(Integer pageNum, Integer pageSize, String name) {
-        return tagMapper.selectTagByName(pageNum, pageSize, name);
+    public PageInfo<Tag> selectTagByQuery(Integer pageNum, Integer pageSize, String name) {
+        return tagMapper.selectTagByQuery(pageNum, pageSize, name);
     }
 
     /**
