@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-03-01 10:19:31
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-28 18:16:02
+ * @LastEditTime: 2024-04-29 11:55:07
  * @FilePath: \blog-manage\src\pages\layout\MyBlogDetail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -222,6 +222,8 @@ const clearAddOption = (val: string) => {
 
 // 暂存 / 保存草稿
 const saveForm = (val?: boolean) => {
+  console.log(blogForm.content);
+  console.log(typeof blogForm.content);
   if (!blogForm.content) return ElNotification.warning('博客内容不能为空');
   if (val) {
     ElNotification.success('保存成功！');

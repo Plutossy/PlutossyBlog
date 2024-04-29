@@ -136,9 +136,10 @@ public class UserController {
 
     /* 根据id查询用户信息 */
     @RequestMapping(value = "/manage/userInfoById", method = RequestMethod.GET)
-    public Object selectUserInfoById(@RequestParam("id") Long id) {
+    public Object selectUserInfoById(@RequestParam("id") String id) {
+        Long selectId = Long.valueOf(id);
         JSONObject jsonObject = new JSONObject();
-        User userInfo = userService.selectUserById(id);
+        User userInfo = userService.selectUserById(selectId);
         jsonObject.put(Consts.CODE, 200);
         jsonObject.put(Consts.MSG, "查询成功！");
         jsonObject.put(Consts.DATA, userInfo);
