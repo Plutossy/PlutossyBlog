@@ -170,4 +170,21 @@
         where (title like CONCAT('%', #{queryParam}, '%')) or (description like CONCAT('%', #{queryParam}, '%')) order by update_time desc
     </select>
 
+    <update id="updateBlogRecommend" parameterType="java.util.HashMap">
+        update t_blog
+        set recommend = #{recommend}
+        where id = #{id}
+    </update>
+
+    <update id="updateBlogCommentabled" parameterType="java.util.HashMap">
+        update t_blog
+        set commentabled = #{commentabled}
+        where id = #{id}
+    </update>
+
+    <update id="updateBlogShared" parameterType="java.util.HashMap">
+        update t_blog
+        set shared = #{shared}
+        where id = #{id}
+    </update>
 </mapper>

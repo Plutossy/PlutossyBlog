@@ -154,4 +154,55 @@ public class BlogController {
         PageInfo<Blog> pageData = blogService.selectBlogByQuery(pageNum, pageSize, queryParam);
         return getObject(jsonObject, pageData);
     }
+
+    // 修改博客推荐状态
+    @RequestMapping(value = "/manage/updateBlogRecommend", method = RequestMethod.POST)
+    public Object updateBlogRecommend(@RequestBody Map<String, Object> jsonData) {
+        Long id = Long.valueOf(jsonData.get("id").toString());
+        Boolean recommend = jsonData.get("recommend") != null && (Boolean) jsonData.get("recommend");
+        Boolean updateFlag = blogService.updateBlogRecommend(id, recommend);
+        JSONObject jsonObject = new JSONObject();
+        if (updateFlag) {
+            jsonObject.put(Consts.CODE, 200);
+            jsonObject.put(Consts.MSG, "修改成功！");
+        } else {
+            jsonObject.put(Consts.CODE, 500);
+            jsonObject.put(Consts.MSG, "修改失败！");
+        }
+        return jsonObject;
+    }
+
+    // 修改博客评论状态
+    @RequestMapping(value = "/manage/updateBlogCommentabled", method = RequestMethod.POST)
+    public Object updateBlogCommentabled(@RequestBody Map<String, Object> jsonData) {
+        Long id = Long.valueOf(jsonData.get("id").toString());
+        Boolean commentabled = jsonData.get("commentabled") == null || (Boolean) jsonData.get("commentabled");
+        Boolean updateFlag = blogService.updateBlogCommentabled(id, commentabled);
+        JSONObject jsonObject = new JSONObject();
+        if (updateFlag) {
+            jsonObject.put(Consts.CODE, 200);
+            jsonObject.put(Consts.MSG, "修改成功！");
+        } else {
+            jsonObject.put(Consts.CODE, 500);
+            jsonObject.put(Consts.MSG, "修改失败！");
+        }
+        return jsonObject;
+    }
+
+    // 修改博客分享状态
+    @RequestMapping(value = "/manage/updateBlogShared", method = RequestMethod.POST)
+    public Object updateBlogShared(@RequestBody Map<String, Object> jsonData) {
+        Long id = Long.valueOf(jsonData.get("id").toString());
+        Boolean shared = jsonData.get("shared") == null || (Boolean) jsonData.get("shared");
+        Boolean updateFlag = blogService.updateBlogShared(id, shared);
+        JSONObject jsonObject = new JSONObject();
+        if (updateFlag) {
+            jsonObject.put(Consts.CODE, 200);
+            jsonObject.put(Consts.MSG, "修改成功！");
+        } else {
+            jsonObject.put(Consts.CODE, 500);
+            jsonObject.put(Consts.MSG, "修改失败！");
+        }
+        return jsonObject;
+    }
 }

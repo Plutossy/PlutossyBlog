@@ -34,7 +34,7 @@
       <el-table-column prop="recommend" label="是否推荐" width="100" align="center">
         <template #default="{ row }">
           <el-tooltip :content="row.recommend ? '是' : '否'" placement="top">
-            <el-switch v-model="row.recommend" inline-prompt :active-icon="Check" :inactive-icon="Close" />
+            <el-switch v-model="row.recommend" @click="updateRecommend(row.id, row.recommend)" inline-prompt :active-icon="Check" :inactive-icon="Close" />
           </el-tooltip>
         </template>
       </el-table-column>
@@ -47,14 +47,14 @@
       <el-table-column prop="commentabled" label="是否可评论" width="100" align="center">
         <template #default="{ row }">
           <el-tooltip :content="row.commentabled ? '是' : '否'" placement="top">
-            <el-switch v-model="row.commentabled" inline-prompt :active-icon="Check" :inactive-icon="Close" />
+            <el-switch v-model="row.commentabled" @click="updateCommentabled(row.id, row.commentabled)" inline-prompt :active-icon="Check" :inactive-icon="Close" />
           </el-tooltip>
         </template>
       </el-table-column>
       <el-table-column prop="shared" label="是否可分享" width="100" align="center">
         <template #default="{ row }">
           <el-tooltip :content="row.shared ? '是' : '否'" placement="top">
-            <el-switch v-model="row.shared" inline-prompt :active-icon="Check" :inactive-icon="Close" />
+            <el-switch v-model="row.shared" @click="updateShared(row.id, row.shared)" inline-prompt :active-icon="Check" :inactive-icon="Close" />
           </el-tooltip>
         </template>
       </el-table-column>
@@ -191,6 +191,90 @@ const handleImgSuccess = (res: { code: number }, _file: any) => {
   }
 };
 
+// 更新推荐状态
+const updateRecommend = async (id: string | number, recommend: boolean) => {
+  const query = {
+    id,
+    recommend,
+  };
+  try {
+    const { code } = await proxy.$apis.blog.updateRecommend(query);
+    if (code === 200) {
+      ElNotification({
+        type: 'success',
+        message: '更新成功!',
+        duration: 1000,
+        showClose: true,
+      });
+    } else {
+      ElNotification({
+        type: 'error',
+        message: '更新失败!',
+        duration: 1000,
+        showClose: true,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// 更新评论状态
+const updateCommentabled = async (id: string | number, commentabled: boolean) => {
+  const query = {
+    id,
+    commentabled,
+  };
+  try {
+    const { code } = await proxy.$apis.blog.updateCommentabled(query);
+    if (code === 200) {
+      ElNotification({
+        type: 'success',
+        message: '更新成功!',
+        duration: 1000,
+        showClose: true,
+      });
+    } else {
+      ElNotification({
+        type: 'error',
+        message: '更新失败!',
+        duration: 1000,
+        showClose: true,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// 更新分享状态
+const updateShared = async (id: string | number, shared: boolean) => {
+  const query = {
+    id,
+    shared,
+  };
+  try {
+    const { code } = await proxy.$apis.blog.updateShared(query);
+    if (code === 200) {
+      ElNotification({
+        type: 'success',
+        message: '更新成功!',
+        duration: 1000,
+        showClose: true,
+      });
+    } else {
+      ElNotification({
+        type: 'error',
+        message: '更新失败!',
+        duration: 1000,
+        showClose: true,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 // 编辑
 const handleEdit = (row: any) => {
   console.log('handleEdit--', row);
@@ -282,13 +366,13 @@ main {
       color: #fff;
       // font-weight: bold;
       &.no-status {
-        background-color: #f56c6c;
+        background-color: #f59090;
       }
       &.is-status {
-        background-color: #67c23a;
+        background-color: #9fdb80;
       }
       &.set-status {
-        background-color: #409eff;
+        background-color: #83baf2;
       }
     }
 

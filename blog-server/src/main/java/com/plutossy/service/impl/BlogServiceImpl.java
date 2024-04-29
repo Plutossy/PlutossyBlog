@@ -85,4 +85,34 @@ public class BlogServiceImpl implements BlogService {
     public PageInfo<Blog> selectBlogByQuery(Integer pageNum, Integer pageSize, String queryParam) {
         return blogMapper.selectBlogByQuery(pageNum, pageSize, queryParam);
     }
+
+    /**
+     * @param id
+     * @param recommend
+     * @return
+     */
+    @Override
+    public Boolean updateBlogRecommend(Long id, Boolean recommend) {
+        return blogMapper.updateBlogRecommend(id, recommend) > 0;
+    }
+
+    /**
+     * @param id
+     * @param commentabled
+     * @return
+     */
+    @Override
+    public Boolean updateBlogCommentabled(Long id, Boolean commentabled) {
+        return blogMapper.updateBlogCommentabled(id, commentabled) > 0;
+    }
+
+    /**
+     * @param id
+     * @param shared
+     * @return
+     */
+    @Override
+    public Boolean updateBlogShared(Long id, Boolean shared) {
+        return blogMapper.updateBlogShared(id, shared) > 0;
+    }
 }

@@ -75,4 +75,28 @@ public interface BlogMapper {
         List<Blog> blogs = selectBlogByQueryByCondition(queryParam);
         return new PageInfo<>(blogs);
     };
+
+    // 更新博客推荐状态
+    /**
+     * @param id
+     * @param recommend
+     * @return
+     */
+    public int updateBlogRecommend(Long id, Boolean recommend);
+
+    // 更新博客评论状态
+    /**
+     * @param id
+     * @param commentabled
+     * @return
+     */
+    public int updateBlogCommentabled(Long id, Boolean commentabled);
+
+    // 更新博客分享状态
+    /**
+     * @param id
+     * @param shared
+     * @return
+     */
+    public int updateBlogShared(Long id, Boolean shared);
 }

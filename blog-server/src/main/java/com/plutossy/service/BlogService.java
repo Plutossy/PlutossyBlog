@@ -58,4 +58,25 @@ public interface BlogService {
      * @return
      */
     public PageInfo<Blog> selectBlogByQuery(Integer pageNum, Integer pageSize, String queryParam);
+
+    /**
+     * @param id
+     * @param recommend
+     * @return
+     */
+    public Boolean updateBlogRecommend(Long id, Boolean recommend);
+
+    /**
+     * @param id
+     * @param commentabled
+     * @return
+     */
+    public Boolean updateBlogCommentabled(Long id, Boolean commentabled);
+
+    /**
+     * @param id
+     * @param shared
+     * @return
+     */
+    public Boolean updateBlogShared(Long id, Boolean shared);
 }

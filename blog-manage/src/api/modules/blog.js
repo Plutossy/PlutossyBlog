@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-04-28 11:32:43
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-28 11:43:56
+ * @LastEditTime: 2024-04-29 10:31:00
  * @FilePath: \blog-manage\src\api\modules\blog.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -55,3 +55,27 @@ export function updateBlog(data) {
     data,
   });
 }
+
+export const updateRecommend = data => {
+  return request({
+    url: '/manage/updateBlogRecommend',
+    method: 'post',
+    data,
+  });
+};
+
+export const updateCommentabled = data => {
+  return request({
+    url: '/manage/updateBlogCommentabled',
+    method: 'post',
+    data,
+  });
+};
+
+export const updateShared = data => {
+  return request({
+    url: '/manage/updateBlogShared',
+    method: 'post',
+    data,
+  });
+};
