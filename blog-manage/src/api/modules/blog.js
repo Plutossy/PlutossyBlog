@@ -8,14 +8,6 @@
  */
 import request from '@/utils/request';
 
-export function getBlogList(data) {
-  return request({
-    url: '/manage/blogList',
-    method: 'post',
-    data,
-  });
-}
-
 export function selectBlogByQuery(data) {
   return request({
     url: '/manage/selectBlogByQuery',

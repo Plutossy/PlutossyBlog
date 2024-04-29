@@ -8,14 +8,6 @@
  */
 import request from '@/utils/request';
 
-export function selectMusicList(data) {
-  return request({
-    url: '/manage/musicList',
-    method: 'post',
-    data,
-  });
-}
-
 export function selectMusicByQuery(data) {
   return request({
     url: '/manage/selectMusicByQuery',

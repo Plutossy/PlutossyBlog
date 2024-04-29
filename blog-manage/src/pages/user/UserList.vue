@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-04-12 08:55:00
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-28 11:54:25
+ * @LastEditTime: 2024-04-29 09:44:41
  * @FilePath: \blog-manage\src\pages\user\UserList.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -69,8 +69,8 @@
       <el-table-column fixed="right" label="操作" width="180" align="center">
         <template #default="scope">
           <el-button type="primary" link @click="getCollect(scope.row.id)">收藏</el-button>
-          <div class="el-divider el-divider--vertical" direction="vertical" />
-          <el-button type="primary" link @click="handleEdit(scope.row)">编辑</el-button>
+          <div v-if="scope.row.id === store.getters['user/userInfo'].id" class="el-divider el-divider--vertical" direction="vertical" />
+          <el-button v-if="scope.row.id === store.getters['user/userInfo'].id" type="primary" link @click="handleEdit(scope.row)">编辑</el-button>
           <div v-if="!scope.row.type" class="el-divider el-divider--vertical" direction="vertical" />
           <el-button v-if="!scope.row.type" type="primary" link @click="handleDelete(scope.row.id)">删除</el-button>
         </template>
@@ -86,7 +86,7 @@
 </template>
 
 <script setup lang="ts">
-import { getUserList, deleteUser, selectUserByName } from '@/api/modules/user';
+import { deleteUser, selectUserByQuery } from '@/api/modules/user';
 import { dayjs } from 'element-plus';
 import { beforeImgUpload } from '@/mixins';
 import config from '@/config';
@@ -99,6 +99,7 @@ let queryParam = reactive({
   pageSize: 10,
   type: false,
   id: '',
+  queryParam: '',
 });
 
 let newTotal = ref(0); // 总数
@@ -148,7 +149,7 @@ const getData = async () => {
   queryParam.type = store.getters['user/userInfo'].type;
   queryParam.id = store.getters['user/userInfo'].id + ''; // 转化为字符串
   try {
-    const { data, code, total } = await getUserList(queryParam);
+    const { data, code, total } = await selectUserByQuery(queryParam);
     if (code === 200) {
       userData.splice(0, userData.length, ...data);
       newTotal.value = total;
@@ -250,33 +251,14 @@ const handleDelete = (id: any) => {
 };
 
 const searchResult = async (param: string) => {
-  try {
-    const query = {
-      pageNum: queryParam.pageNum,
-      pageSize: queryParam.pageSize,
-      type: queryParam.type,
-      queryParam: param,
-    };
-    const { data, code } = await selectUserByName(query);
-    if (code === 200) {
-      // 因为 reactive 不能直接赋值，所以用 splice
-      userData.splice(0, userData.length, ...data);
-    } else {
-      ElNotification({
-        type: 'error',
-        message: '搜索失败!',
-        duration: 1000,
-        showClose: true,
-      });
-    }
-  } catch (error) {
-    console.log(error);
-  }
+  queryParam.queryParam = param;
+  getData();
 };
 
 const reset = () => {
   queryParam.pageNum = 1;
   queryParam.pageSize = 10;
+  queryParam.queryParam = '';
   getData();
 };
 </script>

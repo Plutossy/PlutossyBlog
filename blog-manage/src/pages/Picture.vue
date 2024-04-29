@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-19 23:25:24
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-25 16:19:21
+ * @LastEditTime: 2024-04-29 09:52:09
  * @FilePath: \blog-manage\src\pages\User.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -61,7 +61,7 @@
 <script setup lang="ts">
 import store from '@/store/store';
 import eventBus from '@/assets/js/eventBus';
-import { ComponentInternalInstance } from 'vue';
+import type { ComponentInternalInstance } from 'vue';
 
 const emitter = eventBus();
 const { proxy } = getCurrentInstance() as ComponentInternalInstance | any;
@@ -82,6 +82,7 @@ let picUrlList: string[] = reactive([]); // 图片预览列表
 let queryParam = reactive({
   pageNum: 1,
   pageSize: 10,
+  queryParam: '',
 });
 let newTotal = ref(0); // 总数
 let tableHeight = ref(568); // 表格高度
@@ -117,7 +118,7 @@ onUnmounted(() => {
 
 const getData = async () => {
   try {
-    const { data, code, total } = await proxy.$apis.picture.selectPictureList(queryParam);
+    const { data, code, total } = await proxy.$apis.picture.selectPictureByQuery(queryParam);
     if (code === 200) {
       pictureData.splice(0, pictureData.length, ...data);
       picUrlList.splice(0, picUrlList.length, ...data.map((item: { url: string }) => item.url));
@@ -191,28 +192,7 @@ const handleDelete = (id: string | number) => {
 };
 
 const searchResult = async (param: string) => {
-  try {
-    const query = {
-      pageNum: queryParam.pageNum,
-      pageSize: queryParam.pageSize,
-      queryParam: param,
-    };
-    const { data, code, total } = await proxy.$apis.picture.selectPictureByQuery(query);
-    if (code === 200) {
-      newTotal.value = total;
-      // 因为 reactive 不能直接赋值，所以用 splice
-      pictureData.splice(0, pictureData.length, ...data);
-    } else {
-      ElNotification({
-        type: 'error',
-        message: '查询失败!',
-        showClose: true,
-        duration: 1000,
-      });
-    }
-  } catch (error) {
-    console.log(error);
-  }
+  queryParam.queryParam = param;
 };
 
 const delAllSuccess = (val: boolean) => {
@@ -222,6 +202,7 @@ const delAllSuccess = (val: boolean) => {
 const reset = () => {
   queryParam.pageNum = 1;
   queryParam.pageSize = 10;
+  queryParam.queryParam = '';
   getData();
 };
 

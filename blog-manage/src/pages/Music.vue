@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-08 19:17:21
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-28 11:54:04
+ * @LastEditTime: 2024-04-29 10:01:54
  * @FilePath: \PlutossyBlog\blog-manage\src\pages\Blog.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -76,7 +76,7 @@ import { CircleCloseFilled } from '@element-plus/icons-vue';
 import store from '@/store/store';
 import eventBus from '@/assets/js/eventBus';
 import config from '@/config';
-import { ComponentInternalInstance } from 'vue';
+import type { ComponentInternalInstance } from 'vue';
 
 const emitter = eventBus();
 const { proxy } = getCurrentInstance() as ComponentInternalInstance | any;
@@ -91,6 +91,7 @@ let drawer = ref(false); // 搜索抽屉是否显示
 let queryParam = reactive({
   pageNum: 1,
   pageSize: 10,
+  queryParam: '',
 });
 let newTotal = ref(0); // 总数
 let tableHeight = ref(568); // 表格高度
@@ -125,7 +126,7 @@ onUnmounted(() => {
 
 const getData = async () => {
   try {
-    const { data, code, total } = await proxy.$apis.music.selectMusicList(queryParam);
+    const { data, code, total } = await proxy.$apis.music.selectMusicByQuery(queryParam);
     if (code === 200) {
       musicData.splice(0, musicData.length, ...data);
       newTotal.value = total;
@@ -214,28 +215,7 @@ const handleDelete = (id: string | number) => {
 };
 
 const searchResult = async (param: string) => {
-  try {
-    const query = {
-      pageNum: queryParam.pageNum,
-      pageSize: queryParam.pageSize,
-      queryParam: param,
-    };
-    const { data, code, total } = await proxy.$apis.music.selectMusicByQuery(query);
-    if (code === 200) {
-      newTotal.value = total;
-      // 因为 reactive 不能直接赋值，所以用 splice
-      musicData.splice(0, musicData.length, ...data);
-    } else {
-      ElNotification({
-        type: 'error',
-        message: '查询失败!',
-        showClose: true,
-        duration: 1000,
-      });
-    }
-  } catch (error) {
-    console.log(error);
-  }
+  queryParam.queryParam = param;
 };
 
 const delAllSuccess = (val: boolean) => {
@@ -245,6 +225,7 @@ const delAllSuccess = (val: boolean) => {
 const reset = () => {
   queryParam.pageNum = 1;
   queryParam.pageSize = 10;
+  queryParam.queryParam = '';
   getData();
 };
 

@@ -25,7 +25,7 @@
 
 <script setup lang="ts">
 import type { FormInstance, FormRules } from 'element-plus';
-import { ComponentInternalInstance } from 'vue';
+import type { ComponentInternalInstance } from 'vue';
 import eventBus from '@/assets/js/eventBus';
 
 const emitter = eventBus();

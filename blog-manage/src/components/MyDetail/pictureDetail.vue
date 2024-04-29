@@ -30,7 +30,7 @@ import { beforeImgUpload } from '@/mixins';
 import { Upload } from '@element-plus/icons-vue';
 import type { FormInstance, FormRules } from 'element-plus';
 import config from '@/config';
-import { ComponentInternalInstance } from 'vue';
+import type { ComponentInternalInstance } from 'vue';
 import eventBus from '@/assets/js/eventBus';
 
 const emitter = eventBus();

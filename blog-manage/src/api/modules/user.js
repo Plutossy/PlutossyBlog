@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-04-10 11:16:32
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-18 16:12:13
+ * @LastEditTime: 2024-04-29 09:03:55
  * @FilePath: \blog-manage\src\api\modules\user.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -28,14 +28,6 @@ export function logout() {
   return request({
     url: '/logout',
     method: 'get',
-  });
-}
-
-export function getUserList(data) {
-  return request({
-    url: '/manage/userList',
-    method: 'post',
-    data,
   });
 }
 
@@ -103,9 +95,9 @@ export function deleteUsers(data) {
   });
 }
 
-export function selectUserByName(data) {
+export function selectUserByQuery(data) {
   return request({
-    url: '/manage/selectUserByName',
+    url: '/manage/selectUserByQuery',
     method: 'post',
     data,
   });

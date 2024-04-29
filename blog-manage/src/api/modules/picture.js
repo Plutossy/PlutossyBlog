@@ -8,14 +8,6 @@
  */
 import request from '@/utils/request';
 
-export function selectPictureList(data) {
-  return request({
-    url: '/manage/pictureList',
-    method: 'post',
-    data,
-  });
-}
-
 export function selectPictureByQuery(data) {
   return request({
     url: '/manage/selectPictureByQuery',

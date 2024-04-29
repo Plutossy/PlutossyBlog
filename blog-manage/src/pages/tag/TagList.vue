@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-08 19:17:21
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-28 11:55:51
+ * @LastEditTime: 2024-04-28 18:22:17
  * @FilePath: \PlutossyBlog\blog-manage\src\pages\Blog.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -32,7 +32,7 @@
 </template>
 
 <script setup lang="ts">
-import { selectTagList, selectTagByName, deleteTag } from '@/api/modules/tag';
+import { selectTagByQuery, deleteTag } from '@/api/modules/tag';
 import store from '@/store/store';
 import eventBus from '@/assets/js/eventBus';
 const emitter = eventBus();
@@ -47,6 +47,7 @@ let dialogData = ref({}); // 详情弹窗数据
 let queryParam = reactive({
   pageNum: 1,
   pageSize: 10,
+  queryParam: '',
 });
 let newTotal = ref(0); // 总数
 
@@ -84,7 +85,7 @@ onUnmounted(() => {
 
 const getData = async () => {
   try {
-    const { data, code, total } = await selectTagList(queryParam);
+    const { data, code, total } = await selectTagByQuery(queryParam);
     if (code === 200) {
       tagData.splice(0, tagData.length, ...data);
       newTotal.value = total;
@@ -153,33 +154,14 @@ const handleDelete = (id: string | number) => {
 };
 
 const searchResult = async (param: string) => {
-  try {
-    const query = {
-      pageNum: queryParam.pageNum,
-      pageSize: queryParam.pageSize,
-      name: param,
-    };
-    const { data, code, total } = await selectTagByName(query);
-    if (code === 200) {
-      newTotal.value = total;
-      // 因为 reactive 不能直接赋值，所以用 splice
-      tagData.splice(0, tagData.length, ...data);
-    } else {
-      ElNotification({
-        type: 'error',
-        message: '查询失败!',
-        showClose: true,
-        duration: 1000,
-      });
-    }
-  } catch (error) {
-    console.log(error);
-  }
+  queryParam.queryParam = param;
+  getData();
 };
 
 const reset = () => {
   queryParam.pageNum = 1;
   queryParam.pageSize = 10;
+  queryParam.queryParam = '';
   getData();
 };
 

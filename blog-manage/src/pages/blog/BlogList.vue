@@ -115,6 +115,7 @@ let multipleSelection = ref([]); // 用于存放多选框选中的数据
 let queryParam = reactive({
   pageNum: 1,
   pageSize: 10,
+  queryParam: '',
 });
 let tableHeight = ref(568); // 表格高度
 let newTotal = ref(0); // 总数
@@ -146,7 +147,7 @@ onUnmounted(() => {
 
 const getData = async () => {
   try {
-    const { data, code, total } = await proxy.$apis.blog.getBlogList(queryParam);
+    const { data, code, total } = await proxy.$apis.blog.selectBlogByQuery(queryParam);
     if (code === 200) {
       blogData.splice(0, blogData.length, ...data);
       newTotal.value = total;
@@ -235,34 +236,15 @@ const handleDelete = (id: string | number) => {
     });
 };
 
-const searchResult = async (param: string) => {
-  try {
-    const query = {
-      pageNum: queryParam.pageNum,
-      pageSize: queryParam.pageSize,
-      queryParam: param,
-    };
-    const { data, code, total } = await proxy.$apis.blog.selectBlogByQuery(query);
-    if (code === 200) {
-      newTotal.value = total;
-      // 因为 reactive 不能直接赋值，所以用 splice
-      blogData.splice(0, blogData.length, ...data);
-    } else {
-      ElNotification({
-        type: 'error',
-        message: '查询失败!',
-        showClose: true,
-        duration: 1000,
-      });
-    }
-  } catch (error) {
-    console.log(error);
-  }
+const searchResult = (param: string) => {
+  queryParam.queryParam = param;
+  getData();
 };
 
 const reset = () => {
   queryParam.pageNum = 1;
   queryParam.pageSize = 10;
+  queryParam.queryParam = '';
   getData();
 };
 
