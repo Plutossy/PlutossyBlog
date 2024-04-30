@@ -15,6 +15,7 @@ export default {
     footerHeight: 0,
   },
   getters: {
+    contentHeight: (state: any) => state.contentHeight,
     tableHeight: (state: any) => state.tableHeight,
   },
   mutations: {

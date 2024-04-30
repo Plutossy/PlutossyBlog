@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-03-01 10:19:31
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-30 14:30:09
+ * @LastEditTime: 2024-04-30 15:38:27
  * @FilePath: \blog-manage\src\pages\layout\MyBlogDetail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -27,7 +27,7 @@
         <el-input v-model="blogForm.title" maxlength="100" placeholder="请输入文章标题" show-word-limit type="text" clearable />
       </el-form-item>
     </el-form>
-    <v-md-editor v-model="blogForm.content" height="600px" placeholder="请输入文章内容......" :disabled-menus="[]" @upload-image="handleUploadImage" @save="saveForm" />
+    <v-md-editor v-model="blogForm.content" :height="editorHeight" placeholder="请输入文章内容......" :disabled-menus="[]" @upload-image="handleUploadImage" @save="saveForm" />
   </div>
 
   <el-dialog v-model="publishVisible" title="发布文章" width="500">
@@ -145,6 +145,8 @@ let isTypeAdding = ref(false);
 let isTagAdding = ref(false);
 let optionName = ref('');
 
+let editorHeight = ref('485px');
+
 watch(publishVisible, val => {
   if (!val) {
     rulePublishRef.value?.clearValidate();
@@ -156,10 +158,26 @@ watch(publishVisible, val => {
 });
 
 onMounted(() => {
+  setEditorHeight();
+  window.addEventListener('resize', () => {
+    setEditorHeight();
+  });
   getTypeList();
   getTagList();
   getBlogDetail(props.blogDetail.id);
 });
+onUnmounted(() => {
+  window.removeEventListener('resize', () => {});
+});
+
+const setEditorHeight = () => {
+  const contentElement = store.getters['table/contentHeight'] || 762;
+  const headerElement: HTMLElement | null = document.querySelector('.el-page-header');
+  const formElement: HTMLElement | null = document.querySelector('.el-form');
+  const paddingHeight = 20 + 20 + 20 + 18;
+  const height = contentElement - (headerElement?.clientHeight ?? 32) - (formElement?.clientHeight ?? 32) - paddingHeight;
+  editorHeight.value = height + 'px';
+};
 
 const rules = reactive<FormRules<RuleForm>>({
   title: [
@@ -268,7 +286,7 @@ const publishForm1 = async (formEl: FormInstance | undefined) => {
   if (!formEl) return;
   await formEl.validate(async (valid, fields) => {
     if (valid) {
-      publishVisible.value = false;
+      publishVisible.value = true;
     } else {
       console.log('error!', fields);
     }
