@@ -89,6 +89,16 @@ public interface BlogMapper {
         return new PageInfo<>(blogs);
     };
 
+    // 精准查询博客
+    /**
+     * @param title
+     * @param content
+     * @param published
+     * @param userId
+     * @return
+     */
+    public Blog selectBlogByTPC(String title, String content, Integer published, Long userId);
+
     // 更新博客推荐状态
     /**
      * @param id

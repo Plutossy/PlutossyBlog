@@ -35,7 +35,7 @@ public class BlogController {
     // 添加博客
     @RequestMapping(value = "/manage/addBlog", method = RequestMethod.POST)
     public Object insertBlog(@RequestBody Map<String, Object> jsonData) {
-        Long id = (jsonData.get("id") == null || jsonData.get("id") == "") ? -1 : (Long) jsonData.get("id");
+        Long id = (jsonData.get("id") == null || jsonData.get("id") == "") ? -1 : Long.parseLong(jsonData.get("id").toString());
         String title = jsonData.get("title") == null ? "【暂无标题】" : (String) jsonData.get("title");
         String content = jsonData.get("content") == null ? "" : (String) jsonData.get("content");
         String description = jsonData.get("description") == null ? "【暂无描述】" : (String) jsonData.get("description");
@@ -47,8 +47,17 @@ public class BlogController {
         Boolean shared = jsonData.get("shared") == null || (Boolean) jsonData.get("shared"); // 默认开启分享
         Integer views = (jsonData.get("views") == null || jsonData.get("views") == "") ? null : (Integer) jsonData.get("views");
         Long typeId = (jsonData.get("typeId") == null || jsonData.get("typeId") == "") ? null : Long.parseLong(jsonData.get("typeId").toString());
+        // 将 tagIds 强制转化为Long数据
+        String[] tagIdsStrArr = jsonData.get("tagIds").toString().split(",");
+        tagIdsStrArr[0] = tagIdsStrArr[0].substring(1);
+        tagIdsStrArr[tagIdsStrArr.length - 1] = tagIdsStrArr[tagIdsStrArr.length - 1].substring(0, tagIdsStrArr[tagIdsStrArr.length - 1].length() - 1);
+        Long[] tagIdsLonArr = new Long[tagIdsStrArr.length];
+        for (int i = 0; i < tagIdsStrArr.length; i++) {
+            tagIdsLonArr[i] = Long.parseLong(tagIdsStrArr[i].trim());
+        }
+        Long[] tagIds = (jsonData.get("tagIds") == null || jsonData.get("tagIds") == "") ? null : tagIdsLonArr;
         Long userId = (jsonData.get("userId") == null || jsonData.get("userId") == "") ? null : Long.parseLong(jsonData.get("userId").toString());
-        Boolean insertFlag = blogService.insertBlog(id, title, content, description, picture, flag, recommend, published, commentabled, shared, views, typeId, userId);
+        Boolean insertFlag = blogService.insertBlog(id, title, content, description, picture, flag, recommend, published, commentabled, shared, views, typeId, tagIds, userId);
         JSONObject jsonObject = new JSONObject();
         if (title.isEmpty()) {
             jsonObject.put(Consts.CODE, 400);

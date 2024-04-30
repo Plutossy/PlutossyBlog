@@ -168,6 +168,12 @@
         where ((title like CONCAT('%', #{queryParam}, '%')) or (description like CONCAT('%', #{queryParam}, '%'))) and (published != #{notPublished}) order by update_time desc
     </select>
 
+    <select id="selectBlogByTPC" resultMap="com.plutossy.domain.Blog" parameterType="java.util.HashMap">
+        select *
+        from t_blog
+        where title = #{title} and published = #{published} and content = #{content} and user_id = #{userId}
+    </select>
+
     <update id="updateBlogRecommend" parameterType="java.util.HashMap">
         update t_blog
         set recommend = #{recommend}

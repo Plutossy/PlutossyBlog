@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-03-01 10:19:31
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-30 15:38:27
+ * @LastEditTime: 2024-04-30 17:09:30
  * @FilePath: \blog-manage\src\pages\layout\MyBlogDetail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -47,8 +47,8 @@
           </template>
         </el-select>
       </el-form-item>
-      <el-form-item label="文章标签：" prop="tagId">
-        <el-select v-model="blogForm.tagId" filterable clearable multiple collapse-tags collapse-tags-tooltip :max-collapse-tags="3" allow-create :reserve-keyword="false" placeholder="请选择文章标签">
+      <el-form-item label="文章标签：" prop="tagIds">
+        <el-select v-model="blogForm.tagIds" filterable clearable multiple collapse-tags collapse-tags-tooltip :max-collapse-tags="3" allow-create :reserve-keyword="false" placeholder="请选择文章标签">
           <el-option v-for="item in tagOptions" :key="item.id" :label="item.name" :value="item.id" />
           <template #footer>
             <el-button v-if="!isTagAdding" text bg size="small" @click="addOption('tag')"> 新增分类 </el-button>
@@ -107,10 +107,11 @@ const props = defineProps({
 });
 
 interface RuleForm {
+  id: string | number;
   title: string;
   content: string;
   typeId: number | string;
-  tagId: number | string;
+  tagIds: number[] | string[];
   description: string;
   flag: number | string;
   published: number;
@@ -126,10 +127,11 @@ type TypeTagList = TypeTagItem[];
 const ruleFormRef = ref<FormInstance>();
 const rulePublishRef = ref<FormInstance>();
 let blogForm = reactive<RuleForm>({
+  id: '',
   title: '【暂无标题】',
   content: '',
   typeId: '',
-  tagId: '',
+  tagIds: [],
   description: '',
   flag: 0, // 0 原创 1 转载 2 翻译
   published: 1, // 0 暂存 1 发布 2 草稿
@@ -151,7 +153,7 @@ watch(publishVisible, val => {
   if (!val) {
     rulePublishRef.value?.clearValidate();
     blogForm.typeId = '';
-    blogForm.tagId = '';
+    blogForm.tagIds = [];
     blogForm.description = '';
     blogForm.flag = 0;
   }
@@ -185,7 +187,7 @@ const rules = reactive<FormRules<RuleForm>>({
     { max: 100, message: '长度在 100 字以内', trigger: 'change' },
   ],
   typeId: [{ required: true, message: '请选择文章分类', trigger: 'blur' }],
-  tagId: [{ required: true, message: '请选择文章标签', trigger: 'blur' }],
+  tagIds: [{ required: true, message: '请选择文章标签', trigger: 'blur' }],
   description: [{ required: true, message: '文章简介不能为空', trigger: 'blur' }],
   flag: [{ required: true, message: '请选择文章类型', trigger: 'blur' }],
 });

@@ -3,8 +3,6 @@ package com.plutossy.service;
 import com.github.pagehelper.PageInfo;
 import com.plutossy.domain.Blog;
 
-import java.util.List;
-
 // 博客Service接口
 public interface BlogService {
     // 添加博客
@@ -20,10 +18,11 @@ public interface BlogService {
      * @param shared
      * @param views
      * @param typeId
+     * @param tagIds
      * @param userId
      * @return
      */
-    public Boolean insertBlog(Long id, String title,String content,String description,String picture,Integer flag,Boolean recommend,Integer published,Boolean commentabled,Boolean shared,Integer views, Long typeId,Long userId);
+    public Boolean insertBlog(Long id, String title, String content, String description, String picture, Integer flag, Boolean recommend, Integer published, Boolean commentabled, Boolean shared, Integer views, Long typeId, Long[] tagIds, Long userId);
 
     /**
      * @param id

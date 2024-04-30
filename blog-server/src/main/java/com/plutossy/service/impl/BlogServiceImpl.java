@@ -2,12 +2,11 @@ package com.plutossy.service.impl;
 
 import com.github.pagehelper.PageInfo;
 import com.plutossy.dao.BlogMapper;
+import com.plutossy.dao.BlogTagMapper;
 import com.plutossy.domain.Blog;
 import com.plutossy.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Date;
 
 /**
  * 博客service实现类
@@ -16,6 +15,8 @@ import java.util.Date;
 public class BlogServiceImpl implements BlogService {
     @Autowired
     private BlogMapper blogMapper;
+    @Autowired
+    private BlogTagMapper blogTagMapper;
 
     /**
      * @param title
@@ -29,32 +30,64 @@ public class BlogServiceImpl implements BlogService {
      * @param shared
      * @param views
      * @param typeId
+     * @param tagIds
      * @param userId
      * @return
      */
     @Override
-    public Boolean insertBlog(Long id, String title, String content, String description, String picture, Integer flag, Boolean recommend, Integer published, Boolean commentabled, Boolean shared,Integer views, Long typeId, Long userId) {
+    public Boolean insertBlog(Long id, String title, String content, String description, String picture, Integer flag, Boolean recommend, Integer published, Boolean commentabled, Boolean shared, Integer views, Long typeId, Long[] tagIds, Long userId) {
         if (published == 0) {
             PageInfo<Blog> pageData = blogMapper.selectBlogByPublished(1, -1, 0);
             boolean dataFlag = pageData.getList().isEmpty();
             if (dataFlag) {
-                return blogMapper.insertBlog(title, content, description, picture, flag, recommend, published, commentabled, shared, typeId, userId) > 0;
+                blogMapper.insertBlog(title, content, description, picture, flag, recommend, published, commentabled, shared, typeId, userId);
+                return true;
             } else {
                 Long cid = pageData.getList().getFirst().getId();
                 return blogMapper.updateBlog(cid, title, content, description, picture, flag, recommend, published, commentabled, shared, views, typeId, userId) > 0;
             }
         }
+        if (published == 1 && id == -1) {
+            boolean inBFlag = blogMapper.insertBlog(title, content, description, picture, flag, recommend, published, commentabled, shared, typeId, userId) > 0;
+            // 获取这条新增数据的id
+            Blog blog = blogMapper.selectBlogByTPC(title, content, published, userId);
+            Long blogId = blog.getId();
+            // 循环插入博客-标签
+            for (Long tagId : tagIds) {
+                inBFlag = blogTagMapper.insertBlogTag(blogId, tagId)>0;
+            }
+            return inBFlag;
+        }
+        if (published == 1) {
+            boolean upBFlag = blogMapper.updateBlog(id, title, content, description, picture, flag, recommend, published, commentabled, shared, views, typeId, userId) > 0;
+            // 删除博客-标签
+            blogTagMapper.deleteBlogTagByBlogId(id);
+            // 循环插入博客-标签
+            for (Long tagId : tagIds) {
+                upBFlag = blogTagMapper.insertBlogTag(id, tagId) > 0;
+            }
+            return upBFlag;
+        }
         if (published == 2 && id == -1) {
-            return blogMapper.insertBlog(title, content, description, picture, flag, recommend, published, commentabled, shared, typeId, userId) > 0;
+            boolean inBFlag = blogMapper.insertBlog(title, content, description, picture, flag, recommend, published, commentabled, shared, typeId, userId) > 0;
+            // 获取这条新增数据的id
+            Blog blog = blogMapper.selectBlogByTPC(title, content, published, userId);
+            Long blogId = blog.getId();
+            // 循环插入博客-标签
+            for (Long tagId : tagIds) {
+                inBFlag = blogTagMapper.insertBlogTag(blogId, tagId) > 0;
+            }
+            return inBFlag;
         }
         if (published == 2) {
-            return blogMapper.updateBlog(id, title, content, description, picture, flag, recommend, published, commentabled, shared, views, typeId, userId) > 0;
-        }
-        if (published == 3 && id == -1) {
-            return blogMapper.insertBlog(title, content, description, picture, flag, recommend, published, commentabled, shared, typeId, userId) > 0;
-        }
-        if (published == 3) {
-            return blogMapper.updateBlog(id, title, content, description, picture, flag, recommend, published, commentabled, shared, views, typeId, userId) > 0;
+            boolean upBFlag = blogMapper.updateBlog(id, title, content, description, picture, flag, recommend, published, commentabled, shared, views, typeId, userId) > 0;
+            // 删除博客-标签
+            blogTagMapper.deleteBlogTagByBlogId(id);
+            // 循环插入博客-标签
+            for (Long tagId : tagIds) {
+                upBFlag = blogTagMapper.insertBlogTag(id, tagId) > 0;
+            }
+            return upBFlag;
         }
         return false;
     }

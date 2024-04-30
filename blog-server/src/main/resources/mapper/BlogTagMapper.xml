@@ -13,4 +13,64 @@
     <sql id="Base_Columns">
         id, blog_id, tag_id
     </sql>
+
+    <!-- 插入博客标签 -->
+    <insert id="insertBlogTag" parameterType="com.plutossy.domain.BlogTag">
+        insert into t_blog_tag
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="blogId != null">
+                blog_id,
+            </if>
+            <if test="tagId != null">
+                tag_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="blogId != null">
+                #{blogId},
+            </if>
+            <if test="tagId != null">
+                #{tagId},
+            </if>
+        </trim>
+    </insert>
+
+    <!-- 根据博客id删除博客标签 -->
+    <delete id="deleteBlogTagByBlogId" parameterType="java.lang.Long">
+        delete from t_blog_tag
+        where blog_id = #{blogId}
+    </delete>
+
+    <!-- 根据标签id删除博客标签 -->
+    <delete id="deleteBlogTagByTagId" parameterType="java.lang.Long">
+        delete from t_blog_tag
+        where tag_id = #{tagId}
+    </delete>
+
+    <!-- 根据博客id和标签id更新博客标签 -->
+    <update id="updateByBlogIdAndTagId" parameterType="com.plutossy.domain.BlogTag">
+        update t_blog_tag
+        <set>
+            <if test="blogId != null">
+                blog_id = #{blogId},
+            </if>
+            <if test="tagId != null">
+                tag_id = #{tagId},
+            </if>
+        </set>
+    </update>
+
+    <!-- 根据博客id查询博客标签 -->
+    <select id="selectBlogTagByBlogId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select *
+        from t_blog_tag
+        where blog_id = #{blogId}
+    </select>
+
+    <!-- 根据标签id查询博客标签 -->
+    <select id="selectBlogTagByTagId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select *
+        from t_blog_tag
+        where tag_id = #{tagId}
+    </select>
 </mapper>
