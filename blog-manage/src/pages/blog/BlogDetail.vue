@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-03-01 10:19:31
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-30 09:03:43
+ * @LastEditTime: 2024-04-30 11:48:25
  * @FilePath: \blog-manage\src\pages\layout\MyBlogDetail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -133,7 +133,7 @@ let blogForm = reactive<RuleForm>({
   description: '',
   flag: 0, // 0 原创 1 转载 2 翻译
   published: 1, // 0 暂存 1 发布 2 草稿
-  userId: stroe.getters['user/getUserInfo'].id,
+  userId: '',
 });
 
 let typeOptions: TypeTagList = reactive([]); // 文章分类
@@ -176,15 +176,13 @@ const getBlogDetail = async (id?: string | number) => {
   try {
     // 博客 - 编辑 // 博客 - 暂存
     const { code, data } = id ? await proxy.$apis.blog.selectBlogById(id) : await proxy.$apis.blog.selectBlogByPublished({ published: 0 });
-    if (code === 200 && data.length > 0) {
-      blogForm.title = data[0].title;
-      blogForm.content = data[0].content;
-      // initData(blogForm, data[0]);
-      // for (const key in data[0]) {
-      //   if (Object.hasOwnProperty.call(blogForm, key)) {
-      //     blogForm[key] = data[0][key];
-      //   }
-      // }
+    if (code === 200 && data) {
+      // initData(blogForm, data);
+      for (const key in data) {
+        if (Object.hasOwnProperty.call(blogForm, key)) {
+          (blogForm as any)[key] = data[key];
+        }
+      }
     }
   } catch (error) {
     console.log(error);
@@ -194,6 +192,7 @@ const getBlogDetail = async (id?: string | number) => {
 // 返回
 const goBack = () => {
   props.forward('BlogList');
+  // 清空表单
   clearForm(blogForm);
 };
 
