@@ -22,7 +22,7 @@ public interface BlogService {
      * @param userId
      * @return
      */
-    public Boolean insertBlog(String title,String content,String description,String picture,Integer flag,Boolean recommend,Integer published,Boolean commentabled,Boolean shared,Long typeId,Long userId);
+    public Boolean insertBlog(Long id, String title,String content,String description,String picture,Integer flag,Boolean recommend,Integer published,Boolean commentabled,Boolean shared,Long typeId,Long userId);
 
     /**
      * @param id

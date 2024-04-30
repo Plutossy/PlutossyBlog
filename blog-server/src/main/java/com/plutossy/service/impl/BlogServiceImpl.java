@@ -32,8 +32,31 @@ public class BlogServiceImpl implements BlogService {
      * @return
      */
     @Override
-    public Boolean insertBlog(String title, String content, String description, String picture, Integer flag, Boolean recommend, Integer published, Boolean commentabled, Boolean shared, Long typeId, Long userId) {
-        return blogMapper.insertBlog(title, content, description, picture, flag, recommend, published, commentabled, shared, typeId, userId) > 0;
+    public Boolean insertBlog(Long id, String title, String content, String description, String picture, Integer flag, Boolean recommend, Integer published, Boolean commentabled, Boolean shared, Long typeId, Long userId) {
+        if (published == 0) {
+            PageInfo<Blog> pageData = blogMapper.selectBlogByPublished(1, -1, 0);
+            boolean dataFlag = pageData.getList().isEmpty();
+            if (dataFlag) {
+                return blogMapper.insertBlog(title, content, description, picture, flag, recommend, published, commentabled, shared, typeId, userId) > 0;
+            } else {
+                Long cid = pageData.getList().getFirst().getId();
+                Date updateTime = new Date();
+                return blogMapper.updateBlog(cid, title, content, description, picture, flag, recommend, published, commentabled, shared, updateTime, typeId, userId) > 0;
+            }
+        }
+        if (published == 2 && id == -1) {
+            return blogMapper.insertBlog(title, content, description, picture, flag, recommend, published, commentabled, shared, typeId, userId) > 0;
+        }
+        if (published == 2) {
+            return blogMapper.updateBlog(id, title, content, description, picture, flag, recommend, published, commentabled, shared, new Date(), typeId, userId) > 0;
+        }
+        if (published == 3 && id == -1) {
+            return blogMapper.insertBlog(title, content, description, picture, flag, recommend, published, commentabled, shared, typeId, userId) > 0;
+        }
+        if (published == 3) {
+            return blogMapper.updateBlog(id, title, content, description, picture, flag, recommend, published, commentabled, shared, new Date(), typeId, userId) > 0;
+        }
+        return false;
     }
 
     /**

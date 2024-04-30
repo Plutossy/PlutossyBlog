@@ -35,19 +35,20 @@ public class BlogController {
     // 添加博客
     @RequestMapping(value = "/manage/addBlog", method = RequestMethod.POST)
     public Object insertBlog(@RequestBody Map<String, Object> jsonData) {
-        String title = jsonData.get("title") == null ? "" : (String) jsonData.get("title");
+        Long id = (jsonData.get("id") == null || jsonData.get("id") == "") ? -1 : (Long) jsonData.get("id");
+        String title = jsonData.get("title") == null ? "【暂无标题】" : (String) jsonData.get("title");
         String content = jsonData.get("content") == null ? "" : (String) jsonData.get("content");
-        String description = jsonData.get("description") == null ? "暂无描述" : (String) jsonData.get("description");
+        String description = jsonData.get("description") == null ? "【暂无描述】" : (String) jsonData.get("description");
         String picture = jsonData.get("picture") == null ? "" : (String) jsonData.get("picture");
-        Integer flag = jsonData.get("flag") == null ? 0 : (Integer) jsonData.get("flag");
-        Boolean recommend = jsonData.get("recommend") != null && (Boolean) jsonData.get("recommend");
-        Integer published = jsonData.get("published") == null ? 1 : (Integer) jsonData.get("published");
-        Boolean commentabled = jsonData.get("commentabled") == null || (Boolean) jsonData.get("commentabled");
-        Boolean shared = jsonData.get("shared") == null || (Boolean) jsonData.get("shared");
+        Integer flag = jsonData.get("flag") == null ? 0 : (Integer) jsonData.get("flag"); // 默认原创
+        Boolean recommend = jsonData.get("recommend") != null && (Boolean) jsonData.get("recommend"); // 默认不推荐
+        Integer published = jsonData.get("published") == null ? 1 : (Integer) jsonData.get("published"); // 默认发布
+        Boolean commentabled = jsonData.get("commentabled") == null || (Boolean) jsonData.get("commentabled"); // 默认开启评论
+        Boolean shared = jsonData.get("shared") == null || (Boolean) jsonData.get("shared"); // 默认开启分享
         // Integer views = jsonData.get("views") == null ? 0 : (Integer) jsonData.get("views");
-        Long typeId = jsonData.get("typeId") == null ? -1 : (Long) jsonData.get("typeId");
-        Long userId = jsonData.get("userId") == null ? -1 : (Long) jsonData.get("userId");
-        Boolean insertFlag = blogService.insertBlog(title, content, description, picture, flag, recommend, published, commentabled, shared, typeId, userId);
+        Long typeId = jsonData.get("typeId") == null ? -1 : Long.parseLong(jsonData.get("typeId").toString());
+        Long userId = jsonData.get("userId") == null ? -1 : Long.parseLong(jsonData.get("userId").toString());
+        Boolean insertFlag = blogService.insertBlog(id, title, content, description, picture, flag, recommend, published, commentabled, shared, typeId, userId);
         JSONObject jsonObject = new JSONObject();
         if (title.isEmpty()) {
             jsonObject.put(Consts.CODE, 400);
@@ -59,10 +60,10 @@ public class BlogController {
         }
         if (insertFlag) {
             jsonObject.put(Consts.CODE, 200);
-            jsonObject.put(Consts.MSG, "添加成功！");
+            jsonObject.put(Consts.MSG, "成功！");
         } else {
             jsonObject.put(Consts.CODE, 500);
-            jsonObject.put(Consts.MSG, "添加失败！");
+            jsonObject.put(Consts.MSG, "失败！");
         }
         return jsonObject;
     }
