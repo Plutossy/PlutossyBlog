@@ -277,7 +277,6 @@ const updateShared = async (id: string | number, shared: boolean) => {
 
 // 编辑
 const handleEdit = (row: any) => {
-  console.log('handleEdit--', row);
   props.forward('BlogDetail', row);
 };
 

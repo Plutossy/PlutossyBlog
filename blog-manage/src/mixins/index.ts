@@ -1,14 +1,16 @@
-import { ElMessage } from 'element-plus';
-import type { UploadProps } from 'element-plus';
-
 /*
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-22 14:59:59
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-18 10:22:37
+ * @LastEditTime: 2024-04-30 09:11:54
  * @FilePath: \blog-manage\src\mixins\index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
+import { deepClone } from '@/plugins/modules/common';
+
+import { ElMessage } from 'element-plus';
+import type { UploadProps } from 'element-plus';
+
 export const handleSex = (val: number) => {
   return val === 1 ? '男' : val === 0 ? '女' : '未知';
 };
@@ -71,4 +73,16 @@ export const clearEmptyProperty = (obj: FormType) => {
   }
 
   return params;
+};
+
+// 初始化数据
+export const initData = (obj: FormType, dataObj: FormType) => {
+  if (!dataObj) return obj;
+  let initData = deepClone(obj);
+  for (const key in initData) {
+    if (Object.hasOwnProperty.call(dataObj, key)) {
+      initData[key] = dataObj[key];
+    }
+  }
+  return initData;
 };

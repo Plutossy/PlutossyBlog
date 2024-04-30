@@ -1,5 +1,5 @@
 <template>
-  <my-blog-list type="collect" back-history="/user" :id="id.toString()" />
+  <my-blog-list type="collect" back-history="/user" :id="id ? id.toString() : ''" />
 </template>
 
 <script setup lang="ts">

@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-03-01 10:19:31
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-29 15:17:27
+ * @LastEditTime: 2024-04-30 09:03:43
  * @FilePath: \blog-manage\src\pages\layout\MyBlogDetail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -17,8 +17,8 @@
       </template>
       <template #extra>
         <div class="flex items-center">
-          <el-button type="primary" @click="saveForm">暂存</el-button>
-          <el-button type="warning" @click="publishForm(ruleFormRef)">发布文章</el-button>
+          <el-button v-if="!props.blogDetail.id" type="primary" @click="saveForm">暂存</el-button>
+          <el-button type="warning" @click="publishForm1(ruleFormRef)">发布文章</el-button>
         </div>
       </template>
     </el-page-header>
@@ -65,11 +65,11 @@
       <el-form-item label="文章简介：" prop="description">
         <el-input v-model="blogForm.description" maxlength="256" placeholder="请输入文章简介......" show-word-limit type="textarea" :rows="4" />
       </el-form-item>
-      <el-form-item label="文章类型：" prop="status">
-        <el-radio-group v-model="blogForm.status">
+      <el-form-item label="文章类型：" prop="flag">
+        <el-radio-group v-model="blogForm.flag">
           <el-radio :value="0" class="original">
             原创
-            <el-icon v-if="blogForm.status === 0" color="green"><SuccessFilled /></el-icon>
+            <el-icon v-if="blogForm.flag === 0" color="green"><SuccessFilled /></el-icon>
           </el-radio>
           <el-radio :value="1">转载</el-radio>
           <el-radio :value="2">翻译</el-radio>
@@ -79,8 +79,8 @@
     <template #footer>
       <div class="dialog-footer">
         <el-button @click="publishVisible = false">取消</el-button>
-        <el-button @click="saveForm(true)">保存为草稿</el-button>
-        <el-button type="primary" @click="publishForm(rulePublishRef, true)">发布文章</el-button>
+        <el-button @click="publishForm2(rulePublishRef, 2)">保存为草稿</el-button>
+        <el-button type="primary" @click="publishForm2(rulePublishRef, 1)">发布文章</el-button>
       </div>
     </template>
   </el-dialog>
@@ -92,7 +92,6 @@ import type { FormInstance, FormRules } from 'element-plus';
 import type { ComponentInternalInstance } from 'vue';
 import { clearForm } from '@/mixins';
 import stroe from '@/store/store';
-import { keysOf } from 'element-plus/es/utils/objects.mjs';
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance | any;
 
@@ -113,7 +112,9 @@ interface RuleForm {
   typeId: number | string;
   tagId: number | string;
   description: string;
-  status: number | string;
+  flag: number | string;
+  published: number;
+  userId: number | string;
 }
 
 type TypeTagItem = {
@@ -130,7 +131,9 @@ let blogForm = reactive<RuleForm>({
   typeId: '',
   tagId: '',
   description: '',
-  status: 0, // 0 原创 1 转载 2 翻译
+  flag: 0, // 0 原创 1 转载 2 翻译
+  published: 1, // 0 暂存 1 发布 2 草稿
+  userId: stroe.getters['user/getUserInfo'].id,
 });
 
 let typeOptions: TypeTagList = reactive([]); // 文章分类
@@ -148,7 +151,7 @@ watch(publishVisible, val => {
     blogForm.typeId = '';
     blogForm.tagId = '';
     blogForm.description = '';
-    blogForm.status = 0;
+    blogForm.flag = 0;
   }
 });
 
@@ -166,19 +169,22 @@ const rules = reactive<FormRules<RuleForm>>({
   typeId: [{ required: true, message: '请选择文章分类', trigger: 'blur' }],
   tagId: [{ required: true, message: '请选择文章标签', trigger: 'blur' }],
   description: [{ required: true, message: '文章简介不能为空', trigger: 'blur' }],
-  status: [{ required: true, message: '请选择文章类型', trigger: 'blur' }],
+  flag: [{ required: true, message: '请选择文章类型', trigger: 'blur' }],
 });
 
 const getBlogDetail = async (id?: string | number) => {
   try {
     // 博客 - 编辑 // 博客 - 暂存
     const { code, data } = id ? await proxy.$apis.blog.selectBlogById(id) : await proxy.$apis.blog.selectBlogByPublished({ published: 0 });
-    if (code === 200) {
-      keysOf(blogForm).forEach(key => {
-        if (key in data) {
-          blogForm[key] = data[key];
-        }
-      });
+    if (code === 200 && data.length > 0) {
+      blogForm.title = data[0].title;
+      blogForm.content = data[0].content;
+      // initData(blogForm, data[0]);
+      // for (const key in data[0]) {
+      //   if (Object.hasOwnProperty.call(blogForm, key)) {
+      //     blogForm[key] = data[0][key];
+      //   }
+      // }
     }
   } catch (error) {
     console.log(error);
@@ -228,33 +234,63 @@ const clearAddOption = (val: string) => {
   }
 };
 
-// 暂存 / 保存草稿
-const saveForm = (val?: boolean) => {
-  console.log(blogForm.content);
-  console.log(typeof blogForm.content);
+// 暂存
+const saveForm = async () => {
+  blogForm.published = 0;
+  blogForm.userId = stroe.getters['user/getUserInfo'].id;
   if (!blogForm.content) return ElNotification.warning('博客内容不能为空');
-  if (val) {
-    ElNotification.success('保存成功！');
-    publishVisible.value = false;
-    goBack();
-  } else {
-    ElNotification.success('暂存成功！');
+  try {
+    const { code } = await proxy.$apis.blog.addBlog(blogForm);
+    if (code === 200) {
+      ElNotification({
+        message: '博客已暂存成功！',
+        type: 'success',
+        showClose: true,
+        duration: 1000,
+      });
+      goBack();
+    }
+  } catch (error) {
+    console.log(error);
   }
 };
 
-// 发布
-const publishForm = async (formEl: FormInstance | undefined, val?: boolean) => {
+// 打开发布弹窗
+const publishForm1 = async (formEl: FormInstance | undefined) => {
   if (!formEl) return;
-  await formEl.validate((valid, fields) => {
+  await formEl.validate(async (valid, fields) => {
     if (valid) {
-      console.log('publish!');
-      if (val) {
-        if (!blogForm.content) return ElNotification.warning('博客内容不能为空！');
-        ElNotification.success('发布成功！');
-        publishVisible.value = false;
-        goBack();
-      } else {
-        publishVisible.value = true;
+      publishVisible.value = false;
+    } else {
+      console.log('error!', fields);
+    }
+  });
+};
+
+// 发布
+const publishForm2 = async (formEl: FormInstance | undefined, published: number) => {
+  if (!formEl) return;
+  await formEl.validate(async (valid, fields) => {
+    if (valid) {
+      blogForm.published = published;
+      blogForm.userId = stroe.getters['user/getUserInfo'].id;
+      if (!blogForm.content) return ElNotification.warning('博客内容不能为空！');
+      try {
+        const { code } = await proxy.$apis.blog.addBlog(blogForm);
+        if (code === 200) {
+          ElNotification({
+            message: '博客已发布成功！',
+            type: 'success',
+            showClose: true,
+            duration: 1000,
+          });
+          publishVisible.value = false;
+          goBack();
+        } else {
+          ElNotification.error('发布失败！');
+        }
+      } catch (error) {
+        console.log(error);
       }
     } else {
       console.log('error!', fields);
