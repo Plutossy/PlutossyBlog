@@ -55,9 +55,6 @@
             <if test="shared != null">
                 shared,
             </if>
-            <if test="views != null">
-                views,
-            </if>
                 create_time, update_time,
             <if test="typeId != null">
                 type_id,
@@ -93,9 +90,6 @@
             </if>
             <if test="shared != null">
                 #{shared},
-            </if>
-            <if test="views != null">
-                #{views},
             </if>
             now(),now(),
             <if test="typeId != null">
@@ -145,9 +139,7 @@
             <if test="views != null">
                 views = #{views},
             </if>
-            <if test="update_time != null">
-                update_time = #{updateTime},
-            </if>
+                update_time = now(),
             <if test="typeId != null">
                 type_id = #{typeId},
             </if>
@@ -173,7 +165,7 @@
     <select id="selectBlogByQuery" resultMap="BaseResultMap" parameterType="java.util.HashMap">
         select *
         from t_blog
-        where (title like CONCAT('%', #{queryParam}, '%')) or (description like CONCAT('%', #{queryParam}, '%')) and (published != #{notPublished}) order by update_time desc
+        where ((title like CONCAT('%', #{queryParam}, '%')) or (description like CONCAT('%', #{queryParam}, '%'))) and (published != #{notPublished}) order by update_time desc
     </select>
 
     <update id="updateBlogRecommend" parameterType="java.util.HashMap">

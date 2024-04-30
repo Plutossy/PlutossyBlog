@@ -37,7 +37,6 @@ const forward = (com: string, data?: DetailDataType) => {
     }
     // blogDetailData = {};
   }
-  console.log(blogDetailData);
 };
 </script>
 

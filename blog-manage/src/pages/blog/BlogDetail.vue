@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-03-01 10:19:31
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-30 11:49:39
+ * @LastEditTime: 2024-04-30 14:30:09
  * @FilePath: \blog-manage\src\pages\layout\MyBlogDetail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -90,8 +90,8 @@
 import { ArrowLeft } from '@element-plus/icons-vue';
 import type { FormInstance, FormRules } from 'element-plus';
 import type { ComponentInternalInstance } from 'vue';
-import { clearForm } from '@/mixins';
-import stroe from '@/store/store';
+import { clearForm, clearEmptyProperty } from '@/mixins';
+import store from '@/store/store';
 
 const { proxy } = getCurrentInstance() as ComponentInternalInstance | any;
 
@@ -133,7 +133,7 @@ let blogForm = reactive<RuleForm>({
   description: '',
   flag: 0, // 0 原创 1 转载 2 翻译
   published: 1, // 0 暂存 1 发布 2 草稿
-  userId: '',
+  userId: store.getters['user/userInfo'].id,
 });
 
 let typeOptions: TypeTagList = reactive([]); // 文章分类
@@ -176,11 +176,19 @@ const getBlogDetail = async (id?: string | number) => {
   try {
     // 博客 - 编辑 // 博客 - 暂存
     const { code, data } = id ? await proxy.$apis.blog.selectBlogById(id) : await proxy.$apis.blog.selectBlogByPublished({ published: 0 });
-    if (code === 200 && data) {
+    if (id && code === 200 && data) {
       // initData(blogForm, data);
       for (const key in data) {
         if (Object.hasOwnProperty.call(blogForm, key)) {
           (blogForm as any)[key] = data[key];
+        }
+      }
+    }
+    if (!id && code === 200 && data[0]) {
+      // initData(blogForm, data);
+      for (const key in data[0]) {
+        if (Object.hasOwnProperty.call(blogForm, key)) {
+          (blogForm as any)[key] = data[0][key];
         }
       }
     }
@@ -236,10 +244,11 @@ const clearAddOption = (val: string) => {
 // 暂存
 const saveForm = async () => {
   blogForm.published = 0;
-  blogForm.userId = stroe.getters['user/getUserInfo'].id;
+  blogForm.userId = store.getters['user/userInfo'].id;
+  console.log(clearEmptyProperty(blogForm));
   if (!blogForm.content) return ElNotification.warning('博客内容不能为空');
   try {
-    const { code } = await proxy.$apis.blog.addBlog(blogForm);
+    const { code } = await proxy.$apis.blog.addBlog(clearEmptyProperty(blogForm));
     if (code === 200) {
       ElNotification({
         message: '博客已暂存成功！',
@@ -272,7 +281,7 @@ const publishForm2 = async (formEl: FormInstance | undefined, published: number)
   await formEl.validate(async (valid, fields) => {
     if (valid) {
       blogForm.published = published;
-      blogForm.userId = blogForm.userId || stroe.getters['user/getUserInfo'].id;
+      blogForm.userId = blogForm.userId || store.getters['user/userInfo'].id;
       if (!blogForm.content) return ElNotification.warning('博客内容不能为空！');
       try {
         const { code } = await proxy.$apis.blog.addBlog(blogForm);

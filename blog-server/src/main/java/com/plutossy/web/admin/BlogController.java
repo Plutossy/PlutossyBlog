@@ -45,10 +45,10 @@ public class BlogController {
         Integer published = jsonData.get("published") == null ? 1 : (Integer) jsonData.get("published"); // 默认发布
         Boolean commentabled = jsonData.get("commentabled") == null || (Boolean) jsonData.get("commentabled"); // 默认开启评论
         Boolean shared = jsonData.get("shared") == null || (Boolean) jsonData.get("shared"); // 默认开启分享
-        // Integer views = jsonData.get("views") == null ? 0 : (Integer) jsonData.get("views");
-        Long typeId = jsonData.get("typeId") == null ? -1 : Long.parseLong(jsonData.get("typeId").toString());
-        Long userId = jsonData.get("userId") == null ? -1 : Long.parseLong(jsonData.get("userId").toString());
-        Boolean insertFlag = blogService.insertBlog(id, title, content, description, picture, flag, recommend, published, commentabled, shared, typeId, userId);
+        Integer views = (jsonData.get("views") == null || jsonData.get("views") == "") ? null : (Integer) jsonData.get("views");
+        Long typeId = (jsonData.get("typeId") == null || jsonData.get("typeId") == "") ? null : Long.parseLong(jsonData.get("typeId").toString());
+        Long userId = (jsonData.get("userId") == null || jsonData.get("userId") == "") ? null : Long.parseLong(jsonData.get("userId").toString());
+        Boolean insertFlag = blogService.insertBlog(id, title, content, description, picture, flag, recommend, published, commentabled, shared, views, typeId, userId);
         JSONObject jsonObject = new JSONObject();
         if (title.isEmpty()) {
             jsonObject.put(Consts.CODE, 400);
@@ -114,9 +114,10 @@ public class BlogController {
         Integer published = jsonData.get("published") == null ? 1 : (Integer) jsonData.get("published");
         Boolean commentabled = jsonData.get("commentabled") == null || (Boolean) jsonData.get("commentabled");
         Boolean shared = jsonData.get("shared") == null || (Boolean) jsonData.get("shared");
+        Integer views = (jsonData.get("views") == null || jsonData.get("views") == "") ? null : (Integer) jsonData.get("views");
         Long typeId = jsonData.get("typeId") == null ? -1 : (Long) jsonData.get("typeId");
         Long userId = jsonData.get("userId") == null ? -1 : (Long) jsonData.get("userId");
-        Boolean updateFlag = blogService.updateBlog(id, title, content, description, picture, flag, recommend, published, commentabled, shared, typeId, userId);
+        Boolean updateFlag = blogService.updateBlog(id, title, content, description, picture, flag, recommend, published, commentabled, shared, views, typeId, userId);
         JSONObject jsonObject = new JSONObject();
         if (title.isEmpty()) {
             jsonObject.put(Consts.CODE, 400);

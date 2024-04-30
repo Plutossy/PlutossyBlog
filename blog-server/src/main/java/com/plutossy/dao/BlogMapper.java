@@ -49,12 +49,12 @@ public interface BlogMapper {
      * @param published
      * @param commentabled
      * @param shared
-     * @param updateTime
+     * @param views
      * @param typeId
      * @param userId
      * @return
      */
-    public int updateBlog(Long id, String title, String content, String description, String picture, Integer flag, Boolean recommend, Integer published, Boolean commentabled, Boolean shared, Date updateTime, Long typeId, Long userId);
+    public int updateBlog(Long id, String title, String content, String description, String picture, Integer flag, Boolean recommend, Integer published, Boolean commentabled, Boolean shared, Integer views, Long typeId, Long userId);
 
     // 根据主键id查询博客信息
     /**
@@ -81,7 +81,7 @@ public interface BlogMapper {
      * @param queryParam
      * @return
      */
-    @Select("select * from t_blog where (title like CONCAT('%', #{queryParam}, '%')) or (description like CONCAT('%', #{queryParam}, '%')) and (published != #{notPublished}) order by update_time desc")
+    @Select("select * from t_blog where ((title like CONCAT('%', #{queryParam}, '%')) or (description like CONCAT('%', #{queryParam}, '%'))) and (published != #{notPublished}) order by update_time desc")
     public List<Blog> selectBlogByQueryByCondition(String queryParam, Integer notPublished);
     default PageInfo<Blog> selectBlogByQuery(@Param("pageNum") Integer pageNum, @Param("pageSize") Integer pageSize, String queryParam, @Param("notPublished") Integer notPublished) {
         PageHelper.startPage(pageNum, pageSize);

@@ -18,11 +18,12 @@ public interface BlogService {
      * @param published
      * @param commentabled
      * @param shared
+     * @param views
      * @param typeId
      * @param userId
      * @return
      */
-    public Boolean insertBlog(Long id, String title,String content,String description,String picture,Integer flag,Boolean recommend,Integer published,Boolean commentabled,Boolean shared,Long typeId,Long userId);
+    public Boolean insertBlog(Long id, String title,String content,String description,String picture,Integer flag,Boolean recommend,Integer published,Boolean commentabled,Boolean shared,Integer views, Long typeId,Long userId);
 
     /**
      * @param id
@@ -41,11 +42,12 @@ public interface BlogService {
      * @param published
      * @param commentabled
      * @param shared
+     * @param views
      * @param typeId
      * @param userId
      * @return
      */
-    public Boolean updateBlog(Long id, String title,String content,String description,String picture,Integer flag,Boolean recommend,Integer published,Boolean commentabled,Boolean shared,Long typeId,Long userId);
+    public Boolean updateBlog(Long id, String title,String content,String description,String picture,Integer flag,Boolean recommend,Integer published,Boolean commentabled,Boolean shared, Integer views, Long typeId,Long userId);
 
     /**
      * @param id
