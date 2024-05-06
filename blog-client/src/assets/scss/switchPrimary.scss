@@ -1,0 +1,49 @@
+$themes: (
+  light: (
+    bgColor: #fff,
+    textColor: #464646,
+    borderColor: #464646,
+  ),
+  dark: (
+    bgColor: #464646,
+    textColor: #fff,
+    borderColor: #fff,
+  ),
+);
+
+$curTheme: 'light';
+
+@mixin useTheme() {
+  @each $key, $value in $themes {
+    $curTheme: $key !global;
+    html[data-theme="#{$key}"] & {
+      @content;
+    }
+  }
+};
+
+@function getVar($paramName) {
+  $themeMap: map-get($themes, $curTheme);
+  @return map-get($themeMap, $paramName);
+};
+
+.switch-item {
+  @include useTheme{
+    background-color: getVar('bgColor') !important;
+    color: getVar('textColor') !important;
+    border-color: getVar('borderColor') !important;
+  };
+}
+
+.switch-item-color-borderColor {
+  @include useTheme{
+    color: getVar('textColor') !important;
+    border-color: getVar('borderColor') !important;
+  };
+}
+
+.switch-item-color {
+  @include useTheme{
+    color: getVar('textColor') !important;
+  };
+}

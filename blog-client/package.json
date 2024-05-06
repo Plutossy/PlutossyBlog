@@ -6,6 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "build:dev": "vite build --mode development",
+    "build:prod": "vite build --mode production",
     "preview": "vite preview"
   },
   "dependencies": {
@@ -14,6 +16,7 @@
     "animate.css": "^4.1.1",
     "axios": "^1.6.2",
     "element-plus": "^2.4.2",
+    "js-cookie": "^3.0.5",
     "lightgallery": "^2.7.2",
     "qrcode-vue3": "^1.6.8",
     "swiper": "^10.3.1",

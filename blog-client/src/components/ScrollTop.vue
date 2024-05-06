@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2023-11-27 16:59:47
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-01-12 15:16:45
+ * @LastEditTime: 2024-05-06 16:34:08
  * @FilePath: \blog-client\src\components\ScrollTop.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -10,15 +10,14 @@
   <el-backtop v-if="showBackTop" :right="80" :bottom="80" :visibility-height="500" />
 </template>
 
-
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters } from 'vuex';
 export default {
   name: 'scroll-top',
   computed: {
-    ...mapGetters('m_back', ['showBackTop'])
-  }
-}
+    ...mapGetters('m_back', ['showBackTop']),
+  },
+};
 </script>
 
 <style lang="scss" scoped>
