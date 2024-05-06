@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-03-01 10:19:31
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-30 17:09:30
+ * @LastEditTime: 2024-05-06 09:25:11
  * @FilePath: \blog-manage\src\pages\layout\MyBlogDetail.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -205,7 +205,7 @@ const getBlogDetail = async (id?: string | number) => {
       }
     }
     if (!id && code === 200 && data[0]) {
-      // initData(blogForm, data);
+      // initData(blogForm, data[0]);
       for (const key in data[0]) {
         if (Object.hasOwnProperty.call(blogForm, key)) {
           (blogForm as any)[key] = data[0][key];
