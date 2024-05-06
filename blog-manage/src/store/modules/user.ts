@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-04-10 11:37:12
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-28 16:15:59
+ * @LastEditTime: 2024-05-06 10:36:09
  * @FilePath: \blog-manage\src\store\modules\user.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -16,13 +16,13 @@ export default {
   getters: {
     token: (state: { token: string }) => {
       if (!state.token) {
-        state.token = getCookiesToken() || JSON.parse(localStorage.getItem('token') || '');
+        state.token = getCookiesToken() || JSON.parse(localStorage.getItem('token') || '"Bearer "');
       }
       return state.token;
     },
     userInfo: (state: { userInfo: any }) => {
       if (!state.userInfo.id) {
-        state.userInfo = JSON.parse(sessionStorage.getItem('userInfo') || '');
+        state.userInfo = JSON.parse(sessionStorage.getItem('userInfo') || '{}');
       }
       return state.userInfo;
     },
