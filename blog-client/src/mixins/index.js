@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2023-12-27 16:51:21
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-05-06 16:52:30
+ * @LastEditTime: 2024-05-06 17:09:24
  * @FilePath: \blog-client\src\mixins\index.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -110,51 +110,51 @@ export const mixin = {
         obj.scrollTop += step;
       }, 15);
     },
-  },
-};
 
-// 清空表单
-export const clearForm = form => {
-  for (const key in form) {
-    form[key] = '';
-  }
-};
+    // 清空表单
+    clearForm(form) {
+      for (const key in form) {
+        form[key] = '';
+      }
+    },
 
-// 清空属性值为空的属性
-export const clearEmptyProperty = obj => {
-  const params = JSON.parse(JSON.stringify(obj));
+    // 清空属性值为空的属性
+    clearEmptyProperty(obj) {
+      const params = JSON.parse(JSON.stringify(obj));
 
-  for (const key in params) {
-    if (Object.hasOwnProperty.call(params, key)) {
-      const element = params[key];
-      const eleType = typeof element;
-      let isDel = false;
+      for (const key in params) {
+        if (Object.hasOwnProperty.call(params, key)) {
+          const element = params[key];
+          const eleType = typeof element;
+          let isDel = false;
 
-      if (eleType === 'string') {
-        element === '' && (isDel = true);
-      } else if (eleType === 'object') {
-        if (element === null) {
-          isDel = true;
-        } else if (Array.isArray(element)) {
-          element.length === 0 && (isDel = true);
+          if (eleType === 'string') {
+            element === '' && (isDel = true);
+          } else if (eleType === 'object') {
+            if (element === null) {
+              isDel = true;
+            } else if (Array.isArray(element)) {
+              element.length === 0 && (isDel = true);
+            }
+          }
+
+          isDel && delete params[key];
         }
       }
 
-      isDel && delete params[key];
-    }
-  }
+      return params;
+    },
 
-  return params;
-};
-
-// 初始化数据
-export const initData = (obj, dataObj) => {
-  if (!dataObj) return obj;
-  let initData = deepClone(obj);
-  for (const key in initData) {
-    if (Object.hasOwnProperty.call(dataObj, key)) {
-      initData[key] = dataObj[key];
-    }
-  }
-  return initData;
+    // 初始化数据
+    initData(obj, dataObj) {
+      if (!dataObj) return obj;
+      let initData = deepClone(obj);
+      for (const key in initData) {
+        if (Object.hasOwnProperty.call(dataObj, key)) {
+          initData[key] = dataObj[key];
+        }
+      }
+      return initData;
+    },
+  },
 };

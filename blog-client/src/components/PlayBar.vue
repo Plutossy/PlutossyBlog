@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2023-12-05 14:58:01
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-01-09 16:48:22
+ * @LastEditTime: 2024-05-06 17:11:52
  * @FilePath: \blog-client\src\components\PlayBar.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -21,8 +21,7 @@
     </el-tooltip>
 
     <!-- 隐藏的音乐插件 -->
-    <audio ref="player" :src="songUrl" controls="controls" preload="auto" @canplay="startPlay" @ended="ended"
-      @timeupdate="timeupdate" @error="errorHandler" style="display: none;"></audio>
+    <audio ref="player" :src="songUrl" controls="controls" preload="auto" @canplay="startPlay" @ended="ended" @timeupdate="timeupdate" @error="errorHandler" style="display: none"></audio>
 
     <!-- 音乐控件 -->
     <el-row class="song-control">
@@ -130,8 +129,7 @@
           <el-row v-if="playSongList.length" class="play-list" align="middle" v-for="site in playSongList" :key="site.id">
             <el-col :span="2" class="song-img">
               &nbsp;
-              <img v-show="(site.id === songContent.id && playStatus === true) ? true : false"
-                src="@/assets/img/song/wave.gif" />
+              <img v-show="site.id === songContent.id && playStatus === true ? true : false" src="@/assets/img/song/wave.gif" />
             </el-col>
             <el-col :span="6" class="song-name">
               <el-tooltip effect="dark" :content="site.name" placement="top">
@@ -143,7 +141,7 @@
             <el-col :span="1">
               <el-tooltip class="item" effect="dark" content="播放/暂停" placement="top">
                 <el-icon @click="cutSong(site)">
-                  <VideoPlay v-if="(site.id !== songContent.id || playStatus === false) ? true : false" />
+                  <VideoPlay v-if="site.id !== songContent.id || playStatus === false ? true : false" />
                   <VideoPause v-else />
                 </el-icon>
               </el-tooltip>
@@ -169,13 +167,13 @@
 
 <script>
 // svg图标资源
-import '@/assets/js/iconfont.js'
-import '@/assets/js/iconfont1.js'
-import '@/assets/js/iconfont2.js'
-import '@/assets/js/iconfont3.js'
-import { mapGetters } from 'vuex'
-import { downloadSong } from '@/api'
-import { mixin } from '@/mixins'
+import '@/assets/js/iconfont.js';
+import '@/assets/js/iconfont1.js';
+import '@/assets/js/iconfont2.js';
+import '@/assets/js/iconfont3.js';
+import { mapGetters } from 'vuex';
+import { downloadSong } from '@/api/modules/song';
+import { mixin } from '@/mixins';
 
 export default {
   mixins: [mixin],
@@ -194,39 +192,39 @@ export default {
       toggle: false, // 显示隐藏播放器页面
       listShow: false, // 显示播放菜单
       playSongList: [], // 播放列表
-    }
+    };
   },
   computed: {
-    ...mapGetters('m_song', ['playStatus', 'songContent', 'playList'])
+    ...mapGetters('m_song', ['playStatus', 'songContent', 'playList']),
   },
   watch: {
     playStatus: {
       handler() {
-        this.playButtonUrl = this.playStatus ? '#icon-zanting' : '#icon-bofang'
+        this.playButtonUrl = this.playStatus ? '#icon-zanting' : '#icon-bofang';
       },
-      immediate: true
+      immediate: true,
     },
     // 监听歌曲变化
     songContent: {
       handler() {
-        this.songUrl = this.songContent.url
+        this.songUrl = this.songContent.url;
       },
-      immediate: true
+      immediate: true,
     },
     playSongList: {
       handler() {
         if (this.playList.length > 7) {
-          this.playSongList = this.playList.slice(this.playList.length - 7, this.playList.length)
+          this.playSongList = this.playList.slice(this.playList.length - 7, this.playList.length);
           console.log(this.playSongList);
         } else {
-          this.playSongList = this.playList
+          this.playSongList = this.playList;
         }
       },
-      immediate: true
+      immediate: true,
     },
     // 监听音量变化
     volume(val) {
-      this.$refs.player.volume = val / 100
+      this.$refs.player.volume = val / 100;
     },
     // // 监听当前播放时间变化
     // currentTime: {
@@ -244,10 +242,14 @@ export default {
     // },
   },
   mounted() {
-    document.querySelector('.item-volume').addEventListener('click', (e) => {
-      document.querySelector('.volume').classList.toggle('show-volume')
-      e.stopPropagation()
-    }, false)
+    document.querySelector('.item-volume').addEventListener(
+      'click',
+      e => {
+        document.querySelector('.volume').classList.toggle('show-volume');
+        e.stopPropagation();
+      },
+      false
+    );
     // document.addEventListener('click', () => {
     //   document.querySelector('.volume').classList.remove('show-volume')
     // }, false)
@@ -255,77 +257,78 @@ export default {
   methods: {
     // 控制音乐播放、暂停
     togglePlay() {
-      if (!this.songContent.url) return this.$message.error('还没有选择歌曲哦~')
+      if (!this.songContent.url) return this.$message.error('还没有选择歌曲哦~');
       // 通过$nextTick()方法，确保拿到最新的DOM节点
       this.$nextTick(() => {
         if (this.$refs.player.paused) {
-          this.$store.commit('m_song/setPlayStatus', true)
-          this.$refs.player.play()
-          this.playButtonUrl = '#icon-zanting'
+          this.$store.commit('m_song/setPlayStatus', true);
+          this.$refs.player.play();
+          this.playButtonUrl = '#icon-zanting';
         } else {
-          this.$store.commit('m_song/setPlayStatus', false)
-          this.$refs.player.pause()
-          this.playButtonUrl = '#icon-bofang'
+          this.$store.commit('m_song/setPlayStatus', false);
+          this.$refs.player.pause();
+          this.playButtonUrl = '#icon-bofang';
         }
-      })
+      });
     },
     //列表点击播放歌曲
     cutSong(obj) {
-      obj.id === this.songContent.id ? this.togglePlay() : this.$store.commit('m_song/setSongContent', obj)
+      obj.id === this.songContent.id ? this.togglePlay() : this.$store.commit('m_song/setSongContent', obj);
     },
     // 初始化，获取链接后准备播放
     startPlay() {
       // this.currentTime = '00:00'
-      this.currentTime = this.formatSeconds(this.$refs.player.currentTime)
+      this.currentTime = this.formatSeconds(this.$refs.player.currentTime);
       // 设置播放时长
-      this.durationTime = this.formatSeconds(this.$refs.player.duration)
+      this.durationTime = this.formatSeconds(this.$refs.player.duration);
       // 设置音量
-      this.$refs.player.volume = this.volume / 100
+      this.$refs.player.volume = this.volume / 100;
     },
     //上一首
     prevSong() {
-      let index = this.playList.indexOf(this.songContent)
-      const length = this.playList.length
-      index == 0 ? (index = length - 1) : index--
-      this.$store.commit('m_song/setSongContent', this.playList[index])
+      let index = this.playList.indexOf(this.songContent);
+      const length = this.playList.length;
+      index == 0 ? (index = length - 1) : index--;
+      this.$store.commit('m_song/setSongContent', this.playList[index]);
     },
     //下一首
     nextSong() {
       // 列表循环
-      let index = this.playList.indexOf(this.songContent)
-      const length = this.playList.length
-      index == length - 1 ? (index = 0) : index++
-      this.$store.commit('m_song/setSongContent', this.playList[index])
+      let index = this.playList.indexOf(this.songContent);
+      const length = this.playList.length;
+      index == length - 1 ? (index = 0) : index++;
+      this.$store.commit('m_song/setSongContent', this.playList[index]);
     },
     // 自动播放下一首
     ended() {
-      this.nextSong()
+      this.nextSong();
     },
     // 播放进度
     timeupdate() {
-      this.currentTime = this.formatSeconds(this.$refs.player.currentTime)
-      this.$store.commit('m_song/setCurrentTime', this.currentTime)
-      this.$store.commit('m_song/setCurrentSeconds', this.$refs.player.currentTime)
+      this.currentTime = this.formatSeconds(this.$refs.player.currentTime);
+      this.$store.commit('m_song/setCurrentTime', this.currentTime);
+      this.$store.commit('m_song/setCurrentSeconds', this.$refs.player.currentTime);
       // 进度条长度
-      this.curLength = this.$refs.player.currentTime / this.$refs.player.duration * 100
+      this.curLength = (this.$refs.player.currentTime / this.$refs.player.duration) * 100;
     },
     download() {
       // this.songContent.url
-      downloadSong(this.songContent.url).then(res => {
-        const content = res.data
-        let eleLink = document.createElement('a')
-        eleLink.download = `${this.artist}-${this.title}.mp3`
-        eleLink.style.display = 'none'
-        // 把字符内容转换为blob地址
-        const blob = new Blob([content])
-        eleLink.href = URL.createObjectURL(blob)
-        // 把链接地址加到document中
-        document.body.appendChild(eleLink)
-        // 触发点击
-        eleLink.click()
-        // 然后移除
-        document.body.removeChild(eleLink)
-        /* handelExport({ portalIds: ids }).then((res) => {
+      downloadSong(this.songContent.url)
+        .then(res => {
+          const content = res.data;
+          let eleLink = document.createElement('a');
+          eleLink.download = `${this.artist}-${this.title}.mp3`;
+          eleLink.style.display = 'none';
+          // 把字符内容转换为blob地址
+          const blob = new Blob([content]);
+          eleLink.href = URL.createObjectURL(blob);
+          // 把链接地址加到document中
+          document.body.appendChild(eleLink);
+          // 触发点击
+          eleLink.click();
+          // 然后移除
+          document.body.removeChild(eleLink);
+          /* handelExport({ portalIds: ids }).then((res) => {
           const blob = new Blob([res], { type: 'application/zip' })
           const url = window.URL.createObjectURL(blob)
           const link = document.createElement('a') // 创建a标签
@@ -336,90 +339,91 @@ export default {
           URL.revokeObjectURL(url) // 释放内存
           document.body.removeChild(link)
         }) */
-      }).catch(err => {
-        console.log(err)
-        this.$message({
-          message: '下载失败',
-          type: 'error'
         })
-      })
+        .catch(err => {
+          console.log(err);
+          this.$message({
+            message: '下载失败',
+            type: 'error',
+          });
+        });
     },
     // 播放失败
     errorHandler() {
-      this.$message.error('播放失败, 请检查歌曲链接是否有效~')
+      this.$message.error('播放失败, 请检查歌曲链接是否有效~');
     },
     //从播放列表中移除
     removeSong(obj) {
-      this.$store.commit('m_song/removeSong', obj)
+      this.$store.commit('m_song/removeSong', obj);
     },
     // 鼠标按下
     mousedown(e) {
-      this.tag = true
-      this.mouseStartX = e.clientX
+      this.tag = true;
+      this.mouseStartX = e.clientX;
       // 解决鼠标移除当前窗口抬起后还能拖动的bug
       // window.addEventListener('mouseout', () => {
       //   this.tag = false
       // })
       // 鼠标抬起
-      document.addEventListener('mouseup', this.mouseup)
+      document.addEventListener('mouseup', this.mouseup);
       // 拖动进度条
-      document.addEventListener('mousemove', this.mousemove)
+      document.addEventListener('mousemove', this.mousemove);
     },
     // 鼠标抬起
     mouseup() {
-      this.tag = false
+      this.tag = false;
     },
     // 拖动进度条
     mousemove(e) {
-      if (!this.durationTime) return false
+      if (!this.durationTime) return false;
       if (this.tag) {
         // 防抖
         this.Timer = setTimeout(() => {
           // getBoundingClientRect 获取元素的大小及其相对于视口的位置
-          const curLength = this.$refs.curProgress.getBoundingClientRect().width // 当前进度条长度
-          const progressLength = this.$refs.bg.getBoundingClientRect().width // 进度条总长度
-          let moveX = e.clientX - this.mouseStartX // 点移动的距离
-          let newPercent = ((curLength + moveX) / progressLength) * 100 // 新的进度条百分比乘以100
-          if (newPercent < 0) newPercent = 0 // 判断是否超出左边界
-          if (newPercent > 100) newPercent = 100 // 判断是否超出右边界
-          this.curLength = newPercent
-          this.mouseStartX += moveX
-          this.changeProgress(newPercent)
-          this.Timer && clearTimeout(this.Timer)
-        }, 200)
+          const curLength = this.$refs.curProgress.getBoundingClientRect().width; // 当前进度条长度
+          const progressLength = this.$refs.bg.getBoundingClientRect().width; // 进度条总长度
+          let moveX = e.clientX - this.mouseStartX; // 点移动的距离
+          let newPercent = ((curLength + moveX) / progressLength) * 100; // 新的进度条百分比乘以100
+          if (newPercent < 0) newPercent = 0; // 判断是否超出左边界
+          if (newPercent > 100) newPercent = 100; // 判断是否超出右边界
+          this.curLength = newPercent;
+          this.mouseStartX += moveX;
+          this.changeProgress(newPercent);
+          this.Timer && clearTimeout(this.Timer);
+        }, 200);
       }
     },
     // 点击播放条切换播放进度
     updatemove(e) {
-      if (!this.durationTime) return false
+      if (!this.durationTime) return false;
       if (!this.tag) {
         // 相对于有定位的父元素的坐标 也就是 progress 的左侧坐标
-        const curLength = this.$refs.bg.offsetLeft // 当前进度条左侧坐标  0
-        const progressLength = this.$refs.bg.getBoundingClientRect().width // 进度条总长度
-        let newPercent = ((e.offsetX - curLength) / progressLength) * 100 // 新的进度条百分比乘以100
-        if (newPercent < 0) newPercent = 0
-        if (newPercent > 100) newPercent = 100
-        this.curLength = newPercent
-        this.mouseStartX = e.clientX
-        this.changeProgress(newPercent)
+        const curLength = this.$refs.bg.offsetLeft; // 当前进度条左侧坐标  0
+        const progressLength = this.$refs.bg.getBoundingClientRect().width; // 进度条总长度
+        let newPercent = ((e.offsetX - curLength) / progressLength) * 100; // 新的进度条百分比乘以100
+        if (newPercent < 0) newPercent = 0;
+        if (newPercent > 100) newPercent = 100;
+        this.curLength = newPercent;
+        this.mouseStartX = e.clientX;
+        this.changeProgress(newPercent);
       }
     },
 
     // 更改歌曲进度
     changeProgress(percent) {
-      this.$refs.player.currentTime = percent * this.$refs.player.duration / 100
+      this.$refs.player.currentTime = (percent * this.$refs.player.duration) / 100;
     },
 
     toMusic() {
-      this.$router.push({ path: '/music' })
+      this.$router.push({ path: '/music' });
     },
   },
   unmounted() {
     // 解除绑定
-    document.removeEventListener('mousemove')
-    document.removeEventListener('mouseup')
+    document.removeEventListener('mousemove');
+    document.removeEventListener('mouseup');
   },
-}
+};
 </script>
 
 <style scoped>
