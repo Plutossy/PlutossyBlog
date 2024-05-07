@@ -1,80 +1,80 @@
 <script lang="ts" setup>
-import MySearch from './MySearch.vue'
-import 'element-plus/theme-chalk/display.css'
+import MySearch from './MySearch.vue';
+import 'element-plus/theme-chalk/display.css';
 
-import { ref, onMounted, onUnmounted, watch } from 'vue'
+import { ref, onMounted, onUnmounted, watch } from 'vue';
 
-let btnHide = ref(true) //按钮显示隐藏
+let btnHide = ref(true); //按钮显示隐藏
 
-let navShow = ref(false)
-let scroll = ref(0) //上下滚动
-let up = ref(300) //开始隐藏位置
-let screenWidth = ref(document.body.clientWidth) //屏幕宽度
+let navShow = ref(false);
+let scroll = ref(0); //上下滚动
+let up = ref(300); //开始隐藏位置
+let screenWidth = ref(document.body.clientWidth); //屏幕宽度
 
-let timer1: any = null // 滚动防抖
-let timer2: any = null // 屏幕宽度防抖
+let timer1: any = null; // 滚动防抖
+let timer2: any = null; // 屏幕宽度防抖
 
 onMounted(() => {
   // 监听（绑定）滚轮 滚动事件
-  window.addEventListener('scroll', handleScroll, true)
+  window.addEventListener('scroll', handleScroll, true);
 
-  window.addEventListener('resize', handleSize, true)
-})
+  window.addEventListener('resize', handleSize, true);
+});
 
 onUnmounted(() => {
-  window.removeEventListener('scroll', handleScroll)
-  window.removeEventListener('resize', handleSize)
-})
+  window.removeEventListener('scroll', handleScroll);
+  window.removeEventListener('resize', handleSize);
+});
 
 watch(
   scroll,
   newValue => {
     if (newValue >= up.value) {
-      navShow.value = true
+      navShow.value = true;
     } else {
-      navShow.value = false
+      navShow.value = false;
     }
   },
   { immediate: true }
-)
+);
 
 watch(
   screenWidth,
   newValue => {
     if (newValue <= 768) {
-      up.value = 500
+      up.value = 500;
     } else {
-      up.value = 300
+      up.value = 300;
     }
   },
   { immediate: true }
-)
+);
 
 // 点击按钮，显示/隐藏导航栏
 const toggleEvent = () => {
-  btnHide.value = !btnHide.value
-}
+  btnHide.value = !btnHide.value;
+};
 
 const handleScroll = () => {
   // 防抖
-  clearTimeout(timer1)
+  clearTimeout(timer1);
   timer1 = setTimeout(() => {
     // 页面滚动距顶部距离
-    const scrollTop = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop
-    scroll.value = scrollTop
-  }, 200)
-}
+    const scrollTop = window.scrollY || document.documentElement.scrollTop || document.body.scrollTop;
+    scroll.value = scrollTop;
+  }, 200);
+};
 const handleSize = () => {
-  clearTimeout(timer2)
+  clearTimeout(timer2);
   timer2 = setTimeout(() => {
     // 页面滚动距顶部距离
-    screenWidth.value = document.body.clientWidth
-  }, 200)
-}
+    screenWidth.value = document.body.clientWidth;
+  }, 200);
+};
 </script>
 
 <template>
-  <div class="header-nav animate__animated animate__fadeInDown" :class="{ 'animate__fadeOutUp': navShow }">
+  <div class="header-nav animate__animated animate__fadeInDown" :class="{ animate__fadeOutUp: navShow }">
     <el-row class="header-container" :gutter="20" justify="space-around">
       <el-col :span="3" :xs="4" class="logo-box">
         <h2 class="logo">SSY_Blog</h2>
@@ -86,50 +86,50 @@ const handleSize = () => {
           <el-col :span="3" :xs="24">
             <router-link to="/home">
               <el-icon>
-                <HomeFilled />
-              </el-icon>&nbsp;首页
+                <HomeFilled /> </el-icon
+              >&nbsp;首页
             </router-link>
           </el-col>
           <el-col :span="3" :xs="24">
             <router-link to="/type">
               <el-icon>
-                <Crop />
-              </el-icon>&nbsp;分类
+                <Crop /> </el-icon
+              >&nbsp;分类
             </router-link>
           </el-col>
           <el-col :span="3" :xs="24">
             <router-link to="/tag">
               <el-icon>
-                <PriceTag />
-              </el-icon>&nbsp;标签
+                <PriceTag /> </el-icon
+              >&nbsp;标签
             </router-link>
           </el-col>
           <el-col :span="3" :xs="24">
             <router-link to="/clone">
               <el-icon>
-                <CopyDocument />
-              </el-icon>&nbsp;归档
+                <CopyDocument /> </el-icon
+              >&nbsp;归档
             </router-link>
           </el-col>
           <el-col :span="3" :xs="24">
             <router-link to="/music">
               <el-icon>
-                <Headset />
-              </el-icon>&nbsp;音乐盒
+                <Headset /> </el-icon
+              >&nbsp;音乐盒
             </router-link>
           </el-col>
           <el-col :span="3" :xs="24">
             <router-link to="/picture">
               <el-icon>
-                <PictureFilled />
-              </el-icon>&nbsp;照片墙
+                <PictureFilled /> </el-icon
+              >&nbsp;照片墙
             </router-link>
           </el-col>
           <el-col :span="3" :xs="24">
             <router-link to="/about">
               <el-icon>
-                <UserFilled />
-              </el-icon>&nbsp;关于我
+                <UserFilled /> </el-icon
+              >&nbsp;关于我
             </router-link>
           </el-col>
         </el-row>
@@ -152,50 +152,50 @@ const handleSize = () => {
               <el-dropdown-item>
                 <router-link to="/home">
                   <el-icon>
-                    <HomeFilled />
-                  </el-icon>&nbsp;首页
+                    <HomeFilled /> </el-icon
+                  >&nbsp;首页
                 </router-link>
               </el-dropdown-item>
               <el-dropdown-item>
                 <router-link to="/type">
                   <el-icon>
-                    <Crop />
-                  </el-icon>&nbsp;分类
+                    <Crop /> </el-icon
+                  >&nbsp;分类
                 </router-link>
               </el-dropdown-item>
               <el-dropdown-item>
                 <router-link to="/tag">
                   <el-icon>
-                    <PriceTag />
-                  </el-icon>&nbsp;标签
+                    <PriceTag /> </el-icon
+                  >&nbsp;标签
                 </router-link>
               </el-dropdown-item>
               <el-dropdown-item>
                 <router-link to="/clone">
                   <el-icon>
-                    <CopyDocument />
-                  </el-icon>&nbsp;归档
+                    <CopyDocument /> </el-icon
+                  >&nbsp;归档
                 </router-link>
               </el-dropdown-item>
               <el-dropdown-item>
                 <router-link to="/music">
                   <el-icon>
-                    <Headset />
-                  </el-icon>&nbsp;音乐盒
+                    <Headset /> </el-icon
+                  >&nbsp;音乐盒
                 </router-link>
               </el-dropdown-item>
               <el-dropdown-item>
                 <router-link to="/picture">
                   <el-icon>
-                    <PictureFilled />
-                  </el-icon>&nbsp;照片墙
+                    <PictureFilled /> </el-icon
+                  >&nbsp;照片墙
                 </router-link>
               </el-dropdown-item>
               <el-dropdown-item>
                 <router-link to="/about">
                   <el-icon>
-                    <UserFilled />
-                  </el-icon>&nbsp;关于我
+                    <UserFilled /> </el-icon
+                  >&nbsp;关于我
                 </router-link>
               </el-dropdown-item>
               <div class="input">
@@ -242,7 +242,7 @@ const handleSize = () => {
       }
     }
 
-    >.el-col:nth-child(2) {
+    > .el-col:nth-child(2) {
       a {
         font-size: large;
         padding: 0.7rem 0;
@@ -282,6 +282,7 @@ const handleSize = () => {
       text-align: center;
       line-height: 100%;
       /* 取消i标签在移动端点击时的蓝色 */
+      user-select: none;
       -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
       -webkit-user-select: none;
       -moz-user-focus: none;

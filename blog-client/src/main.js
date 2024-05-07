@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2023-11-27 16:59:47
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-05-06 17:32:13
+ * @LastEditTime: 2024-05-06 18:22:37
  * @FilePath: \blog-client\src\main.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -16,6 +16,8 @@ import 'element-plus/dist/index.css';
 import './index.css';
 // 导入全局动画样式表
 import 'animate.css';
+// svg图标
+import 'virtual:svg-icons-register';
 
 //导入 Element Plus 的图标库
 import * as ElementPlusIconsVue from '@element-plus/icons-vue';
