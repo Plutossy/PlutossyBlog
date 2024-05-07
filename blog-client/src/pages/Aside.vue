@@ -176,6 +176,7 @@ const gotoDetail = (id: number) => {
 </script>
 
 <style lang="scss" scoped>
+@import url('@/assets/scss/animate.scss');
 .aside-container {
   width: 100%;
   margin: 0 auto 1rem;
@@ -377,39 +378,6 @@ const gotoDetail = (id: number) => {
         width: 8rem;
       }
     }
-  }
-}
-
-.collection-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-  // background: #39c5bb;
-  cursor: pointer;
-  width: 65%;
-  border-radius: 1rem;
-  text-align: center;
-  line-height: 35px;
-  overflow: hidden;
-  z-index: 1;
-  &::before {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    content: '';
-    background: linear-gradient(to right, #ff4b2b, #ff416c);
-    transform: scaleX(0);
-    transform-origin: 0;
-    transition: transform 0.5s ease-out;
-    transition-timing-function: cubic-bezier(0.45, 1.64, 0.47, 0.66);
-    border-radius: 1rem;
-    z-index: -1;
-  }
-  &:hover::before {
-    transform: scaleX(1);
   }
 }
 </style>
