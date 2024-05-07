@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2023-11-29 14:57:14
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-01-19 21:32:56
+ * @LastEditTime: 2024-05-07 16:35:30
  * @FilePath: \blog-client\src\components\recommend\Recommend.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -13,23 +13,23 @@
     </el-row>
     <el-row align="middle" :gutter="20" justify="space-around">
       <el-col :span="10" :xs="20">
-        <introduction />
+        <introduction type="recommend" />
       </el-col>
       <el-col :span="10" :xs="20">
-        <introduction />
+        <introduction type="recommend" />
       </el-col>
     </el-row>
   </div>
 </template>
 
 <script>
-import Introduction from '../introduction/Introduction.vue'
+import Introduction from '../introduction/Introduction.vue';
 export default {
   name: 'Recommend',
   components: {
-    Introduction
-  }
-}
+    Introduction,
+  },
+};
 </script>
 
 <style lang="scss" scoped>

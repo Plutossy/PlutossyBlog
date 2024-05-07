@@ -1,7 +1,7 @@
 <template>
   <div class="introduction-container">
     <el-card shadow="hover" class="box-card">
-      <template #header>
+      <template v-if="type === 'default'" #header>
         <div class="card-header">
           <h2>标题</h2>
         </div>
@@ -9,10 +9,10 @@
 
       <div class="card-content" @click="gotoDetail(1)">
         <el-row :gutter="16" justify="space-around">
-          <el-col :span="6">
-            <img src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif" />
+          <el-col :span="type === 'default' ? 6 : 24">
+            <img src="https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif" class="content-img" />
           </el-col>
-          <el-col :span="18">
+          <el-col :span="type === 'default' ? 18 : 24">
             <p>
               这是一个基于Vue.js的前后端分离的博客系统，前端使用Vue.js，后端使用Spring Boot，数据库使用MySQL，使用Nginx作为反向代理服务器。这是一个基于Vue.js的前后端分离的博客系统，前端使用Vue.js，后端使用Spring
               Boot，数据库使用MySQL，使用Nginx作为反向代理服务器。这是一个基于Vue.js的前后端分离的博客系统，前端使用Vue.js，后端使用Spring Boot，数据库使用MySQL，使用Nginx作为反向代理服务器。
@@ -55,6 +55,12 @@
 <script>
 export default {
   name: 'Introduction',
+  props: {
+    type: {
+      type: String,
+      default: 'default', // default, recommend
+    },
+  },
   methods: {
     gotoDetail(id) {
       this.$router.push(`/article/${id}`);
@@ -79,15 +85,22 @@ export default {
     }
     .card-content {
       cursor: pointer;
+      display: flex;
+      justify-content: center;
       > .el-row {
         width: 100%;
         > .el-col:first-child {
           margin: auto; // 居中一下
           > img {
             width: 100%;
+            transition: transform 0.8s;
+            &:hover {
+              transform: scale(1.1);
+            }
           }
         }
         > .el-col:last-child {
+          // z-index: 1;
           > p {
             font-size: 1rem;
             font-weight: 400;
