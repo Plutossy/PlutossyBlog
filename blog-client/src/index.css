@@ -9,6 +9,33 @@
   overflow-x: hidden;
 }
 
+::-webkit-scrollbar {
+  /* 垂直滚动条的宽度 */
+  width: 8px;
+  /* 水平滚动条的高度 */
+  height: 8px;
+}
+
+/* 滚动条轨道 */
+::-webkit-scrollbar-track {
+  /* 轨道样色 */
+  background: #c7f4ff;
+}
+
+/* 滚动条滑块 */
+::-webkit-scrollbar-thumb {
+  /* 滑块颜色 */
+  background: linear-gradient(#8bb6e6, #4a90e2, #8bb6e6);
+  /* 滑块圆角 */
+  border-radius: 10px;
+}
+
+/* 滑块hover效果 */
+::-webkit-scrollbar-thumb:hover {
+  /* 滑块hover颜色 */
+  background: #3c85d8;
+}
+
 * {
   margin: 0;
   padding: 0;
