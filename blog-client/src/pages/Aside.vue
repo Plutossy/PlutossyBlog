@@ -6,9 +6,7 @@
       <template #header>
         <div class="card-header">
           <div>
-            <el-icon>
-              <Suitcase />
-            </el-icon>分类
+            <el-icon> <Suitcase /> </el-icon>分类
           </div>
 
           <div>
@@ -40,9 +38,7 @@
       <template #header>
         <div class="card-header">
           <div>
-            <el-icon>
-              <Suitcase />
-            </el-icon>标签
+            <el-icon> <Suitcase /> </el-icon>标签
           </div>
 
           <div>
@@ -54,36 +50,68 @@
         </div>
       </template>
       <div class="card-content-tag">
-        <div :style="{
-            borderRadius: `var(--el-border-radius-round)`
-          }">标签1</div>
-        <div :style="{
-            borderRadius: `var(--el-border-radius-round)`
-          }">标签2</div>
-        <div :style="{
-            borderRadius: `var(--el-border-radius-round)`
-          }">标签3</div>
-        <div :style="{
-            borderRadius: `var(--el-border-radius-round)`
-          }">标签类型4</div>
-        <div :style="{
-            borderRadius: `var(--el-border-radius-round)`
-          }">标签类型5</div>
-        <div :style="{
-            borderRadius: `var(--el-border-radius-round)`
-          }">标签6</div>
-        <div :style="{
-            borderRadius: `var(--el-border-radius-round)`
-          }">标签7</div>
-        <div :style="{
-            borderRadius: `var(--el-border-radius-round)`
-          }">标签类型8</div>
+        <div
+          :style="{
+            borderRadius: `var(--el-border-radius-round)`,
+          }"
+        >
+          标签1
+        </div>
+        <div
+          :style="{
+            borderRadius: `var(--el-border-radius-round)`,
+          }"
+        >
+          标签2
+        </div>
+        <div
+          :style="{
+            borderRadius: `var(--el-border-radius-round)`,
+          }"
+        >
+          标签3
+        </div>
+        <div
+          :style="{
+            borderRadius: `var(--el-border-radius-round)`,
+          }"
+        >
+          标签类型4
+        </div>
+        <div
+          :style="{
+            borderRadius: `var(--el-border-radius-round)`,
+          }"
+        >
+          标签类型5
+        </div>
+        <div
+          :style="{
+            borderRadius: `var(--el-border-radius-round)`,
+          }"
+        >
+          标签6
+        </div>
+        <div
+          :style="{
+            borderRadius: `var(--el-border-radius-round)`,
+          }"
+        >
+          标签7
+        </div>
+        <div
+          :style="{
+            borderRadius: `var(--el-border-radius-round)`,
+          }"
+        >
+          标签类型8
+        </div>
       </div>
     </el-card>
 
     <el-card shadow="hover">
       <template #header>
-        <h3><img src="@/assets/img/svg/achieve.svg">个人成就</h3>
+        <h3><img src="@/assets/img/svg/achieve.svg" />个人成就</h3>
       </template>
       <div class="card-content-achievement">
         <ul>
@@ -130,7 +158,7 @@
 
     <el-card shadow="hover">
       <template #header>
-        <h3><img src="@/assets/img/svg/hand.svg">扫码关注我</h3>
+        <h3 class="collection-btn"><svg-icon icon-class="hand" size="25px"></svg-icon>扫码关注我</h3>
       </template>
       <div class="card-content-code">
         <img src="@/assets/img/CSDN.jpg" alt="二维码" />
@@ -140,11 +168,11 @@
 </template>
 
 <script lang="ts" setup>
-import { useRouter } from 'vue-router'
-const router = useRouter()
+import { useRouter } from 'vue-router';
+const router = useRouter();
 const gotoDetail = (id: number) => {
-  router.push(`/article/${id}`)
-}
+  router.push(`/article/${id}`);
+};
 </script>
 
 <style lang="scss" scoped>
@@ -189,6 +217,7 @@ const gotoDetail = (id: number) => {
         cursor: pointer;
         /* 取消div标签在移动端点击时的蓝色 */
         -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+        user-select: none;
         -webkit-user-select: none;
         -moz-user-focus: none;
         -moz-user-select: none;
@@ -197,6 +226,12 @@ const gotoDetail = (id: number) => {
         }
       }
     }
+
+    :deep(.el-card__header) {
+      display: flex;
+      justify-content: center;
+    }
+
     h3 {
       padding: 0 1rem;
       font-weight: 560;
@@ -319,7 +354,6 @@ const gotoDetail = (id: number) => {
     }
 
     .card-content-newblog {
-
       .el-row {
         border-bottom: 1px solid #ccc;
         padding: 1rem;
@@ -343,6 +377,39 @@ const gotoDetail = (id: number) => {
         width: 8rem;
       }
     }
+  }
+}
+
+.collection-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  // background: #39c5bb;
+  cursor: pointer;
+  width: 65%;
+  border-radius: 1rem;
+  text-align: center;
+  line-height: 35px;
+  overflow: hidden;
+  z-index: 1;
+  &::before {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    content: '';
+    background: linear-gradient(to right, #ff4b2b, #ff416c);
+    transform: scaleX(0);
+    transform-origin: 0;
+    transition: transform 0.5s ease-out;
+    transition-timing-function: cubic-bezier(0.45, 1.64, 0.47, 0.66);
+    border-radius: 1rem;
+    z-index: -1;
+  }
+  &:hover::before {
+    transform: scaleX(1);
   }
 }
 </style>
