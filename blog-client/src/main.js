@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2023-11-27 16:59:47
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-05-06 18:22:37
+ * @LastEditTime: 2024-05-07 15:53:06
  * @FilePath: \blog-client\src\main.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -10,6 +10,8 @@ import { createApp } from 'vue';
 import App from './App.vue';
 import store from './store/store';
 import mitt from 'mitt';
+
+import './assets/js/title.js'; // 引入重置样式表
 
 // import ElementPlus from 'element-plus' //已经配置按需导入
 import 'element-plus/dist/index.css';
