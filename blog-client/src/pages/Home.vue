@@ -25,6 +25,7 @@ import MySwiper from '../components/MySwiper.vue';
 import Recommend from '../components/recommend/Recommend.vue';
 import Aside from './Aside.vue';
 import Introduction from '../components/introduction/Introduction.vue';
+import { ref, onUnmounted } from 'vue';
 
 const recommend = ref(true);
 let timer: any = null;
