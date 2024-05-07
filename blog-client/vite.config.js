@@ -2,11 +2,12 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2023-11-27 16:56:57
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-05-07 14:59:38
+ * @LastEditTime: 2024-05-07 15:35:16
  * @FilePath: \blog-client\vite.config.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 import { defineConfig, loadEnv } from 'vite';
+import vueSetupExtend from 'vite-plugin-vue-setup-extend';
 // 引入path
 import { resolve } from 'path';
 import vue from '@vitejs/plugin-vue';
@@ -30,6 +31,7 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd());
   return {
     plugins: [
+      vueSetupExtend(),
       commonjs(), // 将 CommonJS 转换成 ES2015 模块供 Rollup 处理
       vue(),
       AutoImport({

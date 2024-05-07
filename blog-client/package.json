@@ -37,6 +37,7 @@
     "vite": "^5.0.0",
     "vite-plugin-restart": "^0.4.0",
     "vite-plugin-svg-icons": "^2.0.1",
+    "vite-plugin-vue-setup-extend": "^0.4.0",
     "webpack": "^5.89.0"
   }
 }
