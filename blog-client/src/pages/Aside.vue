@@ -171,7 +171,7 @@
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
-const gotoDetail = (id: number) => {
+const gotoDetail = id => {
   router.push(`/article/${id}`);
 };
 </script>
