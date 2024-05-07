@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2023-11-27 16:59:47
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-05-07 11:48:55
+ * @LastEditTime: 2024-05-07 11:59:45
  * @FilePath: \blog-client\src\components\ScrollTop.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -12,7 +12,7 @@
       <svg-icon class="backTop-icon" icon-class="back-top" size="50px" color="#474747" />
       <el-popover placement="left" trigger="hover" transition="custom">
         <template #reference>
-          <svg-icon class="iconRotate" icon-class="setting" size="40px" color="#474747" @click="disClick" />
+          <svg-icon class="iconRotate" icon-class="setting" size="40px" color="#474747" @click.prevent="disClick" />
         </template>
         <template #default>
           <div class="setting-fire" @click="changeMouseAnimation">
