@@ -21,8 +21,8 @@
         </el-row>
       </div>
 
-      <div class="card-footer">
-        <el-row justify="space-between" align="middle">
+      <template #footer>
+        <el-row class="card-footer" justify="space-between" align="middle">
           <el-col :span="16">
             <el-row justify="space-between">
               <el-col :span="8">
@@ -47,7 +47,7 @@
             <div class="type">类型Type</div>
           </el-col>
         </el-row>
-      </div>
+      </template>
     </el-card>
   </div>
 </template>
@@ -112,53 +112,50 @@ export default {
       color: #888686;
       font-size: 0.6rem;
       font-weight: 400;
-      margin-top: 20px;
-      > .el-row {
-        > .el-col:first-child {
-          .el-row {
-            > .el-col {
+      > .el-col:first-child {
+        .el-row {
+          > .el-col {
+            display: flex;
+            align-items: center;
+            > img {
+              width: 1.5rem;
+              height: 1.5rem;
+              border-radius: 50%;
+              cursor: pointer;
+            }
+            > a {
+              color: #1e70bf;
+              margin-left: 0.5rem;
+            }
+            > p {
+              text-align: center;
+              margin-left: 0.5rem;
               display: flex;
               align-items: center;
-              > img {
-                width: 1.5rem;
-                height: 1.5rem;
-                border-radius: 50%;
-                cursor: pointer;
-              }
-              > a {
-                color: #1e70bf;
-                margin-left: 0.5rem;
-              }
-              > p {
-                text-align: center;
-                margin-left: 0.5rem;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-              }
-              i {
-                font-size: 1rem;
-                margin-right: 0.2rem;
-              }
+              justify-content: center;
+            }
+            i {
+              font-size: 1rem;
+              margin-right: 0.2rem;
             }
           }
         }
-        > .el-col:last-child {
-          .type {
-            width: 4rem;
-            height: 100%;
-            color: #00b5ad;
-            border: 1px solid #00b5ad;
-            border-radius: 10px;
-            text-align: center;
-            line-height: 2;
-            margin: auto;
-            cursor: pointer;
+      }
+      > .el-col:last-child {
+        .type {
+          width: 4rem;
+          height: 100%;
+          color: #00b5ad;
+          border: 1px solid #00b5ad;
+          border-radius: 10px;
+          text-align: center;
+          line-height: 2;
+          margin: auto;
+          cursor: pointer;
 
-            &:hover {
-              background-color: #00b5ad;
-              color: #fff;
-            }
+          &:hover {
+            background-color: #00b5ad;
+            color: #fff;
           }
         }
       }

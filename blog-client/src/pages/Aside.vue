@@ -167,8 +167,7 @@
   </div>
 </template>
 
-<script lang="ts" setup>
-import { useRouter } from 'vue-router';
+<script setup>
 const router = useRouter();
 const gotoDetail = (id: number) => {
   router.push(`/article/${id}`);
@@ -228,13 +227,9 @@ const gotoDetail = (id: number) => {
       }
     }
 
-    :deep(.el-card__header) {
-      display: flex;
-      justify-content: center;
-    }
-
     h3 {
       padding: 0 1rem;
+      margin: 0 auto;
       font-weight: 560;
       display: flex;
       align-items: center;

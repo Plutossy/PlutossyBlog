@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2023-11-27 16:56:57
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-05-06 18:09:33
+ * @LastEditTime: 2024-05-07 14:59:38
  * @FilePath: \blog-client\vite.config.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -37,6 +37,8 @@ export default defineConfig(({ mode }) => {
         imports: ['vue', '@vueuse/core', 'vue-router', 'vuex', '@vueuse/head'],
         // 指定自动导入函数TS类型声明文件路径 (false:关闭自动生成)
         dts: false,
+        // 是否在 vue 模板中自动导入
+        vueTemplate: true,
         eslintrc: {
           // 是否自动生成 eslint 规则，建议生成之后设置 false
           enabled: true,

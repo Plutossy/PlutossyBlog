@@ -14,18 +14,17 @@
         <el-pagination :page-size="5" :pager-count="5" layout="prev, pager, next" :total="28" prev-text="上一页" next-text="下一页" :hide-on-single-page="true" background />
       </el-col>
       <el-col :span="8" :xs="24" class="animate__animated animate__fadeInRightBig animate__delay-1s">
-        <aside-vue />
+        <aside />
       </el-col>
     </el-row>
   </div>
 </template>
 
-<script lang="ts" setup>
+<script setup>
 import MySwiper from '../components/MySwiper.vue';
 import Recommend from '../components/recommend/Recommend.vue';
-import AsideVue from './Aside.vue';
+import Aside from './Aside.vue';
 import Introduction from '../components/introduction/Introduction.vue';
-import { ref, onUnmounted } from 'vue';
 
 const recommend = ref(true);
 let timer: any = null;
