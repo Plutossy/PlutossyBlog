@@ -26,7 +26,6 @@ onMounted(() => {
     <Introduction />
     <Introduction />
     <Introduction />
-    <el-pagination :page-size="5" :pager-count="5" layout="prev, pager, next" :total="28" prev-text="上一页" next-text="下一页" :hide-on-single-page="true" background />
   </div>
 </template>
 

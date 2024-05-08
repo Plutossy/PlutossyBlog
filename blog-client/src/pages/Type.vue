@@ -15,81 +15,105 @@
           <div
             class="active"
             :style="{
-            borderRadius: `var(--el-border-radius-base)`
-          }"
+              borderRadius: `var(--el-border-radius-base)`,
+            }"
           >
             <span>分类1</span>
             <span>8</span>
           </div>
-          <div :style="{
-            borderRadius: `var(--el-border-radius-base)`
-          }">
+          <div
+            :style="{
+              borderRadius: `var(--el-border-radius-base)`,
+            }"
+          >
             <span>分类2</span>
             <span>10</span>
           </div>
-          <div :style="{
-            borderRadius: `var(--el-border-radius-base)`
-          }">
+          <div
+            :style="{
+              borderRadius: `var(--el-border-radius-base)`,
+            }"
+          >
             <span>分类3</span>
             <span>5</span>
           </div>
-          <div :style="{
-            borderRadius: `var(--el-border-radius-base)`
-          }">
+          <div
+            :style="{
+              borderRadius: `var(--el-border-radius-base)`,
+            }"
+          >
             <span>分类4</span>
             <span>23</span>
           </div>
-          <div :style="{
-            borderRadius: `var(--el-border-radius-base)`
-          }">
+          <div
+            :style="{
+              borderRadius: `var(--el-border-radius-base)`,
+            }"
+          >
             <span>分类4</span>
             <span>23</span>
           </div>
-          <div :style="{
-            borderRadius: `var(--el-border-radius-base)`
-          }">
+          <div
+            :style="{
+              borderRadius: `var(--el-border-radius-base)`,
+            }"
+          >
             <span>分类4</span>
             <span>23</span>
           </div>
-          <div :style="{
-            borderRadius: `var(--el-border-radius-base)`
-          }">
+          <div
+            :style="{
+              borderRadius: `var(--el-border-radius-base)`,
+            }"
+          >
             <span>分类4</span>
             <span>23</span>
           </div>
-          <div :style="{
-            borderRadius: `var(--el-border-radius-base)`
-          }">
+          <div
+            :style="{
+              borderRadius: `var(--el-border-radius-base)`,
+            }"
+          >
             <span>分类4</span>
             <span>23</span>
           </div>
-          <div :style="{
-            borderRadius: `var(--el-border-radius-base)`
-          }">
+          <div
+            :style="{
+              borderRadius: `var(--el-border-radius-base)`,
+            }"
+          >
             <span>分类4</span>
             <span>23</span>
           </div>
-          <div :style="{
-            borderRadius: `var(--el-border-radius-base)`
-          }">
+          <div
+            :style="{
+              borderRadius: `var(--el-border-radius-base)`,
+            }"
+          >
             <span>分类4</span>
             <span>23</span>
           </div>
-          <div :style="{
-            borderRadius: `var(--el-border-radius-base)`
-          }">
+          <div
+            :style="{
+              borderRadius: `var(--el-border-radius-base)`,
+            }"
+          >
             <span>分类4</span>
             <span>23</span>
           </div>
-          <div :style="{
-            borderRadius: `var(--el-border-radius-base)`
-          }">
+          <div
+            :style="{
+              borderRadius: `var(--el-border-radius-base)`,
+            }"
+          >
             <span>分类4</span>
             <span>23</span>
           </div>
-          <div :style="{
-            borderRadius: `var(--el-border-radius-base)`
-          }">
+          <div
+            :style="{
+              borderRadius: `var(--el-border-radius-base)`,
+            }"
+          >
             <span>分类4</span>
             <span>23</span>
           </div>
@@ -109,29 +133,16 @@
     <el-row class="animate__animated animate__fadeInUpBig">
       <introduction />
     </el-row>
-    <el-row justify="center">
-      <el-pagination
-        :page-size="5"
-        :pager-count="5"
-        layout="prev, pager, next"
-        :total="28"
-        prev-text="上一页"
-        next-text="下一页"
-        :hide-on-single-page="true"
-        background
-        class="animate__animated animate__fadeInUpBig"
-      />
-    </el-row>
   </div>
 </template>
 
 <script>
-import Introduction from '../components/introduction/Introduction.vue'
+import Introduction from '../components/introduction/Introduction.vue';
 export default {
   components: {
-    Introduction
-  }
-}
+    Introduction,
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -162,6 +173,7 @@ export default {
       > div {
         /* 取消div标签在移动端点击时的蓝色 */
         -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+        user-select: none;
         -webkit-user-select: none;
         -moz-user-focus: none;
         -moz-user-select: none;
