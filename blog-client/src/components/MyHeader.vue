@@ -75,61 +75,47 @@ const handleSize = () => {
 
 <template>
   <div class="header-nav animate__animated animate__fadeInDown" :class="{ animate__fadeOutUp: navShow }">
-    <el-row class="header-container" :gutter="20" justify="space-around">
+    <el-row class="header-container" :gutter="20">
       <el-col :span="3" :xs="4" class="logo-box">
         <h2 class="logo">SSY_Blog</h2>
       </el-col>
 
       <!-- 导航栏 -->
       <el-col :span="16" class="hidden-sm-and-down">
-        <el-row justify="space-around">
+        <el-row justify="end">
           <el-col :span="3" :xs="24">
             <router-link to="/home">
-              <el-icon>
-                <HomeFilled /> </el-icon
-              >&nbsp;首页
+              <el-icon> <HomeFilled /> </el-icon>&nbsp;首页
             </router-link>
           </el-col>
           <el-col :span="3" :xs="24">
             <router-link to="/type">
-              <el-icon>
-                <Crop /> </el-icon
-              >&nbsp;分类
+              <el-icon> <Crop /> </el-icon>&nbsp;分类
             </router-link>
           </el-col>
           <el-col :span="3" :xs="24">
             <router-link to="/tag">
-              <el-icon>
-                <PriceTag /> </el-icon
-              >&nbsp;标签
+              <el-icon> <PriceTag /> </el-icon>&nbsp;标签
             </router-link>
           </el-col>
           <el-col :span="3" :xs="24">
             <router-link to="/clone">
-              <el-icon>
-                <CopyDocument /> </el-icon
-              >&nbsp;归档
+              <el-icon> <CopyDocument /> </el-icon>&nbsp;归档
             </router-link>
           </el-col>
           <el-col :span="3" :xs="24">
             <router-link to="/music">
-              <el-icon>
-                <Headset /> </el-icon
-              >&nbsp;音乐盒
+              <el-icon> <Headset /> </el-icon>&nbsp;音乐盒
             </router-link>
           </el-col>
           <el-col :span="3" :xs="24">
             <router-link to="/picture">
-              <el-icon>
-                <PictureFilled /> </el-icon
-              >&nbsp;照片墙
+              <el-icon> <PictureFilled /> </el-icon>&nbsp;照片墙
             </router-link>
           </el-col>
           <el-col :span="3" :xs="24">
             <router-link to="/about">
-              <el-icon>
-                <UserFilled /> </el-icon
-              >&nbsp;关于我
+              <el-icon> <UserFilled /> </el-icon>&nbsp;关于我
             </router-link>
           </el-col>
         </el-row>
@@ -151,51 +137,37 @@ const handleSize = () => {
             <el-dropdown-menu class="mobile-hide mobile-show">
               <el-dropdown-item>
                 <router-link to="/home">
-                  <el-icon>
-                    <HomeFilled /> </el-icon
-                  >&nbsp;首页
+                  <el-icon> <HomeFilled /> </el-icon>&nbsp;首页
                 </router-link>
               </el-dropdown-item>
               <el-dropdown-item>
                 <router-link to="/type">
-                  <el-icon>
-                    <Crop /> </el-icon
-                  >&nbsp;分类
+                  <el-icon> <Crop /> </el-icon>&nbsp;分类
                 </router-link>
               </el-dropdown-item>
               <el-dropdown-item>
                 <router-link to="/tag">
-                  <el-icon>
-                    <PriceTag /> </el-icon
-                  >&nbsp;标签
+                  <el-icon> <PriceTag /> </el-icon>&nbsp;标签
                 </router-link>
               </el-dropdown-item>
               <el-dropdown-item>
                 <router-link to="/clone">
-                  <el-icon>
-                    <CopyDocument /> </el-icon
-                  >&nbsp;归档
+                  <el-icon> <CopyDocument /> </el-icon>&nbsp;归档
                 </router-link>
               </el-dropdown-item>
               <el-dropdown-item>
                 <router-link to="/music">
-                  <el-icon>
-                    <Headset /> </el-icon
-                  >&nbsp;音乐盒
+                  <el-icon> <Headset /> </el-icon>&nbsp;音乐盒
                 </router-link>
               </el-dropdown-item>
               <el-dropdown-item>
                 <router-link to="/picture">
-                  <el-icon>
-                    <PictureFilled /> </el-icon
-                  >&nbsp;照片墙
+                  <el-icon> <PictureFilled /> </el-icon>&nbsp;照片墙
                 </router-link>
               </el-dropdown-item>
               <el-dropdown-item>
                 <router-link to="/about">
-                  <el-icon>
-                    <UserFilled /> </el-icon
-                  >&nbsp;关于我
+                  <el-icon> <UserFilled /> </el-icon>&nbsp;关于我
                 </router-link>
               </el-dropdown-item>
               <div class="input">
@@ -225,7 +197,7 @@ const handleSize = () => {
     width: 100%;
     background-color: rgba($color: #000000, $alpha: 0.5);
     margin: 0 !important;
-    padding: 0.8rem 5rem;
+    padding: 0.8rem;
     border-bottom: 1px solid #b2b1b1;
     box-shadow: 0 1px #ccc;
 

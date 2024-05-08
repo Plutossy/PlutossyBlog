@@ -37,38 +37,38 @@
 </template>
 
 <script>
-import { swiperList } from '@/assets/js/swiper.js'
+import { swiperList } from '@/assets/js/swiper.js';
 
 // Import Swiper Vue.js components
-import { Swiper, SwiperSlide } from 'swiper/vue'
+import { Swiper, SwiperSlide } from 'swiper/vue';
 // Import Swiper styles
-import 'swiper/scss'
-import 'swiper/scss/navigation'
-import 'swiper/scss/pagination'
+import 'swiper/scss';
+import 'swiper/scss/navigation';
+import 'swiper/scss/pagination';
 
 // import required modules
-import { Autoplay, EffectCoverflow, Pagination, Navigation } from 'swiper/modules'
+import { Autoplay, EffectCoverflow, Pagination, Navigation } from 'swiper/modules';
 
 export default {
   name: 'MySwiper',
   data() {
     return {
-      swiperList: []
-    }
+      swiperList: [],
+    };
   },
   components: {
     Swiper,
-    SwiperSlide
+    SwiperSlide,
   },
   setup() {
     return {
-      modules: [EffectCoverflow, Autoplay, Pagination, Navigation]
-    }
+      modules: [EffectCoverflow, Autoplay, Pagination, Navigation],
+    };
   },
   created() {
-    this.swiperList = swiperList
-  }
-}
+    this.swiperList = swiperList;
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -85,8 +85,7 @@ export default {
 
 .swiper {
   width: 100%;
-  padding-top: 15px;
-  padding-bottom: 50px;
+  padding: 15px 0.8rem 50px;
   .swiper-slide {
     background-position: center;
     background-size: cover;
