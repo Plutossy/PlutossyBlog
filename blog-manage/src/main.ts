@@ -2,20 +2,21 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-03-04 10:53:37
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-29 14:30:04
+ * @LastEditTime: 2024-05-21 09:59:06
  * @FilePath: \blog-manage\src\main.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
 import { createApp } from 'vue';
 import './style.scss';
-// import ElementPlus from 'element-plus'
-import 'element-plus/dist/index.css';
 import App from './App.vue';
 import router from './router';
 import store from './store/store.ts';
 import mitt from 'mitt';
+import ElementPlus from 'element-plus';
+// import 'element-plus/dist/index.css';
 // 如果您正在使用CDN引入，请删除下面一行。
-import * as ElementPlusIconsVue from '@element-plus/icons-vue';
+// import * as ElementPlusIconsVue from '@element-plus/icons-vue';
+import zhCn from 'element-plus/es/locale/lang/zh-cn';
 // 导入全局动画样式表
 import 'animate.css';
 
@@ -43,9 +44,13 @@ VueMarkdownEditor.use(vuepressTheme, {
 
 const app = createApp(App);
 
-for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
-  app.component(key, component);
-}
+// for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+//   app.component(key, component);
+// }
+
+app.use(ElementPlus, {
+  locale: zhCn,
+});
 
 // app.use(ElementPlus)
 // 引入自定义插件
