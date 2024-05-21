@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-09 08:56:06
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-28 16:49:56
+ * @LastEditTime: 2024-05-21 10:11:41
  * @FilePath: \blog-manage\src\pages\Login.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -147,7 +147,7 @@ onMounted(() => {
 // 切换登录注册
 const loginToggle = () => {
   tologin.value = !tologin.value;
-  if (tologin.value) {
+  if (!tologin.value) {
     ruleFormRef.value.resetFields();
     clearForm(ruleForm);
   }
