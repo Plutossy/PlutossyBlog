@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2023-11-27 16:56:57
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-05-07 15:35:16
+ * @LastEditTime: 2024-05-21 10:21:46
  * @FilePath: \blog-client\vite.config.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -11,6 +11,8 @@ import vueSetupExtend from 'vite-plugin-vue-setup-extend';
 // 引入path
 import { resolve } from 'path';
 import vue from '@vitejs/plugin-vue';
+import Icons from 'unplugin-icons/vite';
+import IconsResolver from 'unplugin-icons/resolver';
 
 // 导入commonjs模块
 import commonjs from '@rollup/plugin-commonjs';
@@ -26,6 +28,8 @@ import { createSvgIconsPlugin } from 'vite-plugin-svg-icons';
 // 热更新，开发环境下使用
 import ViteRestart from 'vite-plugin-restart';
 
+const pathSrc = resolve(__dirname, 'src');
+
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd());
@@ -35,7 +39,12 @@ export default defineConfig(({ mode }) => {
       commonjs(), // 将 CommonJS 转换成 ES2015 模块供 Rollup 处理
       vue(),
       AutoImport({
-        resolvers: [ElementPlusResolver()],
+        resolvers: [
+          ElementPlusResolver(), // 自动导入图标组件
+          IconsResolver({
+            prefix: 'Icon',
+          }),
+        ],
         imports: ['vue', '@vueuse/core', 'vue-router', 'vuex', '@vueuse/head'],
         // 指定自动导入函数TS类型声明文件路径 (false:关闭自动生成)
         dts: false,
@@ -50,12 +59,27 @@ export default defineConfig(({ mode }) => {
         },
       }),
       Components({
-        dirs: ['src/components'], // 组件存放的文件夹，默认为 src/components
-        resolvers: [ElementPlusResolver()],
+        resolvers: [
+          // 自动注册图标组件
+          IconsResolver({
+            // element-plus图标库，其他图标库 https://icon-sets.iconify.design/
+            enabledCollections: ['ep'],
+          }),
+          // 自动导入 Element Plus 组件
+          ElementPlusResolver(),
+        ],
+        dts: false, // 指定自动导入函数TS类型声明文件路径 (false:关闭自动生成)
+        dirs: ['src/components'], // 自动导入组件存放的文件夹，默认为 src/components
+      }),
+      Icons({
+        // 自动安装图标库
+        autoInstall: true,
       }),
       // svg图标
       createSvgIconsPlugin({
-        iconDirs: [resolve(process.cwd(), 'src/assets/img/svg')],
+        // 指定需要缓存的图标文件夹
+        iconDirs: [resolve(process.cwd(), 'src/assets/icons')],
+        // 指定symbolId格式
         symbolId: 'icon-[dir]-[name]',
       }),
       ViteRestart({
