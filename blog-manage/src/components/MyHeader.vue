@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2024-01-08 19:48:58
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-04-16 18:39:54
+ * @LastEditTime: 2024-07-17 19:05:20
  * @FilePath: \blog-manage\src\components\MyHeader.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -310,10 +310,10 @@ const sendCaptcha = async () => {
     <!-- 折叠图片 -->
     <div class="collapse-btn" @click="collapseChange">
       <el-icon v-if="!collapse" class="switch-item">
-        <Fold />
+        <i-ep-Fold />
       </el-icon>
       <el-icon v-else class="switch-item">
-        <Expand />
+        <i-ep-Expand />
       </el-icon>
     </div>
     <div class="logo">SSY_Blog 后台管理</div>
@@ -331,7 +331,7 @@ const sendCaptcha = async () => {
         <span class="el-dropdown-link switch-item">
           {{ userInfo.nickname }}
           <el-icon class="el-icon--right">
-            <CaretBottom />
+            <i-ep-CaretBottom />
           </el-icon>
         </span>
         <template #dropdown>

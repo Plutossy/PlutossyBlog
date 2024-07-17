@@ -49,7 +49,7 @@ export default defineConfig(({ mode }) => {
           }),
         ],
         imports: ['vue', '@vueuse/core', 'vue-router', 'vuex', '@vueuse/head'],
-        // 可以选择auto-import.d.ts生成的位置，使用ts建议设置为'src/auto-import.d.ts'
+        // 可以选择auto-import.d.ts生成的位置，使用ts建议设置为'src/auto-imports.d.ts'
         dts: resolve(pathSrc, 'auto-imports.d.ts'),
         eslintrc: {
           // 是否自动生成 eslint 规则，建议生成之后设置 false
