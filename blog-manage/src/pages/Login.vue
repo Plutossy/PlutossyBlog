@@ -243,9 +243,9 @@ const setCookie = () => {
   }
 };
 const getCookie = () => {
-  const nickname = decrypt(Cookies.get('nickname'));
-  const password = decrypt(Cookies.get('password'));
-  const remember = Cookies.get('remember');
+  const nickname = decrypt(Cookies.get('nickname') || '');
+  const password = decrypt(Cookies.get('password') || '');
+  const remember = Cookies.get('remember') || 'false';
   ruleForm.nickname = nickname ?? '';
   ruleForm.password = password ?? '';
   ruleForm.remember = remember === 'true';
