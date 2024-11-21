@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2023-11-27 16:59:47
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-05-07 13:55:38
+ * @LastEditTime: 2024-11-21 15:04:34
  * @FilePath: \blog-client\src\components\ScrollTop.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -10,21 +10,10 @@
   <el-backtop v-if="showBackTop" :right="60" :bottom="100" :visibility-height="500">
     <div class="content">
       <svg-icon class="backTop-icon" icon-class="back-top" size="50px" color="#474747" />
-      <el-popover placement="left" trigger="hover" transition="custom">
-        <template #reference>
-          <svg-icon class="iconRotate" icon-class="setting" size="40px" color="#474747" @click.prevent="disClick" />
-        </template>
-        <template #default>
-          <div class="setting-fire" @click="changeMouseAnimation">
-            <svg-icon v-if="mouseAnimation" icon-class="fire-work-active" size="30px" />
-            <svg-icon v-else icon-class="fire-work" size="30px" color="#474747" />
-          </div>
-        </template>
-      </el-popover>
     </div>
   </el-backtop>
   <!-- 点击动画 -->
-  <canvas v-if="mouseAnimation" id="mousedown" style="position: fixed; left: 0; top: 0; pointer-events: none; z-index: 1000"> </canvas>
+  <canvas id="mousedown" style="position: fixed; left: 0; top: 0; pointer-events: none; z-index: 1000"> </canvas>
 </template>
 
 <script>
@@ -41,25 +30,8 @@ export default {
   computed: {
     ...mapGetters('m_back', ['showBackTop']),
   },
-  created() {
-    if (this.mouseAnimation) {
-      mousedown();
-    }
-  },
-  methods: {
-    // 阻止点击事件
-    disClick(e) {
-      e.stopPropagation();
-      return false;
-    },
-    changeMouseAnimation() {
-      this.mouseAnimation = !this.mouseAnimation;
-      if (this.mouseAnimation) {
-        this.$nextTick(() => {
-          mousedown();
-        });
-      }
-    },
+  mounted() {
+    mousedown();
   },
 };
 </script>
