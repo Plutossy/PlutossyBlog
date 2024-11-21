@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2023-12-05 14:58:01
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-05-06 17:11:52
+ * @LastEditTime: 2024-11-21 10:24:27
  * @FilePath: \blog-client\src\components\PlayBar.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -15,7 +15,7 @@
         <use xlink:href="#icon-jiantou-xia-cuxiantiao" />
         </svg>-->
         <el-icon>
-          <ArrowUpBold />
+          <i-ep-ArrowUpBold />
         </el-icon>
       </div>
     </el-tooltip>
@@ -114,7 +114,7 @@
             <el-col :span="21">播放列表</el-col>
             <el-col :span="1">
               <el-icon @click="listShow = false">
-                <CloseBold />
+                <i-ep-CloseBold />
               </el-icon>
             </el-col>
           </el-row>
@@ -141,15 +141,15 @@
             <el-col :span="1">
               <el-tooltip class="item" effect="dark" content="播放/暂停" placement="top">
                 <el-icon @click="cutSong(site)">
-                  <VideoPlay v-if="site.id !== songContent.id || playStatus === false ? true : false" />
-                  <VideoPause v-else />
+                  <i-ep-VideoPlay v-if="site.id !== songContent.id || playStatus === false ? true : false" />
+                  <i-ep-VideoPause v-else />
                 </el-icon>
               </el-tooltip>
             </el-col>
             <el-col :span="3" @click="removeSong(site)">
               <el-tooltip class="item" effect="dark" content="移除" placement="top">
                 <el-icon>
-                  <Delete />
+                  <i-ep-Delete />
                 </el-icon>
               </el-tooltip>
             </el-col>

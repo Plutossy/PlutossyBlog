@@ -85,37 +85,37 @@ const handleSize = () => {
         <el-row justify="end">
           <el-col :span="3" :xs="24">
             <router-link to="/home">
-              <el-icon> <HomeFilled /> </el-icon>&nbsp;首页
+              <el-icon> <i-ep-HomeFilled /> </el-icon>&nbsp;首页
             </router-link>
           </el-col>
           <el-col :span="3" :xs="24">
             <router-link to="/type">
-              <el-icon> <Crop /> </el-icon>&nbsp;分类
+              <el-icon> <i-ep-Crop /> </el-icon>&nbsp;分类
             </router-link>
           </el-col>
           <el-col :span="3" :xs="24">
             <router-link to="/tag">
-              <el-icon> <PriceTag /> </el-icon>&nbsp;标签
+              <el-icon> <i-ep-PriceTag /> </el-icon>&nbsp;标签
             </router-link>
           </el-col>
           <el-col :span="3" :xs="24">
             <router-link to="/clone">
-              <el-icon> <CopyDocument /> </el-icon>&nbsp;归档
+              <el-icon> <i-ep-CopyDocument /> </el-icon>&nbsp;归档
             </router-link>
           </el-col>
           <el-col :span="3" :xs="24">
             <router-link to="/music">
-              <el-icon> <Headset /> </el-icon>&nbsp;音乐盒
+              <el-icon> <i-ep-Headset /> </el-icon>&nbsp;音乐盒
             </router-link>
           </el-col>
           <el-col :span="3" :xs="24">
             <router-link to="/picture">
-              <el-icon> <PictureFilled /> </el-icon>&nbsp;照片墙
+              <el-icon> <i-ep-PictureFilled /> </el-icon>&nbsp;照片墙
             </router-link>
           </el-col>
           <el-col :span="3" :xs="24">
             <router-link to="/about">
-              <el-icon> <UserFilled /> </el-icon>&nbsp;关于我
+              <el-icon> <i-ep-UserFilled /> </el-icon>&nbsp;关于我
             </router-link>
           </el-col>
         </el-row>
@@ -130,44 +130,44 @@ const handleSize = () => {
         <!-- 下拉菜单 -->
         <el-dropdown trigger="click" @visible-change="toggleEvent">
           <el-icon>
-            <Expand v-show="btnHide" />
-            <Fold v-show="!btnHide" />
+            <i-ep-Expand v-show="btnHide" />
+            <i-ep-Fold v-show="!btnHide" />
           </el-icon>
           <template #dropdown>
             <el-dropdown-menu class="mobile-hide mobile-show">
               <el-dropdown-item>
                 <router-link to="/home">
-                  <el-icon> <HomeFilled /> </el-icon>&nbsp;首页
+                  <el-icon> <i-ep-HomeFilled /> </el-icon>&nbsp;首页
                 </router-link>
               </el-dropdown-item>
               <el-dropdown-item>
                 <router-link to="/type">
-                  <el-icon> <Crop /> </el-icon>&nbsp;分类
+                  <el-icon> <i-ep-Crop /> </el-icon>&nbsp;分类
                 </router-link>
               </el-dropdown-item>
               <el-dropdown-item>
                 <router-link to="/tag">
-                  <el-icon> <PriceTag /> </el-icon>&nbsp;标签
+                  <el-icon> <i-ep-PriceTag /> </el-icon>&nbsp;标签
                 </router-link>
               </el-dropdown-item>
               <el-dropdown-item>
                 <router-link to="/clone">
-                  <el-icon> <CopyDocument /> </el-icon>&nbsp;归档
+                  <el-icon> <i-ep-CopyDocument /> </el-icon>&nbsp;归档
                 </router-link>
               </el-dropdown-item>
               <el-dropdown-item>
                 <router-link to="/music">
-                  <el-icon> <Headset /> </el-icon>&nbsp;音乐盒
+                  <el-icon> <i-ep-Headset /> </el-icon>&nbsp;音乐盒
                 </router-link>
               </el-dropdown-item>
               <el-dropdown-item>
                 <router-link to="/picture">
-                  <el-icon> <PictureFilled /> </el-icon>&nbsp;照片墙
+                  <el-icon> <i-ep-PictureFilled /> </el-icon>&nbsp;照片墙
                 </router-link>
               </el-dropdown-item>
               <el-dropdown-item>
                 <router-link to="/about">
-                  <el-icon> <UserFilled /> </el-icon>&nbsp;关于我
+                  <el-icon> <i-ep-UserFilled /> </el-icon>&nbsp;关于我
                 </router-link>
               </el-dropdown-item>
               <div class="input">

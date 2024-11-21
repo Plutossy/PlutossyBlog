@@ -6,13 +6,13 @@
       <template #header>
         <div class="card-header">
           <div>
-            <el-icon> <Suitcase /> </el-icon>分类
+            <el-icon> <i-ep-Suitcase /> </el-icon>分类
           </div>
 
           <div>
             更多
             <el-icon>
-              <DArrowRight />
+              <i-ep-DArrowRight />
             </el-icon>
           </div>
         </div>
@@ -38,13 +38,13 @@
       <template #header>
         <div class="card-header">
           <div>
-            <el-icon> <Suitcase /> </el-icon>标签
+            <el-icon> <i-ep-Suitcase /> </el-icon>标签
           </div>
 
           <div>
             更多
             <el-icon>
-              <DArrowRight />
+              <i-ep-DArrowRight />
             </el-icon>
           </div>
         </div>
@@ -143,7 +143,7 @@
     <el-card shadow="hover">
       <template #header>
         <h3>
-          <el-icon color="orange"><Notebook /></el-icon>
+          <el-icon color="orange"><i-ep-Notebook /></el-icon>
           最新博客
         </h3>
       </template>

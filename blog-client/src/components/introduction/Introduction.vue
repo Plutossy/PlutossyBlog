@@ -20,7 +20,7 @@
           </el-col>
           <el-col v-if="type === 'recommend'" class="content-time" :span="24">
             <el-icon>
-              <Calendar />
+              <i-ep-Calendar />
             </el-icon>
             <p>2023-11-29</p>
           </el-col>
@@ -30,7 +30,7 @@
           <el-col v-if="type === 'recommend'" class="content-tips" :span="24">
             <div>
               <el-icon>
-                <View />
+                <i-ep-View />
               </el-icon>
               <p>233</p>
             </div>
@@ -66,13 +66,13 @@
               </el-col>
               <el-col :span="8">
                 <el-icon>
-                  <Calendar />
+                  <i-ep-Calendar />
                 </el-icon>
                 <p>2023-11-29</p>
               </el-col>
               <el-col :span="8">
                 <el-icon>
-                  <View />
+                  <i-ep-View />
                 </el-icon>
                 <p>233</p>
               </el-col>

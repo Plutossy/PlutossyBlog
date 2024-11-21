@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2023-11-27 16:56:57
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-05-21 10:21:46
+ * @LastEditTime: 2024-11-21 10:18:09
  * @FilePath: \blog-client\vite.config.js
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -78,7 +78,7 @@ export default defineConfig(({ mode }) => {
       // svg图标
       createSvgIconsPlugin({
         // 指定需要缓存的图标文件夹
-        iconDirs: [resolve(process.cwd(), 'src/assets/icons')],
+        iconDirs: [resolve(process.cwd(), 'src/assets/img/svg')],
         // 指定symbolId格式
         symbolId: 'icon-[dir]-[name]',
       }),
