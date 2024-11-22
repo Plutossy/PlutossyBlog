@@ -2,7 +2,7 @@
  * @Author: Plutossy pluto_ssy@outlook.com
  * @Date: 2023-11-27 16:59:47
  * @LastEditors: Plutossy pluto_ssy@outlook.com
- * @LastEditTime: 2024-11-21 15:04:34
+ * @LastEditTime: 2024-11-22 17:34:07
  * @FilePath: \blog-client\src\components\ScrollTop.vue
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
 -->
@@ -13,12 +13,12 @@
     </div>
   </el-backtop>
   <!-- 点击动画 -->
-  <canvas id="mousedown" style="position: fixed; left: 0; top: 0; pointer-events: none; z-index: 1000"> </canvas>
+  <canvas id="fireworks" style="position: fixed; left: 0; top: 0; pointer-events: none; z-index: 1000"></canvas>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
-import mousedown from '@/utils/mousedown';
+import fireworks from '@/utils/fireworks';
 
 export default {
   name: 'scroll-top',
@@ -31,7 +31,7 @@ export default {
     ...mapGetters('m_back', ['showBackTop']),
   },
   mounted() {
-    mousedown();
+    fireworks();
   },
 };
 </script>
