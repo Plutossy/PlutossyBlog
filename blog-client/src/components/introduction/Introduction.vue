@@ -197,40 +197,33 @@ export default {
             align-items: center;
             color: #585858;
             background-color: rgb(180, 180, 180);
-            border-radius: 10px;
+            border-radius: 1.5rem;
             text-align: center;
             line-height: 2;
             padding-left: 32px;
             padding-right: 64px;
+            z-index: 1;
             cursor: pointer;
+
             &::before {
               content: '';
               position: absolute;
               left: 0;
-              top: 0;
-              width: 0;
-              height: 0;
-              border-top: 16px solid #f5f7fa;
-              border-right: 16px solid transparent;
-              border-bottom: 16px solid transparent;
-              border-left: 18px solid #f5f7fa;
-            }
-            &::after {
-              content: '';
-              position: absolute;
               right: 0;
+              top: 0;
               bottom: 0;
-              width: 0;
-              height: 0;
-              border-top: 16px solid transparent;
-              border-right: 18px solid #f5f7fa;
-              border-bottom: 16px solid #f5f7fa;
-              border-left: 18px solid transparent;
+              // background-color: linear-gradient(to right, #ff4b2b, #ff416c);
+              background-color: #ff4b2b;
+              transform: scaleX(0);
+              transform-origin: 50%;
+              transition: transform 0.5s ease-out;
+              transition-timing-function: cubic-bezier(0.45, 1.64, 0.47, 0.66);
+              border-radius: 1.5rem;
+              z-index: -1;
             }
 
-            &:hover {
-              background-color: rgb(217, 217, 22);
-              color: #ffffff;
+            &:hover::before {
+              transform: scaleX(1);
             }
 
             > p {
