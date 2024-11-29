@@ -203,6 +203,7 @@ export default {
             padding-left: 32px;
             padding-right: 64px;
             z-index: 1;
+            overflow-x: hidden;
             cursor: pointer;
 
             &::before {
@@ -215,7 +216,7 @@ export default {
               // background-color: linear-gradient(to right, #ff4b2b, #ff416c);
               background-color: #ff4b2b;
               transform: scaleX(0);
-              transform-origin: 50%;
+              transform-origin: 0;
               transition: transform 0.5s ease-out;
               transition-timing-function: cubic-bezier(0.45, 1.64, 0.47, 0.66);
               border-radius: 1.5rem;
